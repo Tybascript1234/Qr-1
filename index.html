@@ -174,7 +174,7 @@
                              <script>
                                  // دالة لتوليد رابط عشوائي أو نص عشوائي
   function generateRandomText() {
-    const baseURL = "https://quranrecited123456780104.on.drv.tw/The%20Quran/Quran.html";
+    const baseURL = "index.html";
     const randomCode = Math.random().toString(36).substring(2, 10); // توليد رمز عشوائي
     return baseURL + randomCode;
   }
@@ -507,7 +507,7 @@
                                     await navigator.share({
                                         title: 'مشاركة الرابط',
                                         text: 'تفاصيل المشاركة هنا.',
-                                        url: 'https://quranrecited123456780104.on.drv.tw/The%20Quran/Quran.html'
+                                        url: 'index.html'
                                     });
                                     console.log('تمت المشاركة بنجاح');
                                 } catch (error) {
