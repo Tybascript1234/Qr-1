@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran recited</title>
+    <!-- links -->
+     <link rel="stylesheet" href="Quran.css">
+     <link rel="stylesheet" href="oo.css">
+     <link rel="stylesheet" href="OZ.css">
+     <link rel="icon" href="New Project.png">
+     <script src="Quran.js"></script>
+     <script src="mo.js"></script>
+     <script src="data-Qur.js"></script>
+     <script src="OZ.js"></script>
+     <script src="OZ2.js"></script>
+     <script src="reload.js"></script>
+     <link rel="manifest" href="manifest.json">
+     <!-- --------------- -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" />
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
+<!-- إضافة CSS الخاص بـ Prism.js لتنسيق الأكواد -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet"/>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+</head>
+<body>
+
+    <!-- Reload -->
+    <div class="Reload" id="Reload-logo">
+        <div class="Reload-div">
+            <div class="i-freem">
+                <div class="Reload-div-logo">
+                    <div class="logo">
+                        <img src="logo-no-background.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="ome"><span id="progress-bar"></span></div>
+            <br>
+            <div class="hom">
+                <button onclick="openInternetSettings()">WiFi settings</button>
+                <button onclick="reloadPage()">Reload</button>
+            </div>
+            <br>
+            <div id="status-text" style="color: rgb(117, 117, 117);">Internet disconnected.</div>
+        </div>
+     </div>
+
+    <div id="sssd" class=""></div>
+
+    <div class="container">
+        <div class="reload" id=""><span id="" class=""></span></div>
+
+        <!-- Add shortcut -->
+         <div id="contentDivWithDetails1" class="Add-shortcut" style="display: none;">
+            <div style="justify-content: space-between;width: -webkit-fill-available;align-items: center;height: 100%;">
+                <div class="Add-only">
+                    <div class="pagee"><div class="add-image"></div><span class="jos"><span class="vo1">Add shortcut Quran recited</span></span></div>
+                    <div class="Shortcut-button"><button id="createShortcut">Add shortcut</button></div>
+                </div>
+                <div class="Add-only">
+                    <button class="Shortcut-close pagee" id="showContentButtonForDiv2"><ion-icon name="document-text-outline"></ion-icon></button>
+                    <button class="Shortcut-close pagee" id="closeContentButtonForDiv1"><ion-icon name="close-outline"></ion-icon></button>
+                </div>
+            </div>
+         </div>
+
+        <!-- Home -->
+         <div class="home">
+            <div class="home-div">
+                <a href=""><div class="logo pagee">
+                    <img src="logo-no-background.png" class="xx2" alt="">
+                    <img src="logo-no-background2.png" class="xx img-logo" alt="">
+                </div></a>
+                <div class="fof">
+                        <button class="logo_button cvme" id="coos" data-tooltip="Eye protection"><ion-icon name="eye-outline"></ion-icon></button>
+                    <div class="fof-div vo1">
+                        <button class="logo_button"><ion-icon name="download-outline"></ion-icon></button>
+                        <div class="fof-dive">
+                            <div>
+                                <button class="download-button-link">Apple<ion-icon name="logo-apple"></ion-icon></button>
+                                <button class="download-button-link">Android<ion-icon name="logo-android"></ion-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fof-div">
+                        <button class="logo_button pagee"><ion-icon name="code"></ion-icon></button>
+                        <div class="fof-dive">
+                            <div>
+                                <span><div style="color: #b0bcc4;display: inline-flex;">< frame ></div> قم بنسخ ال </span>
+                                <br>
+                                <span>لإضافة اوقات الصلاة الى موقعك بالإضافه الى اذكار الصباح والمساء وغيرها من الاشياء</span>
+                                <br>
+                                <textarea readonly class="frame copyable"><iframe src="file:///C:/Users/Lenovo/OneDrive/Desktop/Chat%20[%20Eyad%20]/noon/noon.html" frameborder="0"></iframe></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="logo_button cvme" id="shareButton" data-tooltip="Share"><ion-icon name="arrow-redo"></ion-icon></button>
+                    <div class="fof-div cke vo" style="display: none;">
+                        <button class="logo_button"><ion-icon name="ellipsis-vertical"></ion-icon></button>
+                        <div class="fof-dive">
+                            <div>
+                                <button class="kkf"><ion-icon name="code-outline"></ion-icon>Copy code</button>
+                                <hr>
+                                <button class="kkf"><ion-icon name="download-outline"></ion-icon>Apple</button>
+                                <button class="kkf"><ion-icon name="download-outline"></ion-icon>Android</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <!-- button-link -->
+            <div class="button-link">
+                <h1>اختر من المحتوى</h1>
+                <div class="menu-button">
+                    <div class="menu-buttons pagee show-btn" data-target="Page1">
+                        <div>
+                            <img src="https://png.pngtree.com/png-vector/20230424/ourmid/pngtree-azan-prayer-call-vector-png-image_6728480.png" alt="">
+                            <br>
+                            <span class="c">اوقات الصلاة اليوم</span> 
+                        </div>
+                    </div>
+                    <div class="menu-buttons pagee show-btn" data-target="Page2">
+                        <div>
+                            <img src="https://alhafidzacademy.com/wp-content/uploads/2023/10/pngimg.com-quran_PNG33-1024x734.png" alt="">
+                            <br>
+                            <span class="c">قرائة القرآن</span>   
+                        </div>
+                    </div>
+                    <div class="menu-buttons pagee show-btn" data-target="Page3">
+                        <div>
+                            <img src="https://png.pngtree.com/png-clipart/20240605/original/pngtree-yellow-crescent-moon-with-fluffy-clouds-png-image_15251413.png" alt="" style="border-radius: 0;">
+                            <br>
+                            <span class="c">اذكار الصباح والمساء</span>   
+                        </div>
+                    </div>
+                    <a href="hello.html" class="menu-buttons pagee" data-target="">
+                        <div>
+                            <div>
+                                <img src="https://png.pngtree.com/png-clipart/20230328/original/pngtree-map-pin-location-with-red-png-image_9006526.png" alt="" style="border-radius: 0;">
+                                <br>
+                                <span class="c">خريطة العالم</span>   
+                            </div>
+                        </div>
+                    </a>
+                    <div class="menu-buttons pagee show-btn" data-target="Page5">
+                        <div>
+                            <img src="https://png.pngtree.com/png-clipart/20231101/original/pngtree-sport-cup-cup-photo-png-image_13470918.png" alt="" style="border-radius: 0;">
+                            <br>
+                            <span class="c">مسابقة دينية</span>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr">
+                    <div class="qr-bd">
+                        <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+                            <div class="qr-container">
+                            <div id="qrcode" style="transform: scale(0.87);"><img src="https://quranrecited12345678096.on.drv.tw/The%20Quran/favicon.ico" alt="Icon" class="icon-overlay"></div>
+                            <span id="timeRemaining">00:00</span>
+                            </div><div class="sold">
+                            <img src="New Project.png" alt=""></div>
+                            <!-- --- -->
+                             <script>
+                                 // دالة لتوليد رابط عشوائي أو نص عشوائي
+  function generateRandomText() {
+    const baseURL = "https://quranrecited123456780104.on.drv.tw/The%20Quran/Quran.html";
+    const randomCode = Math.random().toString(36).substring(2, 10); // توليد رمز عشوائي
+    return baseURL + randomCode;
+  }
+
+  // دالة لتحديث رمز QR
+  function updateQRCode() {
+    const url = generateRandomText();
+    document.getElementById('qrcode').innerHTML = ""; // تنظيف المحتوى السابق
+    new QRCode(document.getElementById("qrcode"), {
+      text: url,
+      width: 210,
+      height: 210,
+    });
+
+    // إعادة تعيين الوقت المتبقي عند تحديث الرمز
+    timeRemaining = 20; // إعادة تعيين الوقت المتبقي ليبدأ من 20 ثانية
+  }
+
+  // دالة لحساب الوقت المتبقي وعرضه في الـ span
+  let timeRemaining = 20;
+  function updateTimeRemaining() {
+    if (timeRemaining > 0) {
+      timeRemaining--;
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      document.getElementById('timeRemaining').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+  }
+
+  // تحديث الوقت المتبقي كل ثانية
+  setInterval(updateTimeRemaining, 1000);
+
+  // تحديث رمز QR كل 20 ثانية
+  updateQRCode();
+  setInterval(updateQRCode, 20000);
+
+                             </script>
+                             <!-- ---- -->
+                    </div>
+                    <div class="qr-txt">
+                        <span style="font-size: 20px; font-weight: 600;">قم بتنزيل التطبيق لتجربة افضل</span>
+                        <div class="qr-text">
+                            <span><ion-icon name="checkmark-outline"></ion-icon>تصفح بدون انترنت</span>
+                            <span><ion-icon name="checkmark-outline"></ion-icon>استماع الى القرآن وأقرئه بدون انترنت</span>
+                            <span><ion-icon name="checkmark-outline"></ion-icon>ضمان فرصتك في الفوز بالمسابقات</span>
+                            <span><ion-icon name="checkmark-outline"></ion-icon>ومزايا اخرى ستعجبك</span>
+                        </div>
+                        <div class="xxxe"><img class="coc" src="https://profitbooks.net/wp-content/uploads/2021/05/58438-play-app-android-now-button-store.png" alt=""><img style="height: 45px;" src="https://vboxxcloud.com/assets/img/download-it-on-google-play.png" alt=""></div>
+                    </div>
+                    
+                </div>
+
+                <div class="sof">
+                    <!-- <div></div> -->
+                    <div class="old">
+                        <button style="background-color: #00000000;color: #4a596d;border-color: #dadada;" class="show-btn" data-target="Page6">المسابقات الشهرية</button>
+                        <button>ادعمنا الأن</button>
+                        <a class="fo_url" data-url="https://quranrecited123456780103.on.drv.tw/The%20Quran/Login-1.html" style="width: fit-content;margin: auto;border-radius: 25px;"><button>اشترك معنا</button></a>
+                    </div>
+                </div>
+
+                <div class="opin_link" style="display: none;">
+                    <button class="opin_link-button"><div><ion-icon name="logo-github"></ion-icon><span>Github</span></div><ion-icon name="open-outline"></ion-icon></button>
+                    <button class="opin_link-button"><div><ion-icon name="logo-youtube"></ion-icon><span>Youtube</span></div><ion-icon name="open-outline"></ion-icon></button>
+                    <button class="opin_link-button"><div><ion-icon name="logo-twitter"></ion-icon><span>Twitter</span></div><ion-icon name="open-outline"></ion-icon></button>
+                </div>
+
+                <div class="oio">
+                    <div class="oio-div">
+                        <div class="oio-div-div">
+                            <span>تواصل معنا</span>
+                            <button style="background-color: white;"><ion-icon style="color: rgb(22, 22, 22);" name="logo-github"></ion-icon></button>
+                            <button style="background-color: white;"><ion-icon style="color: #f70000;" name="logo-youtube"></ion-icon></button>
+                            <button style="background-color: #1c9cea;"><ion-icon style="color: white;" name="logo-twitter"></ion-icon></button>
+                            <button style="background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf)"><ion-icon style="color: white;" name="logo-instagram"></ion-icon></button>
+                            <div class="">
+                               <a>tybascript@gmail.com</a>
+                                <a>eyadscript@gmail.com</a>
+                                <a>0597 730 31300</a> 
+                            </div>
+                        </div>
+
+                        <!-- 2 -->
+                        <div class="oio-div-div">
+                            <span style="direction: rtl;">ربط API</span>
+                            <div class="">
+                              <a onclick="showModal()">اوقات الصلاة</a>
+                                <a onclick="showModal()">القرآن الكريم</a>
+                                <a onclick="showModal()">اذكار الصباح والمساء</a>
+                                <a onclick="showModal()">خريطة العالم</a>
+                                <a onclick="showModal()">ماسبقة دينية</a>
+                                <a id="showContentButtonForDiv1">اضافة اختصار</a>  
+                            </div>
+                        </div>
+                        
+                        <!-- 3 -->
+                        <div class="oio-div-div">
+                            <span>الشركة المطورة</span>
+                            <div class="">
+                               <a href="https://creativecloudsit.com/?srsltid=AfmBOoqhIIQ-hBKGRq7z8zOxr3NQJtVEhUScWBEXb-nnoonagbRuirVh">Creative Clouds IT</a>
+                                <a>منذ عام 2019م</a> 
+                            </div>
+                        </div>
+
+                        <!-- 4 -->
+                        <div class="oio-div-div" style="direction: rtl;">
+                            <span>السياسات والاحكام</span>
+                            <div class="">
+                                <a class="show-btn" data-target="Page7">سياسة الموقع</a>
+                                <a href="https://creativecloudsit.com/page/privacy-policy">سياسة شركة Creative Clouds IT</a>
+                                <a href="https://creativecloudsit.com/page/terms-of-use">سروط الإستخدام   Creative Clouds IT</a>
+                                <a class="show-btn" data-target="Page9">سياسة استخدام ال API</a>
+                            </div>
+                        </div>
+                        
+                        <!-- 5 -->
+                        <div class="oio-div-div">
+                            <span>المساهمات</span>
+                            <div class="">
+                                <a class="show-btn" data-target="Page8">مساهمة تقنية</a>
+                                <a onclick="showModal()">مساهمة مالية</a>
+                                <a onclick="showModal()">مساهمة ادارية وغيرها</a>
+                            </div>
+                        </div>
+                        <div style="position: absolute;margin: auto;bottom: 8px;filter: opacity(0.7);width: -webkit-fill-available;right: 0;">Released under MIT License | Copyright @ 2024</div>
+                    </div>
+                </div>
+            
+            <!-- 1 -->
+             <div id="Page2" class="kk">
+                <div class="div-page myDiv123">
+                    <div id="ass"></div>
+                    <div class="page-1 popupDivWithLongClassName" id="popupDivWithLongIdName" style="display: none;">
+                        <div class="text-inpu search-box"><span class="material-symbols-outlined"> search </span><input id="searchInput" type="text" placeholder="ابحث عن سورة"><button class="logo_button cc buttonToCloseDivWithLongClassName pagee" style="position: absolute;margin-bottom: 4px;margin-right: 0;margin-left: 0;right: 0;left: auto;" id="closeDivButtonWithLongName"><ion-icon name="close-outline"></ion-icon></button></div>
+                        <div id="suraContainer"></div>
+                    </div>
+                    <div class="page-2">
+                            <div class="Name" style="z-index: 5;">
+                                <button class="logo_button cc buttonWithLongClassName pagee" id="showDivButtonWithLongName"><ion-icon name="menu-outline"></ion-icon></button>
+                                <div id="controlsContainer"></div>
+                                <span id="bismillah">محتوى السورة هنا</span><button class="close-button closeButton" id="closeButton"><span class="material-symbols-outlined"> refresh </span></button> <!-- زر الإغلاق -->
+                                <button class="close-button closeButton" id="playPauseAudio" style="display: none;"><ion-icon name="radio-outline"></ion-icon></button>
+                                <button class="page-close hide-btn pagee cvme" data-target="Page2" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                                <!-- --------- -->
+                                 <div class="name_12" id="selectionDiv" style="display: none;">
+                                    <div class="name_12_div">
+                                        <div>
+                                            <div class="name_13"><span id="selectedCount">0</span> العدد المحدد</div>
+                                            <select name="" id="downloadType" class="name_14">
+                                                <option value="video">فيديو</option>
+                                                <option value="text">نص</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button class="name_14" id="downloadFiles"><ion-icon name="download-outline"></ion-icon>تنزيل</button>
+                                            <button id="closeSelection" class="name_15" style="background: #f7f7f7; color: #555555;"><ion-icon name="close-outline"></ion-icon></button>
+                                        </div>
+                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+                                    </div>
+                                 </div>
+                            </div>
+
+                            <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+                            <div id="controls" class="Name" style="z-index: 10;justify-content: left;display: flex;">
+                                <div class="controlse">
+                                    <div style="display: flex;">
+                                        <button id="togglePlayButton" class="logo_button cccx"><ion-icon name="caret-forward-outline"></ion-icon></button>
+                                        <button id="rewindButton" class="logo_button cccx"><span class="material-symbols-outlined"> undo </span></button>
+                                        <button id="forwardButton" class="logo_button cccx"><span class="material-symbols-outlined"> redo </span></button>
+                                    </div>
+                                <div style="margin: 0 8px;" class="svs">
+                                    <span id="currentTime" class="sv">0:00</span> / <span class="sv" id="durationTime">0:00</span>
+                                </div>
+                                <input type="range" id="progressBar" min="0" max="100" value="0" style="margin-right: 8px;"> 
+                                </div>
+                                <div class="fof-div cke xxd" style="margin-right: 8px;justify-content: right;margin-left: 0;">
+                                    <button class="logo_button cccx"><ion-icon name="settings-outline"></ion-icon></button>
+                                    <div class="fof-dive" id="kn">
+                                        <div>
+                                            <!-- <button class="kkf" id="nextSuraButton"><ion-icon name="return-up-forward-outline"></ion-icon>Skip Next</button>
+                                            <button class="kkf" id="prevSuraButton"><ion-icon name="return-up-back-outline"></ion-icon>Skip Previous</button> -->
+                                            <button class="kkf" id="showContentButtonForDiv3"><ion-icon name="search-outline"></ion-icon>البحث بالسورة</button>
+                                            <button class="kkf" id="repeatButton"><ion-icon name="repeat-outline"></ion-icon>إعادة</button>
+                                            <div id="ert" style="display: none;">
+                                                <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>الصوت</button>
+                                                <div class="fof-dive" id="">
+                                                    <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>عالي</button>
+                                                    <button class="kkf" id=""><ion-icon name="volume-medium"></ion-icon>متوسط</button>
+                                                    <button class="kkf" id=""><ion-icon name="volume-low"></ion-icon>منخفض</button>
+                                                </div>
+                                            </div>
+                                                <button class="kkf" id="shareButton234"><ion-icon name="share-social"></ion-icon>الأية المحددة</button>
+                                            <div id="ert">
+                                                <button class="kkf" id=""><span class="material-symbols-outlined"> download </span>تنزيل</button>
+                                                <div class="fof-dive" id="">
+                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                                    <button class="kkf" id="downloadButton"><span class="material-symbols-outlined"> movie </span>فيديو</button>
+                                                    <button class="kkf" id="downloadTextButton"><ion-icon name="document-text-outline"></ion-icon>نص</button>
+                                                </div>
+                                            </div>
+                                            <div id="ert" style="display: block;">
+                                                <button class="kkf" id=""><ion-icon name="ellipsis-horizontal"></ion-icon>اخرى</button>
+                                                <div class="fof-dive" style="bottom: -11px; top: auto;">
+                                                    <div id="">
+                                                        <select id="audioSelect">
+                                                            <option value="ar.alafasy">مشاري العفاسي</option>
+                                                            <option value="ar.abdulsamad">عبد الباسط عبد الصمد</option>
+                                                            <option value="ar.husary">محمود الحصري</option>
+                                                            <option value="ar.shuraym">سعود الشريم</option>
+                                                        </select>   
+                                                    </div>
+                                                    <button class="kkf" id="toggleButton123" style="justify-content: right;">اخفاء الشريط العلوي</button>
+                                                    <button class="kkf" id="" onclick="showModal()"><span class="material-symbols-outlined"> flag </span>ابلاغ عن مشكلة</button>
+                                                </div>
+                                            </div>
+                                            <!-- <button class="kkf" id=""><ion-icon name="download-outline"></ion-icon>Download MP4</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="contentDivWithDetails3" style="display: none;"><ion-icon style="font-size: 19px;color: #4a596d;" name="search"></ion-icon><input type="text" placeholder="ابحث" id="searchAyahInput"><button id="closeContentButtonForDiv3" class="Shortcut-close"><ion-icon name="close-outline"></ion-icon></button></div>
+                            </div> 
+                        <div id="suraTextContainer">
+                            <div class="oo" id="suraText">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- 2 -->
+                <div id="Page1" class="kk">
+                    <div class="div-page">
+                        <button class="page-close hide-btn pagee cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        
+                         <!-- ديف يحتوي على أوقات الصلاة وزر لإغلاقه -->
+                        <div class="prayer-container">
+                            <div class="">
+                                <h2 class="selected-location-title" id="date">0/0/0000</h2>
+                                <div class="prayer-countdown-timer">00:00:00</div>
+                                <div class="next-prayer-time-display">متبقي على الصلاة القادمة: <span class="next-prayer-time">PM 5:45</span></div>
+                                <table class="prayer-times-table">
+                                    <thead>
+                                    <tr>
+                                        <th style="border-top-color: #00000000;" class="prayer-times-header">الصلاة</th>
+                                        <th style="border-top-color: #00000000;" class="prayer-times-header">الوقت</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="prayer-times-body">
+                                    <tr class="fajr-prayer-row">
+                                        <td class="prayer-times-data">الفجر</td>
+                                        <td class="fajr-time prayer-times-data">AM 4:27</td>
+                                    </tr>
+                                    <tr class="dhuhr-prayer-row">
+                                        <td class="prayer-times-data">الظهر</td>
+                                        <td class="dhuhr-time prayer-times-data">AM 11:43</td>
+                                    </tr>
+                                    <tr class="asr-prayer-row">
+                                        <td class="prayer-times-data">العصر</td>
+                                        <td class="asr-time prayer-times-data">PM 3:07</td>
+                                    </tr>
+                                    <tr class="maghrib-prayer-row">
+                                        <td class="prayer-times-data">المغرب</td>
+                                        <td class="maghrib-time prayer-times-data">PM 5:45</td>
+                                    </tr>
+                                    <tr class="isha-prayer-row">
+                                        <td style="border-bottom-color: #00000000;" class="prayer-times-data">العشاء</td>
+                                        <td style="border-bottom-color: #00000000;" class="isha-time prayer-times-data">PM 7:15</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+                        
+                            <div class="omg">
+                                <select onchange="handleCountryChange(this)" class="dropdown-selector custom-select mySelect">
+                                    <option value="">اختر الدولة</option>
+                                </select>
+                                <select onchange="handleCityChange(this)" class="dropdown-selector custom-select mySelect">
+                                    <option value="">اختر المدينة</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- 1 -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                        <!-- 2 -->
+                        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+                        <script>
+                        $(document).ready(function() {
+                            $('.mySelect').select2({
+                                placeholder: "اختر من القائمة",
+                                allowClear: true
+                            });
+                        
+                            $('.mySelect').on('select2:open', function() {
+                                // الوصول إلى حقل البحث داخل Select2
+                                let searchField = $('.select2-container .select2-search__field');
+
+                                // جعل الحقل في وضع القراءة فقط عند فتح القائمة
+                                searchField.prop('readonly', true);
+
+                                // السماح بالكتابة فقط عند النقر على الحقل
+                                searchField.off('mousedown').on('mousedown', function(e) {
+                                    e.preventDefault(); // منع السلوك الافتراضي
+                                    $(this).prop('readonly', false).focus(); // السماح بالكتابة بعد النقر
+                                });
+                            
+                                // ضبط placeholder ليظهر النص الافتراضي أو العنصر المختار
+                                let selectedOption = $(this).find(':selected').text();
+                                searchField.attr('placeholder', selectedOption || 'ابحث هنا');
+                            });
+                        });
+
+                        </script>
+
+
+                        <!-- shareButton -->
+                         <script>
+                            document.getElementById('shareButton').addEventListener('click', async () => {
+                            if (navigator.share) {
+                                try {
+                                    await navigator.share({
+                                        title: 'مشاركة الرابط',
+                                        text: 'تفاصيل المشاركة هنا.',
+                                        url: 'https://quranrecited123456780104.on.drv.tw/The%20Quran/Quran.html'
+                                    });
+                                    console.log('تمت المشاركة بنجاح');
+                                } catch (error) {
+                                    console.error('حدث خطأ أثناء المشاركة:', error);
+                                }
+                            } else {
+                                alert('خاصية المشاركة غير مدعومة في هذا المتصفح.');
+                            }
+                        });
+                         </script>
+                    </div>
+                </div>
+                <!-- 3 -->
+                <div id="Page3" class="kk">
+                    <div class="div-page">
+                        <button class="page-close hide-btn pagee cvme" data-target="Page3" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        <div class="gooo">
+                            <div class="gooo-button">
+                                <div>
+                                    <button id="toggleBtn1" class="toggle-button">الادعية</button>
+                                    <button id="toggleBtn2" class="toggle-button">اذكار الصباح والمساء</button>
+                                </div>
+                            </div>
+                            <div id="containersk" class="containersk">
+                            <!-- map -->
+                             <button id="addTextButton" style="display: flex;"><span class="material-symbols-outlined"> add </span></button>
+                            </div>  
+                            <div id="container-second" class="containersk hidden">
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 -->
+                <div id="Page5" class="kk">
+                    <div class="div-page">
+                        <label class="page-close hide-btn pagee cvme" data-target="Page5" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></label>
+                            <div class="start-screen">
+                                <button id="start-button">ابدأ المسابقة الشهرية</button> <!-- يمكن ترجمة النصوص للعربية -->
+                              </div>
+                              <div id="display-container">
+                                <div class="header">
+                                  <div class="number-of-count">
+                                    <span class="number-of-question">1 من 3 أسئلة</span> <!-- ترجمة النصوص -->
+                                  </div>
+                                  <div class="timer-div">
+                                    <img src="timer-icon.svg" />
+                                    <span class="time-left">10 ثواني</span> <!-- ترجمة النصوص -->
+                                  </div>
+                                </div>
+                                <div id="container">
+                                  <!-- الأسئلة والخيارات ستظهر هنا -->
+                                </div>
+                                <button id="next-button">التالي</button> <!-- ترجمة النصوص -->
+                              </div>
+                              <div class="score-container hide">
+                                <img class="copyable" src="trophee-de-recompense-10918726-8828894.gif" alt="" height="300px">
+                                <div id="user-score" class="copyable">النتيجة: 0</div> <!-- ترجمة النصوص -->
+                                <button id="restart">إعادة التشغيل</button> <!-- ترجمة النصوص -->
+                              </div>
+                            <!-- Script -->
+                             <link rel="stylesheet" href="ssw.css">
+                            <script src="ssw.js"></script>
+                    </div>
+                </div>
+
+
+
+                <!-- 5 -->
+                <div id="Page6" class="kk">
+                    <div class="div-page">
+                        <button class="page-close hide-btn pagee cvme" data-target="Page6" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        <div class="ssdx containersk">
+                            <span>.موعد نزول المسابقه الجديدة: يكون كل عشرة ايام</span>
+                            <br>
+                            <span>.عدد الاسئلة: 25 ومن المحتمل ان تكون اكثر</span>
+                            <br>
+                            <span>.محتوى المسابقة: محتوى ديني من الكتاب والسنة</span>
+                            <br>
+                            <span>.تواصل معنا في حين ان كان هناك مشكلة او تريد المساهمة بميزة جديدة</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 6 -->
+                <div class="kk" id="contentDivWithDetails2">
+                    <div class="div-page">
+                        <button id="closeContentButtonForDiv2" class="page-close pagee cvme" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        <div class="ssdx containersk">
+                            <span>.قم بتنزيل إختصار الموقع للهاتف او لسطح المكتب</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 7 -->
+                <div class="kk" id="Page7">
+                    <div class="div-page">
+                        <button data-target="Page7" class="page-close hide-btn pagee cvme" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        <div class="ssdx containersk erw">
+                            <h1>سياسة موقع قراءة القرآن الكريم والاستماع إليه ومعرفة أوقات الصلاة والأذكار</h1>
+                            <section>
+                                <h2>1. الهدف من الموقع</h2>
+                                <ul>
+                                    <li>توفير وسيلة سهلة لقراءة القرآن الكريم والاستماع إلى تلاوته بصوت عدد من القراء.</li>
+                                    <li>تقديم خدمة دقيقة لمعرفة أوقات الصلاة بما يتناسب مع موقع المستخدم الجغرافي.</li>
+                                    <li>تذكير المستخدمين بالأذكار اليومية والأدعية المستحبة.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>2. الخصوصية والأمان</h2>
+                                <ul>
+                                    <li>نحترم خصوصية جميع المستخدمين. يتم جمع البيانات الشخصية (مثل الموقع الجغرافي) فقط لتحسين الخدمات.</li>
+                                    <li>يتم تشفير جميع البيانات الحساسة لضمان عدم وصول أي أطراف غير مصرح لها إليها.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>3. استخدام المحتوى</h2>
+                                <ul>
+                                    <li>جميع المحتويات مخصصة للاستخدام الشخصي والدعوي فقط.</li>
+                                    <li>يُمنع استخدام المحتوى لأي غرض تجاري دون إذن مسبق.</li>
+                                    <li>يحق للموقع تحديث المحتوى أو تغييره لضمان الدقة والالتزام بالشريعة الإسلامية.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>4. مسؤوليات المستخدم</h2>
+                                <ul>
+                                    <li>استخدام الموقع بما يتوافق مع الأخلاق الإسلامية وعدم الإساءة أو نشر محتوى غير لائق.</li>
+                                    <li>التأكد من صحة الموقع الجغرافي المُدخل لضمان دقة أوقات الصلاة.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>5. أوقات الصلاة والتنبيهات</h2>
+                                <ul>
+                                    <li>تُحدث أوقات الصلاة تلقائيًا باستخدام خوارزميات دقيقة ومصادر موثوقة.</li>
+                                    <li>يتم توفير إشعارات للتذكير بالصلاة وبالأذكار اليومية، مع إمكانية إيقافها من خلال إعدادات المستخدم.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>6. حقوق الملكية الفكرية</h2>
+                                <ul>
+                                    <li>جميع حقوق النصوص القرآنية والتلاوات محفوظة لمصدرها الشرعي.</li>
+                                    <li>يحق للموقع إزالة أي محتوى مُضاف من قِبل المستخدمين إذا كان غير ملائم أو ينتهك الحقوق.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>7. حدود المسؤولية</h2>
+                                <ul>
+                                    <li>لا يتحمل الموقع مسؤولية أي انقطاع أو خلل تقني في الخدمات.</li>
+                                    <li>تُبذل الجهود لتحديث أوقات الصلاة والمحتوى، ولكن يُوصى بالتحقق من المعلومات لضمان دقتها.</li>
+                                </ul>
+                            </section>
+                        
+                            <section>
+                                <h2>8. تحديث السياسة</h2>
+                                <p>يحتفظ الموقع بالحق في تعديل هذه السياسة من وقت لآخر. يُرجى مراجعة السياسة بانتظام للتعرف على أي تغييرات.</p>
+                            </section>
+                        
+                            <section>
+                                <h2>9. التواصل معنا</h2>
+                                <p>لأي استفسارات أو ملاحظات، يُرجى التواصل معنا عبر البريد الإلكتروني أو النموذج المخصص لذلك في الموقع.</p>
+                            </section>
+                        
+                            <footer>
+                                <p>نتمنى لكم تجربة روحانية مميزة ونسأل الله أن يجعل هذا العمل خالصًا لوجهه الكريم.</p>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 9 -->
+                <div class="kk" id="Page9">
+                    <div class="div-page">
+                        <button data-target="Page9" class="page-close hide-btn pagee cvme" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                        <div class="ssdx containersk erw">
+                            <section>
+                                <h1>سياسة استعمال API لموقع [اسم موقعك]</h1>
+                                <ul>
+                                    <li>
+                                        <h2>1. مقدمة:</h2>
+                                        <p>توضح هذه السياسة شروط الاستخدام الخاصة بخدمات API التي يقدمها موقع [اسم موقعك]. باستخدامك لهذه الخدمات، فإنك توافق على الالتزام بكافة الشروط والأحكام الواردة في هذه السياسة.</p>
+                                    </li>
+                                    <li>
+                                        <h2>2. الأغراض المشمولة:</h2>
+                                        <ul>
+                                            <li>
+                                                <h3>API أوقات الصلاة:</h3>
+                                                <p>تتيح هذه الخدمة للمستخدمين الحصول على أوقات الصلاة اليومية حسب الموقع الجغرافي أو المدينة المحددة.</p>
+                                            </li>
+                                            <li>
+                                                <h3>API القرآن الكريم:</h3>
+                                                <p>تتيح هذه الخدمة الوصول إلى نصوص القرآن الكريم والتفسير، بالإضافة إلى تقديم الآيات والسور بمختلف الأشكال.</p>
+                                            </li>
+                                            <li>
+                                                <h3>API الأذكار:</h3>
+                                                <p>توفر هذه الخدمة الأذكار اليومية مثل أذكار الصباح والمساء، مع إمكانية تخصيص الأذكار وفقًا للمحتوى المطلوب.</p>
+                                            </li>
+                                            <li>
+                                                <h3>API خريطة العالم:</h3>
+                                                <p>تتيح هذه الخدمة عرض خريطة تفاعلية للعالم مع إمكانية استعراض مواقع الصلاة في مدن مختلفة باستخدام تقنيات GPS.</p>
+                                            </li>
+                                            <li>
+                                                <h3>API المسابقة الدينية:</h3>
+                                                <p>تتيح هذه الخدمة تقديم أسئلة مسابقات دينية متنوعة مع خيارات متعددة للمشاركة في التحديات الدينية.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>3. القيود والحقوق:</h2>
+                                        <ul>
+                                            <li>
+                                                <p>يجب ألا يتم استخدام الـ API بطريقة تؤثر سلبًا على أداء الموقع أو الخدمات أو تؤدي إلى تحميل البيانات بشكل مفرط أو غير قانوني.</p>
+                                            </li>
+                                            <li>
+                                                <p>يجب على المستخدمين الالتزام بالقوانين المحلية والدولية عند استخدام هذه الخدمات.</p>
+                                            </li>
+                                            <li>
+                                                <p>يحق لموقع [اسم موقعك] تعليق أو إيقاف الوصول إلى الـ API في حال اكتشاف أي استخدام غير قانوني أو يخالف هذه الشروط.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>4. الأمان والخصوصية:</h2>
+                                        <ul>
+                                            <li>
+                                                <p>يلتزم موقع [اسم موقعك] بحماية بيانات المستخدمين والمعلومات الخاصة بالـ API من الوصول غير المصرح به.</p>
+                                            </li>
+                                            <li>
+                                                <p>يجب على المطورين اتخاذ التدابير اللازمة لضمان حماية البيانات عند استخدام الـ API في تطبيقاتهم.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>5. استخدام API:</h2>
+                                        <ul>
+                                            <li>
+                                                <p>يتم الوصول إلى خدمات الـ API عبر مفتاح API الذي يتم توفيره بعد التسجيل في الموقع. يُستخدم هذا المفتاح للتحقق من هوية المستخدم.</p>
+                                            </li>
+                                            <li>
+                                                <p>يحتفظ موقع [اسم موقعك] بحق مراقبة استخدام الـ API لضمان الامتثال للسياسات والشروط المحددة.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>6. تعديل الشروط:</h2>
+                                        <p>يحتفظ موقع [اسم موقعك] بحق تعديل هذه السياسة في أي وقت. سيتم إخطار المستخدمين بأي تغييرات جوهرية عبر الموقع الإلكتروني أو من خلال البريد الإلكتروني.</p>
+                                    </li>
+                                    <li>
+                                        <h2>7. تعليق أو إنهاء الخدمة:</h2>
+                                        <ul>
+                                            <li>
+                                                <p>يحق لموقع [اسم موقعك] تعليق أو إنهاء الوصول إلى الـ API في حال تبين أن الخدمة قد تم استخدامها بطريقة غير قانونية أو تخالف الشروط والأحكام.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>8. حدود المسؤولية:</h2>
+                                        <ul>
+                                            <li>
+                                                <p>لا يتحمل موقع [اسم موقعك] أي مسؤولية عن الأضرار أو الخسائر التي قد تنشأ نتيجة لاستخدام الـ API، بما في ذلك على سبيل المثال لا الحصر فقدان البيانات أو انقطاع الخدمة.</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h2>9. دعم العملاء:</h2>
+                                        <p>لأي استفسارات أو مشاكل تتعلق باستخدام API، يمكن للمستخدمين التواصل مع فريق الدعم عبر [البريد الإلكتروني/نموذج الاتصال] المتاح على الموقع الإلكتروني.</p>
+                                    </li>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div id="Page8" class="kk">
+                <div class="div-page">
+                    <button class="page-close hide-btn pagee cvme" data-target="Page8" data-tooltip="Back"><span class="material-symbols-outlined"> arrow_forward </span></button>
+                    <form class="gooo" action="" id="myForm">
+                        <h2>ارسال مساهمة تقنية</h2>
+                    <!-- إضافة أكثر من div لعرض الأكواد -->
+                    <div id="code-container-1"></div>
+                    <h2>معلومات المرسل</h2>
+                    <div class="code-container-div">
+                        <div>
+                            <label for="name">الإسم</label>
+                            <br>
+                            <input id="name" name="" type="text" placeholder="الإسم" required>
+                        </div>
+                        <div>
+                            <label for="email">البريد الإلكتروني</label>
+                            <br>
+                            <input id="email" name="" type="email" placeholder="البريد الالكتروني" required>
+                        </div>
+                        <div>
+                            <label for="password2">كلمة المرور</label>
+                            <br>
+                            <input id="password2" name="" type="password" placeholder="كلمة المرور" required>
+                        </div>
+                        <div>
+                            <label for="password">تأكيد كلمة المرور</label>
+                            <br>
+                            <input id="password" name="" type="password" placeholder="تأكيد كلمة المرور" required>
+                        </div>
+                        <div class="send-kkk" style="width: 100%; text-align: right;">
+                            <button type="submit">إرسال</button>
+                        </div>
+                    </div>                    
+
+                    <!-- إضافة JS الخاص بـ Prism.js لتحليل الأكواد -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+                    <script src="code.js"></script>
+
+                    </form>
+                </div>
+                <script>
+                    // التأكد من الإرسال يتم عبر زر submit فقط
+                    document.getElementById('myForm').addEventListener('submit', function(event) {
+                        const submitter = event.submitter; // الزر الذي تم الضغط عليه
+                        if (!submitter || submitter.type !== "submit") {
+                            alert("يمكنك الإرسال فقط من خلال الزر المخصص!");
+                            event.preventDefault(); // إيقاف الإرسال
+                        }
+                    });
+                </script>
+            </div>
+            
+
+    </div>
+
+    <!-- ----- -->
+    <div class="tascar" id="adhan-alert-container" style="display: none;">
+        <audio id="adhan-audio" src="019--1.mp3"></audio>
+        <div class="tascar1 cor"><img src="New Project.png" alt=""></div>
+        <div class="tascar2">
+            <div class="tascar3"><span>مواقيت الصلاة</span><button onclick="closeAdhanAlert()" class="material-symbols-outlined times-button close-button">close</button></div>
+            <div class="cor alert-message">
+                لقد حان الأن وقت الأذان اترك ما بيدك واذهب الى الصلاة
+            </div>
+        </div>
+     </div>
+     
+ <!-- تضمين مكتبة Popper.js الضرورية لـ tippy.js -->
+ <script src="https://unpkg.com/@popperjs/core@2"></script>
+ <!-- تضمين مكتبة Tippy.js -->
+ <script src="https://unpkg.com/tippy.js@6"></script>
+ <!-- تضمين CSS الخاص بـ Tippy.js (اختياري) -->
+ <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+     <script>
+        tippy('.cvme', {
+            content(reference) {
+                return reference.getAttribute('data-tooltip');
+            },
+            placement: 'bottom', // وضع الـ tooltip (أعلى، أسفل، يسار، يمين)
+            animation: 'scale', // نوع الحركة (اختياري)
+            theme: 'custom', // تطبيق الاستيل المخصص
+        });
+     </script>
+
+     <script>
+        document.querySelectorAll('a.fo_url').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault(); // منع التصرف الافتراضي (عرض الرابط في شريط الحالة)
+
+            const url = link.getAttribute('data-url'); // استخدام data-url بدلاً من href
+            window.location.assign(url); // استخدام window.location.assign لتمكين العودة للخلف
+          });
+        });
+     </script>
+
+
+     <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe6_LqQKChGVBv83Q48NCUGD4Ycd2zeu47UFS0mVE4sTc8cCg/formResponse" method="" class="API modal">
+        <div class="API-text">تواصل معنا</div>
+        <span>خلال 24 ساعة Emile سيتم ارسال الرد عن طريق</span>
+        <div class="zz">
+            <input class="" type="text" name="entry.622719195" placeholder="الإسم" required>
+            <input class="" type="email" name="entry.1398539276" placeholder="الإميل" required>
+        </div>
+        <textarea class="API-cupy" typy="text" name="entry.744897344" placeholder="اكتب الطلب" required></textarea>
+        <select name="" id="" style="text-align: right;" required>
+            <option value="">سبب آخر</option>
+            <option value="">(قرائة الرآن) الإبلاغ عن مشكلة</option>
+            <option value="">الإعلانت</option>
+            <option value="">مساهمة مالية</option>
+            <option value="">مساهمة إدارية وغيرها</option>
+            <option value="">API اوقات الصلاة</option>
+            <option value="">API القرآن الكريم</option>
+            <option value="">API اذكار الصباح والمساء</option>
+            <option value="">API خريطة العالم</option>
+            <option value="">API مسابقة دينية</option>
+        </select>
+        <span>إختر سبب الإرسال</span>
+        <div class="API-button">
+            <button class="api-share" type="button"><ion-icon name="cloud-upload-outline"></ion-icon></button>
+            <button class="api-butt" id="api-butt" type="submit">Send</button>
+            <button class="api-butt" onclick="hideModal()">Cancel</button>
+        </div>
+     </form>
+     <div class="overlay" onclick="hideModal()"></div>
+     <script src="form.js"></script>     
+
+<p class="message" id="message"></p>
+
+<p class="message" id="repeatCount">عدد التكرارات <span id="repeatCountValue">0</span></p>
+<script src="https://cdn.jsdelivr.net/npm/howler"></script>
+
+<!-- <script src="Safety.js"></script> -->
+</body>
+</html>

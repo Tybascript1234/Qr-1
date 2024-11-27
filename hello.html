@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خريطة العالم مع خاصية البحث</title>
+    <!-- رابط CSS لمكتبة Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
+    <script type = "module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script> 
+    <script nomodule src = "https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" ></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=my_location" />
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <script src="reload.js"></script>
+    <link rel="stylesheet" href="oo.css">
+    <link rel="stylesheet" href="home.css">
+    <script src="home.js"></script>
+    <style>
+        
+        body {
+            user-select: none;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        ion-icon {
+            display: flex;
+        }
+        #worldMap {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 10px;
+            background: #00000008;
+        }
+        #searchContainer {
+            /* margin-bottom: 10px; */
+        }
+        .highlight {
+            color: red; /* تلوين النص باللون الأحمر */
+        }
+        .custom-control {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        body .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+            display: none;
+        }
+        
+
+body .leaflet-left .leaflet-control {
+    margin-left: 10px;
+    display: none;
+}
+        /* map */
+.map-menu {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: fit-content;
+    /* margin: 0px auto; */
+    z-index: 1000;
+}
+.map-menu button {
+    position: relative;
+    background: #0000009c;
+    cursor: context-menu;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border: solid 1px #dadada;
+    color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+}
+.map-menu button:hover {
+    background-color: #000000bb;
+}
+.map-menu button::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.map-menu input {
+    outline: none;
+    background: #0000009c;
+    height: 36px;
+    border-radius: 50px;
+    border: solid 1px #dadada;
+    color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 18px;
+    width: 190px;
+    padding: 0px 14px;
+    text-align: right;
+    margin: 0 10px;
+}
+.map-div {
+    width: 400px;
+    height: 400px;
+    max-width: 100%;
+    margin-top: 30px;
+}
+body .leaflet-container a.leaflet-popup-close-button {
+    color: white;
+}
+body .highlight {
+    color: #ffffff;
+}
+body .leaflet-popup-content {
+    margin: 9px 18px;
+}
+body .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: #00000099;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+}
+body .leaflet-popup-content-wrapper {
+    padding: 1px;
+    text-align: left;
+    border-radius: 5px;
+}
+body .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+    margin-bottom: 22px;
+}
+body .leaflet-popup-tip {
+    width: 15px;
+    height: 15px;
+}
+
+body .leaflet-bottom {
+    display: none;
+}
+
+.oho {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: -1px 1px 0px #ccc inset;
+}
+.ggg {
+    outline: solid 1px #ccc;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    z-index: 1000;
+    background: white;
+    padding: 4px;
+    font-family: sans-serif;
+}
+.ggg a {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+}
+.ggg img {
+    height: 12px;
+    display: block;
+    margin-right: 3px;
+}
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.countryInfo {
+    overflow: hidden;
+    position: relative;
+    transition: ease 0.3s;
+    font-family: sans-serif;
+    padding-top: 50px;
+    direction: rtl;
+    font-size: 18px;
+    width: 380px;
+    padding-right: 10px;
+    border-left: solid 1px #ccc;
+}
+.countryInfo p {
+    position: relative;
+    z-index: 5;
+    display: block;
+}
+body input:-internal-autofill-selected {
+    background-color: #00000000;
+    border-color: #333;
+    outline: solid 3px #0000000c;
+}
+.custom-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 25px;
+    background-color: #fff;
+    cursor: context-menu;
+    border: solid 1px #ccc;
+    font-size: 22px;
+    font-family: sans-serif;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.custom-button:hover {
+    background-color: #f7f7f7;
+}
+.custom-button:active {
+    background-color: #f1f1f1;
+}
+
+.oho button {
+    border: 0;
+    background: #ffffff00;
+    height: 25px;
+    width: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0px 0px;
+}
+.oho button:hover {
+    background: #3d3d3d0a;
+}
+.oho button:active {
+    background: #3d3d3d1a;
+}
+
+.oho-div {
+    position: relative;
+}
+.oho-div div {
+    transition: ease 0.2s;
+    display: none;
+    position: absolute;
+    width: max-content;
+    font-family: system-ui;
+    bottom: 35px;
+    left: 0;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.589);
+    box-shadow: 0px 1px 7px #0000001e;
+    color: #3d3d3d;
+    font-size: 13px;
+}
+.oho-div:hover div {
+    display: block;
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+    .oho-div div {
+        left: auto;
+        right: 0;
+    }
+.countryInfo {
+    position: fixed;
+    /* right: 0; */
+    z-index: 1000;
+    background: white;
+    border: solid 1px #99999900;
+    border-bottom: 0;
+    border-right: 0;
+    border-left: 0;
+    box-shadow: 0px -6px 11px #00000024, 0px -1px 0px #d7d9da;
+    bottom: 0px;
+    padding: 10px;
+    max-width: 100%;
+    width: -webkit-fill-available;
+    /* margin: 0 20px; */
+    transition: opacity 0.5s ease;
+    display: none;
+  }
+
+  #toools.visible {
+    display: block;
+    animation: fadeIn 0.5s forwards; /* انميشن الظهور */
+  }
+
+  #toools.hidden {
+    animation: fadeOut 0.5s forwards; /* انميشن الاختفاء */
+  }
+
+  /* إعدادات تأثير الظهور */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9); /* يمكن إضافة تأثير تكبير */
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* إعدادات تأثير الاختفاء */
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+
+#buttonContainer {
+    text-align: center;
+}
+#buttonContainer button {
+    margin: 0 auto;
+}
+body .leaflet-right {
+    right: auto;
+    left: 0;
+    top: 70px;
+}
+body .compass {
+    margin: 10px;
+}
+body #toools {
+    display: none;
+}
+}
+
+.countryInfo::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    height: 112px;
+    width: 100%;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.733);
+}
+.compass {
+    overflow: hidden;
+    border: none;
+    transition: ease 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #ffffff94;
+    border-radius: 50%;
+    padding: 20px;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 1px 3px 1px rgba(60,64,67,0.15);
+    color: #2e2e2e;
+}
+.compass:hover {
+    background: #ffffff;
+}
+.compass::before {
+    position: absolute;
+    z-index: 2;
+    content: "";
+    width: 100%;
+    height: 100%;
+}
+/* .compass::before {
+    position: absolute;
+    content: "";
+    background-image: url(png-transparent-compass-direction-arrow-map-symbol-business-circle-art-travel-3d.png);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+} */
+.compass ion-icon {
+    transform: rotate(45deg);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+i {
+    display: grid;
+}
+
+.ccx {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: #1b6ef3;
+    border-radius: 50px;
+    outline: solid 1px #fff;
+}
+.ccx:hover {
+    background: #2d7eff;
+}
+.ccx:hover:before {
+    outline: solid 2px #2d7eff;
+}
+.ccx:active {
+    background: #478eff;
+}
+.ccx:active:before {
+    outline: solid 2px #478eff;
+}
+.ccx:active:before {
+    height: 28px;
+}
+.ccx::before {
+    transition: ease 0.1s;
+    animation: showDiv 0.3s;
+    transform: rotate(45deg);
+    position: absolute;
+    content: "";
+    height: 32px;
+    width: 2px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    outline: solid 2px #1b6ef3;
+}
+@keyframes showDiv {
+    from {
+        height: 14px;
+    }
+    to {
+        height: 32px;
+    }
+}
+body .leaflet-marker-pane img {
+    filter: hue-rotate(157deg);
+}
+    </style>
+</head>
+<body>
+    <div id="container" style="z-index: 1500;"></div>
+        <!-- Reload -->
+        <div class="Reload" id="Reload-logo">
+            <div class="Reload-div">
+                <div class="i-freem">
+                    <div class="Reload-div-logo">
+                        <div class="logo">
+                            <img src="logo-no-background.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ome"><span id="progress-bar"></span></div>
+                <br>
+                <div class="hom">
+                    <button onclick="openInternetSettings()">WiFi settings</button>
+                    <button onclick="reloadPage()">Reload</button>
+                </div>
+                <br>
+                <div id="status-text" style="color: rgb(117, 117, 117);">Internet disconnected.</div>
+            </div>
+         </div>
+         
+<div style="display: flex;justify-content: center;width: 100%;height: 100%;position: relative;">
+    <div class="map-menu">
+        <button onclick="zoomOut()"><i class="fi fi-br-minus"></i></button>
+        <div id="searchContainer"><input id="countryInput" type="text" placeholder="ابحث عن مكانك"></div>
+        <button onclick="zoomIn()"><i class="fi fi-br-plus"></i></button>
+    </div>
+    <div id="worldMap"></div>
+    <!-- --- -->
+     <div class="oho">
+    <div class="ggg">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUC8w15QGL9EmviUrxaVf-uN3P0Q2XI90lng&s" alt="">
+        <a  class="" href="Quran.html"><img src="logo-no-background - Copy.png" alt="" style="height: 16px;">Quran recited</a>
+        <div>Developer Company</div>
+    </div> 
+    <button onclick="reloadPage()"><ion-icon name="reload-outline"></ion-icon></button>
+    <div class="oho-div">
+        <button><ion-icon name="information-circle-outline"></ion-icon></button>
+        <div>
+            Quran recited تم تطويرها من قبل 
+        </div>
+    </div>
+    
+     </div>
+    
+    <div class="countryInfo" id="toools">
+        <div id="countryInfo">
+            
+        </div>
+        <div id="buttonContainer" style="display: flex;">
+            <button id="faceButton" class="custom-button" onclick="setDirection()"><div class="ccx"><i class="fi fi-rr-diamond-turn-right"></i></div></button>
+            <!-- <button id="" class="custom-button" onclick=""><div class="" style="font-size: 26px;"><ion-icon name="star-outline"></ion-icon></div></button> -->
+            <button id="shareButton" class="custom-button" onclick="shareInfo()" style="font-size: 26px;"><ion-icon name="arrow-redo-outline"></ion-icon></button>
+        </div>
+    </div>
+</div>
+    <!-- رابط JavaScript لمكتبة Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/bundle.min.js"></script>
+    <script>
+        // إنشاء الخريطة وتحديد الإحداثيات المركزية ومستوى التكبير والحدود
+        var map = L.map('worldMap', {
+            center: [20, 0],
+            zoom: 2,
+            minZoom: 2,
+            maxZoom: 10,
+            worldCopyJump: true,
+            maxBounds: [[-90, -180], [90, 180]]
+        });
+        
+        // إضافة خريطة الأساس باستخدام OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            noWrap: true
+        }).addTo(map);
+        
+        // تهيئة موفر البحث (GeoSearch)
+        const provider = new window.GeoSearch.OpenStreetMapProvider();
+        
+        // تعريف المتغير الخاص بعلامة الموقع
+        let marker;
+        
+        // تعريف المتغير للخطوط
+        let routeLine;
+        let isDirectionVisible = false; // متغير لتتبع حالة الاتجاه
+        
+        // دالة لحساب المسافة بين نقطتين باستخدام صيغة هافرساين (Haversine)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            var R = 6371; // نصف قطر الأرض بالكيلومترات
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+            var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // المسافة بالكيلومترات
+        }
+        
+        // دالة للبحث عن الدولة أو المدينة
+        function searchCountry() {
+            var countryName = document.getElementById('countryInput').value;
+        
+            if (countryName) {
+                provider.search({ query: countryName })
+                    .then((results) => {
+                        if (results && results.length > 0) {
+                            var firstResult = results[0];
+                            var bounds = [
+                                [firstResult.bounds[0][0], firstResult.bounds[0][1]],
+                                [firstResult.bounds[1][0], firstResult.bounds[1][1]]
+                            ];
+                            map.fitBounds(bounds);
+        
+                            // إزالة أي علامة قديمة إذا كانت موجودة
+                            if (marker) {
+                                map.removeLayer(marker);
+                            }
+        
+                            // إضافة علامة (Marker) عند موقع الدولة أو المدينة
+                            marker = L.marker([firstResult.y, firstResult.x]).addTo(map)
+                                .bindPopup(`<b class="highlight">${firstResult.label}</b>`)
+                                .openPopup();
+        
+                            // الحصول على الموقع الحالي للمستخدم
+                            navigator.geolocation.getCurrentPosition((position) => {
+                                var userLat = position.coords.latitude;
+                                var userLon = position.coords.longitude;
+                                var distance = calculateDistance(userLat, userLon, firstResult.y, firstResult.x);
+        
+                                // الحصول على الساعة الحالية في الدولة باستخدام مكتبة moment-timezone
+                                var timezone = firstResult.timezone || 'UTC';
+                                var currentTime = new Date().toLocaleString("en-US", { timeZone: timezone });
+        
+                                // عرض المعلومات في الديف
+                                document.getElementById('countryInfo').innerHTML = `
+                                    <p>اسم المنطقه: <b>${firstResult.label}</b>.</p>
+                                    <p>المسافة من موقعك الحالي: <b>${distance.toFixed(2)} كم</b>.</p>
+                                    <p>الوقت الحالي في المنطقه: <b>${currentTime}</b>.</p>
+                                `;
+        
+                                // إظهار أزرار الاتجاه ومشاركة المعلومات
+                                showDirectionAndShareButtons(userLat, userLon, firstResult.y, firstResult.x);
+        
+                                // تحديث الاتجاه للبوصلة تلقائيًا
+                                updateDirection(userLat, userLon, firstResult.y, firstResult.x);
+        
+                                // إذا كان الاتجاه موجودًا، قم بإزالته
+                                if (isDirectionVisible) {
+                                    map.removeLayer(routeLine); // إزالة الخط القديم
+                                }
+        
+                                // رسم الخط الجديد
+                                routeLine = L.polyline([[userLat, userLon], [firstResult.y, firstResult.x]], { color: 'black' }).addTo(map);
+                                isDirectionVisible = true; // تعيين الحالة إلى مرئية
+        
+                                // تحديث الاتجاه للبوصلة
+                                updateDirection(userLat, userLon, firstResult.y, firstResult.x);
+        
+                            }, (error) => {
+                                console.error('خطأ في الحصول على الموقع الحالي:', error);
+                                alert('لا يمكن الحصول على موقعك الحالي. الرجاء تمكين الوصول إلى الموقع.');
+                            }, { enableHighAccuracy: true }); // تمكين دقة عالية هنا
+                        } else {
+                            alert('لم يتم العثور على الدولة أو المدينة. الرجاء التأكد من صحة الاسم.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('حدث خطأ أثناء البحث:', error);
+                        alert('حدث خطأ أثناء البحث. الرجاء المحاولة مرة أخرى.');
+                    });
+            } else {
+                alert('الرجاء إدخال اسم الدولة أو المدينة.');
+            }
+        }
+        
+        // دالة لتحديث الاتجاه للبوصلة
+        function updateDirection(userLat, userLon, targetLat, targetLon) {
+            var bearing = calculateBearing(userLat, userLon, targetLat, targetLon);
+            updateCompass(document.querySelector('.compass'), bearing);
+        }
+        
+        // دالة لإظهار أزرار الاتجاه ومشاركة المعلومات
+        function showDirectionAndShareButtons(userLat, userLon, targetLat, targetLon) {
+            // إنشاء زر تحديد الاتجاه
+            var directionButton = document.createElement('button');
+            directionButton.innerHTML = '<div class="ccx"><i class="fi fi-rr-diamond-turn-right"></i></div>';
+            directionButton.className = 'custom-button';
+            directionButton.onclick = function () {
+                if (isDirectionVisible) {
+                    map.removeLayer(routeLine); // إزالة الخط القديم إذا كان موجودًا
+                    isDirectionVisible = false;
+                    directionButton.innerHTML = '<i class="fi fi-rr-diamond-turn-right"></i>'; // تغيير نص الزر
+                } else {
+                    routeLine = L.polyline([[userLat, userLon], [targetLat, targetLon]], { color: 'black' }).addTo(map);
+                    isDirectionVisible = true;
+                    directionButton.innerHTML = '<div class="ccx"><i class="fi fi-rr-diamond-turn-right"></i></div>'; // تغيير نص الزر
+                }
+            };
+        
+            // إنشاء زر مشاركة المعلومات
+            var shareButton = document.createElement('button');
+            shareButton.innerHTML = '<ion-icon name="arrow-redo-outline"></ion-icon>';
+            shareButton.className = 'custom-button';
+            shareButton.onclick = function () {
+                if (navigator.share) {
+                    navigator.share({
+                        title: `معلومات عن ${document.getElementById('countryInput').value}`,
+                        text: document.getElementById('countryInfo').innerText,
+                        url: window.location.href
+                    })
+                        .then(() => console.log('مشاركة ناجحة'))
+                        .catch((error) => console.error('حدث خطأ أثناء المشاركة:', error));
+                } else {
+                    alert('مشاركة المعلومات غير مدعومة في هذا المتصفح.');
+                }
+            };
+        
+            // إضافة الأزرار إلى الخريطة
+            var buttonContainer = document.getElementById('buttonContainer');
+            buttonContainer.innerHTML = ''; // مسح الأزرار السابقة
+            buttonContainer.appendChild(directionButton);
+            buttonContainer.appendChild(shareButton);
+        }
+        
+        // إضافة حدث للبحث عند الضغط على زر Enter
+        document.getElementById('countryInput').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                searchCountry();
+            }
+        });
+        
+        // دالة لتكبير الخريطة
+        function zoomIn() {
+            map.zoomIn();
+        }
+        
+        // دالة لتصغير الخريطة
+        function zoomOut() {
+            map.zoomOut();
+        }
+        
+        // إنشاء أزرار التحكم الخاصة بالتكبير والتصغير
+        var controlDiv = L.control({ position: 'topleft' });
+        controlDiv.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'custom-control');
+            
+            // إنشاء زر التكبير
+            var zoomInButton = L.DomUtil.create('button', 'custom-button', div);
+            zoomInButton.innerHTML = '+';
+            zoomInButton.onclick = zoomIn;
+            
+            // إنشاء زر التصغير
+            var zoomOutButton = L.DomUtil.create('button', 'custom-button', div);
+            zoomOutButton.innerHTML = '-';
+            zoomOutButton.onclick = zoomOut;
+            
+            return div;
+        };
+        controlDiv.addTo(map);
+        
+        // إضافة البوصلة إلى الخريطة
+        function addCompass() {
+            var compass = L.control({ position: 'topright' });
+            
+            compass.onAdd = function (map) {
+                var div = L.DomUtil.create('button', 'compass');
+                div.innerHTML = '<ion-icon name="compass-outline"></ion-icon>'; // استخدام أيقونة بوصلة
+                div.style.cursor = 'pointer';
+                div.style.fontSize = '24px';
+                
+                // إضافة حدث للنقر على البوصلة لتحديث الاتجاه
+                div.onclick = function () {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        var userLat = position.coords.latitude;
+                        var userLon = position.coords.longitude;
+        
+                        // حساب الاتجاه
+                        var bearing = calculateBearing(userLat, userLon, targetLat, targetLon);
+                        updateCompass(div, bearing); // تحديث البوصلة
+                    }, (error) => {
+                        console.error('خطأ في الحصول على الموقع الحالي:', error);
+                    });
+                };
+                
+                return div;
+            };
+            
+            compass.addTo(map);
+        }
+        
+        // دالة لحساب الاتجاه بين نقطتين
+        function calculateBearing(lat1, lon1, lat2, lon2) {
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+            lat1 = lat1 * Math.PI / 180;
+            lat2 = lat2 * Math.PI / 180;
+            var y = Math.sin(dLon) * Math.cos(lat2);
+            var x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+            var bearing = Math.atan2(y, x) * 180 / Math.PI;
+            return (bearing + 360) % 360; // إرجاع الاتجاه بين 0 و 360
+        }
+        
+        // دالة لتحديث اتجاه البوصلة
+        function updateCompass(compassDiv, bearing) {
+            compassDiv.style.transform = `rotate(${-bearing}deg)`; // تدوير البوصلة
+        }
+        
+        // إضافة البوصلة إلى الخريطة
+        addCompass();
+        
+
+
+
+
+
+
+
+
+// مرجع للعناصر
+const toools = document.getElementById('toools');
+const countryInfo = document.getElementById('countryInfo');
+let isDivVisible = false; // متغير لتعقب حالة ظهور الديف
+
+// العناصر التي لا يجب أن تؤدي إلى إخفاء أو إظهار الديف
+const excludedElements = ['BUTTON', 'INPUT', 'TEXTAREA']; 
+
+// محتوى يمكن إضافته إلى الديف عند الظهور
+const countryData = `
+  ابحث عن منطقه معينه لظهور معلوماته هنا.
+`;
+
+// وظيفة لتغيير حالة ظهور الديف مع تأثيرات CSS
+function toggleDiv() {
+  isDivVisible = !isDivVisible; // عكس حالة ظهور الديف
+  if (isDivVisible) {
+    toools.classList.remove('hidden');
+    toools.classList.add('visible');
+    toools.style.display = 'block'; // إظهار الديف
+
+    // إضافة المحتوى إلى الديف عند الظهور
+    if (countryInfo.innerHTML.trim() === "") {
+      countryInfo.innerHTML = countryData;
+    }
+  } else {
+    toools.classList.remove('visible');
+    toools.classList.add('hidden');
+    
+    // عند نهاية الأنميشن إخفاء الديف
+    setTimeout(() => {
+      if (!isDivVisible) toools.style.display = 'none';
+    }, 500);
+  }
+}
+
+// التحقق من عرض الشاشة عند الضغط على الـ body
+document.body.addEventListener('click', (event) => {
+  // تجاهل الضغط على العناصر المستثناة
+  if (excludedElements.includes(event.target.tagName)) {
+    return;
+  }
+
+  if (window.innerWidth <= 600) {
+    // التحقق مما إذا كانت النقرة خارج الديف
+    if (!toools.contains(event.target)) {
+      toggleDiv(); // تغيير حالة الديف بناءً على حالته الحالية
+    }
+  }
+});
+
+// استمع لزر النقر لمنع إخفاء الـ div عند الضغط على أي زر بداخله
+const myButton = document.getElementById('myButton');
+if (myButton) {
+  myButton.addEventListener('click', (event) => {
+    // يمكن إضافة أي وظائف أخرى هنا عند الضغط على الزر
+    event.stopPropagation(); // منع الحدث من الانتشار إلى عنصر الـ body
+  });
+}
+
+// الاستماع لتغيير حجم الشاشة
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 600) {
+    // إظهار الديف عند عرض أكبر من 600 بكسل
+    toools.style.display = 'block';
+    toools.classList.remove('hidden');
+    toools.classList.remove('visible');
+    isDivVisible = true; // تعيين حالة العرض إلى true
+  }
+});
+</script>
+
+<script src="Safety.js"></script>
+</body>
+</html>

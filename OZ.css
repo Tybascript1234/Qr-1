@@ -1,0 +1,177 @@
+.gooo {
+    text-align: center;
+    position: relative;
+    height: -webkit-fill-available;
+    width: 100%;
+    overflow: auto;
+    padding-bottom: 60px;
+    /* scrollbar-width: none; */
+    margin-top: 45px;
+}
+.gooo-button {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.gooo-button div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: auto;
+}
+.gooo-button button {
+    transition: ease 0.2s;
+    cursor: pointer;
+    background: #0000;
+    color: #4a596d;
+    border: solid 1px #dadada;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 17px;
+    font-family: "Amiri", serif;
+    margin: 0 8px;
+    border-radius: 26px;
+}
+.gooo-button button:hover {
+    background-color: #4a596d09;
+}
+
+.containersk {
+    margin: 0 auto;
+    margin-top: 30px;
+    /* height: -webkit-fill-available; */
+    /* overflow: auto;
+    scrollbar-width: none; */
+    width: max-content;
+    max-width: 100%;
+    color: #4a596d;
+    font-size: 17px;
+    height: fit-content;
+}
+.text-container {
+    padding: 10px;
+    text-align: right;
+    max-width: 544px;
+    font-family: "Amiri", serif;
+    line-height: 2em;
+    font-size: 2.2em;
+    border-bottom: solid 1px #ececec;
+    color: #4a596d;
+}
+.containersk-button {
+    transition: ease 0.2s;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: #00000000;
+    color: #4a596d;
+    border: solid 1px #dadada;
+    margin-left: 10px;
+    border-radius: 25px;
+}
+.containersk-button:hover {
+    background-color: #4a596d09;
+}
+
+
+.containersk-button {
+    position: relative;
+}
+.active22  {
+    background-color: lightblue;
+}
+
+
+/* -------------------------------------------------------- */
+
+.containersk-button[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    right: -6px;
+    /* transform: translateX(-50%); */
+    padding: 6px 8px;
+    background-color: rgba(60, 64, 67, .9);
+    border-radius: 2px;
+    color: white;
+    font-size: 12px;
+    /* outline: solid 1px #ccc; */
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,.14),0px 3px 1px -2px rgba(0,0,0,.12),0px 1px 5px 0px rgba(0,0,0,.2);
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-top: 10px;
+}
+
+.containersk-button[data-tooltip]:hover::after {
+    opacity: 1; /* يظهر عند التمرير فوق الزر */
+}
+
+#addTextButton {
+    transition: ease 0.2s;
+    cursor: pointer;
+    position: fixed;
+    bottom: 50px;
+    width: 55px;
+    height: 55px;
+    background-color: #ffffff;
+    color: #4a596d;
+    border: solid 1px #dadada;
+    border-radius: 100px;
+    box-shadow: 0px 3px 5px #00000014;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+#addTextButton:hover {
+    background-color: #f9f9fa;
+}
+#addTextButton span {
+    transition: ease 0.2s;
+    font-size: 26px;
+}
+#addTextButton:active span {
+    font-size: 26px;
+    transition: ease 0.1s;
+    transform: scale(0.92);
+}
+
+
+@media screen and (max-width: 600px) {
+    body .text-container {
+        font-size: 23px;
+        line-height: 2em;
+    }
+    body .containersk-button[data-tooltip]:hover::after  {
+        display: none;
+    }
+    body .containersk-button {
+        cursor: context-menu;
+        width: 40px;
+        height: 40px;
+    }
+    body .containersk-button ion-icon {
+        font-size: 18px;
+    }
+    body .gooo-button button {
+        height: 39px;
+        cursor: context-menu;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+    body #addTextButton {
+        width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        cursor: context-menu;
+    }
+    body .text-container p {
+        margin: 11px;
+    }
+}

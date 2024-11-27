@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/vstatic/svg/3917/3917110.svg?token=exp=1730965040~hmac=95968e0d9b1b62246a0ff3f8813ab38d">
+    <link rel="stylesheet" href="time.css">
+    <script src="time.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+<body>
+    
+    <div class="home">
+
+        <!-- 1 -->
+        <div class="home-1 cox" style="padding-bottom: 88px;">
+            <div class="head-co"><span>Control panel</span></div>
+            <div class="head-button">
+                <div>
+                    <button class="button" id="button1" onclick="showDiv(this)">Everyone</button>
+                    <button class="button" id="button2" onclick="showDiv(this)">Names</button>
+                    <button class="button" id="button3" onclick="showDiv(this)">Emails</button>
+                    <button class="button" id="button4" onclick="showDiv(this)">Password</button>
+                    <button class="button" id="button5" onclick="showDiv(this)">Numbers</button>
+                    <button class="button" id="button6" onclick="showDiv(this)">City</button>
+                    <button class="button" id="button7" onclick="showDiv(this)">Files</button>
+                    <button class="button" id="button8" onclick="showDiv(this)">Other</button>
+                </div>
+            </div>
+                <div class="rrty">
+                    <button class="oz">Quran recited<ion-icon name="open-outline"></ion-icon></button>
+                    <button class="xo">Opin settings</button>
+                </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="home-2 cox">
+
+            <!-- Everyone -->
+            <div class="content-div" id="div1"><div class="loading-bar"></div>
+                <div class="content">
+                    <div class="Everyone">
+                        <div class="Everyone-div2">
+                            <div class="Everyone-dev"><div>Names</div><div>Emails</div><div>Password</div><div>Numbers</div><div>City</div><div>Files</div><div>Time</div></div>
+                            <div id="dataContainer">
+                                <!-- سيتم عرض البيانات هنا -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Names -->
+            <div class="content-div" id="div2"><div class="loading-bar"></div>
+                <div class="content">
+                    <div id="namesContainer">
+                        <!-- ديف لعرض الأسماء -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emails -->
+            <div class="content-div" id="div3"><div class="loading-bar"></div>
+                <div class="content">
+                    <div id="emailsContainer">
+                        <!-- ديف لعرض الإيميلات -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="content-div" id="div4"><div class="loading-bar"></div>
+                <div class="content">
+                    <div id="passwordsContainer">
+                        <!-- ديف لعرض الباسوردات -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Numbers -->
+            <div class="content-div" id="div5"><div class="loading-bar"></div>
+                <div class="content">
+                    5
+                </div>
+            </div>
+
+            <!-- City -->
+            <div class="content-div" id="div6"><div class="loading-bar"></div>
+                <div class="content">
+                    6
+                </div>
+            </div>
+
+            <!-- Files -->
+            <div class="content-div" id="div7"><div class="loading-bar"></div>
+                <div class="content">
+                    <div id="filesContainer">
+                        <!-- ديف لعرض الملفات -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other -->
+            <div class="content-div" id="div8"><div class="loading-bar"></div>
+                <div class="content">
+                    <div id="imagesContainer">
+                        <!-- ديف لعرض الصور -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+// استرجاع البيانات من localStorage
+const data = JSON.parse(localStorage.getItem('formData')) || [];
+
+// الحصول على الحاويات
+const dataContainer = document.getElementById('dataContainer');
+const emailsContainer = document.getElementById('emailsContainer');
+const imagesContainer = document.getElementById('imagesContainer');
+const filesContainer = document.getElementById('filesContainer');
+const namesContainer = document.getElementById('namesContainer');
+const passwordsContainer = document.getElementById('passwordsContainer');
+
+// إذا كانت البيانات موجودة، اعرضها
+if (data.length > 0) {
+    data.forEach((item, index) => {
+        // عرض البيانات في ديف #dataContainer
+        const content = `
+            <div class="Everyone-d" data-index="${index}">
+                <div>${item.name}</div>
+                <div>${item.email}</div>
+                <div>${item.phone}</div>
+                <div>${item.city}</div>
+                <div>${item.file}</div>
+                <div>${item.time}</div>
+                <button class="delete-button">Delete</button>
+            </div>
+        `;
+        dataContainer.insertAdjacentHTML('beforeend', content);
+
+        // عرض الإيميلات في ديف خاص بها
+        const emailContent = `<p data-index="${index}">${item.email}</p>`;
+        emailsContainer.insertAdjacentHTML('beforeend', emailContent);
+
+        // عرض الصور في ديف خاص بها
+        if (item.file && (item.file.endsWith('.jpg') || item.file.endsWith('.png') || item.file.endsWith('.jpeg'))) {
+            const imageContent = `<img src="path/to/images/${item.file}" alt="صورة" style="width: 100px; height: 100px; margin: 10px;" data-index="${index}">`;
+            imagesContainer.insertAdjacentHTML('beforeend', imageContent);
+        }
+
+        // عرض الملفات في ديف خاص بها
+        if (item.file && !item.file.endsWith('.jpg') && !item.file.endsWith('.png') && !item.file.endsWith('.jpeg')) {
+            const fileContent = `<div><a href="path/to/files/${item.file}" download="${item.file}" data-index="${index}">${item.file}</a></div>`;
+            filesContainer.insertAdjacentHTML('beforeend', fileContent);
+        }
+
+        // عرض الأسماء في ديف خاص بها
+        const nameContent = `<p data-index="${index}">${item.name}</p>`;
+        namesContainer.insertAdjacentHTML('beforeend', nameContent);
+
+        // عرض الباسوردات في ديف خاص بها
+        const passwordContent = `<p data-index="${index}">${item.password}</p>`;
+        passwordsContainer.insertAdjacentHTML('beforeend', passwordContent);
+    });
+} else {
+    // إذا لم تكن هناك بيانات
+    dataContainer.innerHTML = '<p>لا توجد بيانات لعرضها.</p>';
+    emailsContainer.innerHTML = '<p>لا توجد إيميلات لعرضها.</p>';
+    imagesContainer.innerHTML = '<p>لا توجد صور لعرضها.</p>';
+    filesContainer.innerHTML = '<p>لا توجد ملفات لعرضها.</p>';
+    namesContainer.innerHTML = '<p>لا توجد أسماء لعرضها.</p>';
+    passwordsContainer.innerHTML = '<p>لا توجد باسوردات لعرضها.</p>';
+}
+
+// إضافة حدث عند الضغط على زر الحذف
+dataContainer.addEventListener('click', function(event) {
+    // التأكد من أن الزر الذي تم الضغط عليه هو زر الحذف
+    if (event.target && event.target.classList.contains('delete-button')) {
+        const confirmDelete = confirm('هل أنت متأكد من حذف هذه البيانات؟');
+        if (confirmDelete) {
+            // إضافة class "Everyone-d" عند الضغط
+            const parentDiv = event.target.closest('div');
+            const index = parentDiv.getAttribute('data-index'); // الحصول على الفهرس المقابل للعنصر
+
+            // حذف العنصر من dataContainer
+            parentDiv.remove();
+
+            // حذف البيانات المقابلة في الحاويات الأخرى
+            const elementsToRemove = document.querySelectorAll(`[data-index="${index}"]`);
+            elementsToRemove.forEach(el => el.remove());
+
+            // تحديث البيانات في localStorage (اختياري)
+            data.splice(index, 1); // إزالة العنصر من البيانات
+            localStorage.setItem('formData', JSON.stringify(data)); // تحديث localStorage
+        }
+    }
+});
+</script>
+</body>
+</html>

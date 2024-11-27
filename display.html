@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج Firebase</title>
+</head>
+<body>
+  <h2>نموذج لإدخال البيانات</h2>
+
+  <!-- النموذج لجمع البيانات -->
+  <form id="dataForm">
+    <label for="name">الاسم:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="email">البريد الإلكتروني:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="message">الرسالة:</label><br>
+    <textarea id="message" name="message" required></textarea><br><br>
+
+    <button type="button" onclick="saveData()">حفظ البيانات</button>
+  </form>
+
+  <h3>البيانات المدخلة:</h3>
+  <div id="displayData"></div>
+
+  <script type="module">
+    // استيراد الوظائف اللازمة من Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    // تكوين Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuSzAy7Aijngx7ia55sdawwQXhU41vZ7s",
+      authDomain: "project-8815575935288799202.firebaseapp.com",
+      projectId: "project-8815575935288799202",
+      storageBucket: "project-8815575935288799202.firebasestorage.app",
+      messagingSenderId: "714595140887",
+      appId: "1:714595140887:web:e3603705b7ad7f93d76352",
+      measurementId: "G-36Y5B41QN6"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // حفظ البيانات في Firebase
+    function saveData() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      const newDataRef = ref(database, 'formData/' + Date.now()); // استخدام timestamp كـ ID فريد
+      set(newDataRef, {
+        name: name,
+        email: email,
+        message: message
+      })
+      .then(() => {
+        alert("تم حفظ البيانات بنجاح!");
+        displayData(); // تحديث عرض البيانات
+      })
+      .catch((error) => {
+        alert("حدث خطأ: " + error.message);
+      });
+    }
+
+    // عرض البيانات من Firebase
+    function displayData() {
+      const dataRef = ref(database, 'formData');
+      get(dataRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const displayDiv = document.getElementById('displayData');
+            displayDiv.innerHTML = ''; // تنظيف المحتوى قبل إضافة البيانات الجديدة
+            for (let id in data) {
+              const entry = data[id];
+              const entryDiv = document.createElement('div');
+              entryDiv.innerHTML = `<p><strong>الاسم:</strong> ${entry.name}</p>
+                                    <p><strong>البريد الإلكتروني:</strong> ${entry.email}</p>
+                                    <p><strong>الرسالة:</strong> ${entry.message}</p><hr>`;
+              displayDiv.appendChild(entryDiv);
+            }
+          } else {
+            alert("لا توجد بيانات.");
+          }
+        })
+        .catch((error) => {
+          alert("حدث خطأ في جلب البيانات: " + error.message);
+        });
+    }
+
+    // تحميل البيانات عند بدء تحميل الصفحة
+    window.onload = function() {
+      displayData(); // لعرض البيانات عند تحميل الصفحة
+    };
+  </script>
+
+</body>
+</html>

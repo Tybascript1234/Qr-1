@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code مع أيقونة في المنتصف</title>
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: max-content;
+      user-select: none;
+      font-family: Arial;
+      overflow: hidden;
+    }
+    .qr-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .qr-container::before {
+      content: "";
+      position: absolute;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+.qr-bd {
+    overflow: hidden;
+    position: relative;
+    height: -webkit-fill-available;
+    border: solid 1px #dadada;
+    width: 210px;
+    border-radius: 8px;
+}
+.sold {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sold img {
+    height: 41px;
+    border: solid 1px #dadada;
+    border-radius: 8px;
+}
+/* #qrcode img {
+  width: 100%;
+  height: 100%;
+} */
+#timeRemaining {
+  position: absolute;
+  bottom: 5px;
+  z-index: 10;
+  color: #fff;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: #ff0000;
+  outline: solid 1px #00000000;
+}
+@media screen and (max-width: 600px) {
+  #qrcode img {
+    width: 209px;
+    height: 209px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="qr-container">
+    <div id="qrcode"><img src="https://quranrecited12345678096.on.drv.tw/The%20Quran/favicon.ico" alt="Icon" class="icon-overlay"></div>
+    <span id="timeRemaining">00:00</span>
+  </div>
+
+
+
+
+<div>
+  <div>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div>
+                    <div><div>
+                      <div>
+                        <div><div></div><div></div><div></div><div>
+                          <div>
+                              <script>
+    // دالة لتوليد رابط عشوائي أو نص عشوائي
+  function generateRandomText() {
+    const baseURL = "https://quranrecited12345678096.on.drv.tw/The%20Quran/Login-1.html?session=";
+    const randomCode = Math.random().toString(36).substring(2, 10); // توليد رمز عشوائي
+    return baseURL + randomCode;
+  }
+
+  // دالة لتحديث رمز QR
+  function updateQRCode() {
+    const url = generateRandomText();
+    document.getElementById('qrcode').innerHTML = ""; // تنظيف المحتوى السابق
+    new QRCode(document.getElementById("qrcode"), {
+      text: url,
+      width: 210,
+      height: 210,
+    });
+
+    // إعادة تعيين الوقت المتبقي عند تحديث الرمز
+    timeRemaining = 20; // إعادة تعيين الوقت المتبقي ليبدأ من 20 ثانية
+  }
+
+  // دالة لحساب الوقت المتبقي وعرضه في الـ span
+  let timeRemaining = 20;
+  function updateTimeRemaining() {
+    if (timeRemaining > 0) {
+      timeRemaining--;
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      document.getElementById('timeRemaining').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+  }
+
+  // تحديث الوقت المتبقي كل ثانية
+  setInterval(updateTimeRemaining, 1000);
+
+  // تحديث رمز QR كل 20 ثانية
+  updateQRCode();
+  setInterval(updateQRCode, 20000);
+
+
+
+
+
+
+
+
+ // تابع لتحديد الديف الذي سيتم عرضه
+let messageDiv;
+
+// وظيفة لعرض الـ div
+function showMessage() {
+  // إنشاء الديف إذا لم يكن موجودًا بعد
+  if (!messageDiv) {
+    messageDiv = document.createElement('div');
+    messageDiv.style.position = 'fixed';
+    messageDiv.style.top = '20px';
+    messageDiv.style.left = '50%';
+    messageDiv.style.transform = 'translateX(-50%)';
+    messageDiv.style.backgroundColor = '#ff0000';
+    messageDiv.style.color = '#fff';
+    messageDiv.style.padding = '10px 20px';
+    messageDiv.style.borderRadius = '5px';
+    messageDiv.style.zIndex = '10000';
+    messageDiv.innerText = 'This shortcut has been disabled !';
+    document.body.appendChild(messageDiv);
+  }
+
+  // إظهار الـ div
+  messageDiv.style.display = 'block';
+
+  // إخفاء الديف بعد 3 ثواني
+  setTimeout(function() {
+    if (messageDiv) {
+      messageDiv.style.display = 'none';
+    }
+  }, 3000);
+
+  // إضافة حدث لإغلاق الديف عند النقر خارجه
+  document.addEventListener('click', function closeMessage(event) {
+    if (!messageDiv.contains(event.target)) {
+      messageDiv.style.display = 'none';
+      document.removeEventListener('click', closeMessage); // إزالة الحدث بعد النقر
+    }
+  });
+}
+
+// تعطيل الأزرار F1 إلى F12
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode >= 112 && event.keyCode <= 123) {
+    event.preventDefault(); // منع الفعل الافتراضي (فتح المساعدة أو قوائم أخرى)
+    showMessage(); // عرض الـ div عند الضغط على F1-F12
+  }
+});
+
+// تعطيل قائمة النقر بالزر الأيمن
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault(); // منع ظهور قائمة النقر بالزر الأيمن
+  showMessage(); // عرض الـ div عند النقر بالزر الأيمن
+});
+
+// تعطيل اختصار Ctrl + S
+document.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault(); // منع الفعل الافتراضي (الحفظ)
+    showMessage(); // عرض الـ div عند الضغط على Ctrl + S
+  }
+});
+
+// تعطيل اختصار Alt + F
+document.addEventListener('keydown', function(event) {
+  if (event.altKey && event.key === 'f') {
+    event.preventDefault(); // منع الفعل الافتراضي (فتح قائمة الملف)
+    showMessage(); // عرض الـ div عند الضغط على Alt + F
+  }
+
+  // تعطيل اختصار Ctrl + F
+  if (event.ctrlKey && event.key === 'f') {
+    event.preventDefault(); // منع الفعل الافتراضي (فتح البحث)
+    showMessage(); // عرض الـ div عند الضغط على Ctrl + F
+  }
+
+  // تعطيل اختصار Ctrl + S
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault(); // منع الفعل الافتراضي (الحفظ)
+    showMessage(); // عرض الـ div عند الضغط على Ctrl + S
+  }
+
+  // تعطيل اختصار Alt + E
+  if (event.altKey && event.key === 'e') {
+    event.preventDefault(); // منع الفعل الافتراضي (فتح قائمة التحرير)
+    showMessage(); // عرض الـ div عند الضغط على Alt + E
+  }
+});
+
+
+
+  </script>
+                          </div>
+                        </div></div>
+                      </div>
+                    </div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

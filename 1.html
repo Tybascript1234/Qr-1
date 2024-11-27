@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة الأسئلة</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        direction: rtl;
+    }
+
+    #game {
+        max-width: 400px;
+        margin: 50px auto;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    #question {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .option {
+        border: solid 1px #0000003f;
+        background-color: #f8fbff00;
+        color: #383838;
+        border-radius: 8px;
+        display: block;
+        margin: 10px auto;
+        padding: 10px 20px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .option.selected {
+        box-shadow: 0 0 0 4px #dfecff;
+        outline: solid 1px #1e6ee3;
+        border: solid 1px #00000000;
+        background-color: #f8fbff;
+        color: #0077ff;
+        border-radius: 8px;
+    }
+
+    #checkAnswer {
+        font-family: sans-serif;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #3091ff;
+    border-radius: 8px;
+    border-color: #0000;
+    color: white;
+    font-weight: 600;
+    }
+    #checkAnswer:hover {
+        background: #2b86ee;
+    }
+
+    #result {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    #nextStage, #restart {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 20px;
+    }
+</style>
+</head>
+<body>
+    <div id="game">
+        <div id="question"></div>
+        <div id="options">
+            <button class="option" onclick="selectOption(0)"></button>
+            <button class="option" onclick="selectOption(1)"></button>
+            <button class="option" onclick="selectOption(2)"></button>
+            <button class="option" onclick="selectOption(3)"></button>
+        </div>
+        <button id="checkAnswer" onclick="checkAnswer()">تحقق</button>
+        <div id="result"></div>
+        <button id="nextStage" onclick="goToNextStage()">الانتقال إلى المرحلة التالية</button>
+        <button id="restart" onclick="restartGame()">إعادة اللعبة</button>
+    </div>
+
+<script>
+const stages = [
+    [
+        { question: "من هو الصحابي الذي قال عنه النبي: لو كان نبي من بعدي لكان هو؟", options: ["عمر بن الخطاب", "أبو بكر الصديق", "علي بن أبي طالب", "عثمان بن عفان"], correct: 0 },
+        { question: "قال رسول الله صلى الله عليه وسلم: من صام رمضان إيماناً واحتساباً غفر له ما تقدم من ...؟", options: ["ذنبه", "ماله", "صحته", "عمره"], correct: 0 }
+    ],
+    [
+        { question: "قال رسول الله: أقرب ما يكون العبد من ربه وهو ...؟", options: ["في الصدقة", "في الصلاة", "في السجود", "في الصيام"], correct: 2 },
+        { question: "قال رسول الله: من حسن إسلام المرء ...؟", options: ["الحب للآخرين", "تركه ما لا يعنيه", "الصبر على البلاء", "التسامح"], correct: 1 }
+    ],
+    [
+        { question: "قال رسول الله صلى الله عليه وسلم: من غشنا ...؟", options: ["أثيم", "فاسق", "ليس منا", "مذنب"], correct: 2 },
+        { question: "أي الأعمال أحب إلى الله كما قال النبي؟", options: ["بر الوالدين", "الجهاد في سبيل الله", "الصلاة على وقتها", "الحج"], correct: 2 }
+    ],
+    [
+        { question: "عن أي شيء سئل رسول الله فقال: الدين النصيحة؟", options: ["النفاق", "الأمانة", "الصدق", "الإخلاص"], correct: 3 },
+        { question: "قال رسول الله: كل مسكر حرام، وكل خمر ...؟", options: ["مكروه", "خمر", "مفسد", "طاهر"], correct: 1 }
+    ],
+    [
+        { question: "قال رسول الله: خيركم خيركم ...؟", options: ["للأصدقاء", "للأقارب", "للأمة", "لأهله"], correct: 3 },
+        { question: "ما هو أفضل الدعاء يوم عرفة كما قال النبي؟", options: ["اللهم ارزقني الجنة", "لا إله إلا الله وحده لا شريك له", "رب اغفر لي", "اللهم أنت ربي لا إله إلا أنت"], correct: 1 }
+    ],
+    [
+        { question: "قال رسول الله: إنما الأعمال ...؟", options: ["بالمقاصد", "بالنيات", "بالكلام", "بالأفعال"], correct: 1 },
+        { question: "قال رسول الله: أحب الأعمال إلى الله أدومها وإن ...؟", options: ["كانت قليلة", "كانت طويلة", "لم تظهر", "لم تتكرر"], correct: 0 },
+        { question: "قال رسول الله: من كان يؤمن بالله واليوم الآخر فليقل ...؟", options: ["الصلاة والسلام على النبي", "خيراً أو ليصمت", "لا إله إلا الله", "آمنت بالله ورسله"], correct: 1 }
+    ],
+    [
+        { question: "قال رسول الله: تبسمك في وجه أخيك ...؟", options: ["عبادة", "صدقة", "محبة", "خير"], correct: 1 },
+        { question: "قال رسول الله: الدين ...؟", options: ["النصيحة", "الصدق", "الإخلاص", "التقوى"], correct: 0 },
+        { question: "ما هو الحديث الذي ينصح بإتباعه الرسول؟", options: ["لا ضرر ولا ضرار", "أدوا الزكاة", "صوموا رمضان", "أحسنوا لأهلكم"], correct: 0 }
+    ],
+    [
+        { question: "قال رسول الله: المسلم من سلم المسلمون من ...؟", options: ["يده ولسانه", "عيبه", "طمعه", "كذبه"], correct: 0 },
+        { question: "قال رسول الله: الطهور شطر ...؟", options: ["الإيمان", "الصلاة", "الصيام", "التوبة"], correct: 0 },
+        { question: "قال رسول الله: من غفر لغيره غفر الله له، ومن عفا عفى الله عنه", options: ["العفو", "الرحمة", "الغفران", "الصبر"], correct: 0 }
+    ],
+    [
+        { question: "قال رسول الله: ما نقص مال من ...؟", options: ["خسارة", "صدقة", "ربح", "خير"], correct: 1 },
+        { question: "قال رسول الله: اتقوا النار ولو بشق ...؟", options: ["تمرة", "شعير", "كلمة طيبة", "صدق"], correct: 0 },
+        { question: "قال رسول الله: صل من قطعك وأعط من حرمك واعف عمن ظلمك", options: ["الرحمة", "العفو", "الصبر", "العطاء"], correct: 2 }
+    ],
+    [
+        { question: "ما هو الحديث الذي يحث على الدعاء للغير؟", options: ["إنما الأعمال بالنيات", "أحب الأعمال إلى الله", "ما نقص مال من صدقة", "دعاء المسلم لأخيه بظهر الغيب مستجاب"], correct: 3 },
+        { question: "قال رسول الله: من كان يؤمن بالله واليوم الآخر فلا يؤذي ...؟", options: ["أخاه المسلم", "أهله", "الناس", "جاره"], correct: 3 },
+        { question: "قال رسول الله: اللهم أرزقني حسن الخاتمة واجعلني من ...", options: ["المهتدين", "الصالحين", "الشاكرين", "المؤمنين"], correct: 1 }
+    ],
+    [
+        { question: "قال رسول الله: لا يؤمن أحدكم حتى يحب لأخيه ...؟", options: ["ما يحب لنفسه", "أن يهتدي", "أن يتعلم", "أن يكون أفضل منه"], correct: 0 },
+        { question: "قال رسول الله: من لا يشكر الناس ...؟", options: ["لا يستحق الخير", "لا يشكر الله", "لا يرضى", "لا يفوز"], correct: 1 },
+        { question: "قال رسول الله: إذا مات ابن آدم انقطع عمله إلا من ...؟", options: ["ولد صالح يدعو له", "مال صالح ينفق", "علم ينتفع به", "صدقة جارية"], correct: 3 },
+        { question: "قال رسول الله: من صلى علي صلاة واحدة صلى الله عليه بها ...؟", options: ["عشرًا", "عشرون", "مئة", "ألف"], correct: 0 }
+    ]
+];
+
+
+
+    let currentStageIndex = 0;
+    let currentQuestionIndex = 0;
+    let totalScore = 0;
+    let stageScore = 0;
+    let selectedOption = null;
+
+    function loadQuestion() {
+        const questionObj = stages[currentStageIndex][currentQuestionIndex];
+        document.getElementById("question").textContent = questionObj.question;
+        document.querySelectorAll(".option").forEach((button, index) => {
+            button.textContent = questionObj.options[index];
+            button.classList.remove("selected");
+        });
+        document.getElementById("result").textContent = "";
+    }
+
+    function selectOption(index) {
+        selectedOption = index;
+        document.querySelectorAll(".option").forEach((button, i) => {
+            button.classList.toggle("selected", i === index);
+        });
+    }
+
+    function checkAnswer() {
+        if (selectedOption === null) {
+            alert("يرجى اختيار إجابة.");
+            return;
+        }
+
+        if (selectedOption === stages[currentStageIndex][currentQuestionIndex].correct) {
+            stageScore++;
+        }
+
+        currentQuestionIndex++;
+        selectedOption = null;
+
+        if (currentQuestionIndex < stages[currentStageIndex].length) {
+            loadQuestion();
+        } else {
+            endStage();
+        }
+    }
+
+    function endStage() {
+        totalScore += stageScore;
+        stageScore = 0;
+        currentQuestionIndex = 0;
+        currentStageIndex++;
+
+        if (currentStageIndex < stages.length) {
+            document.getElementById("result").textContent = `درجتك في المرحلة: ${totalScore}`;
+            document.getElementById("nextStage").style.display = "block";
+        } else {
+            endGame();
+        }
+    }
+
+    function endGame() {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("options").style.display = "none";
+        document.getElementById("checkAnswer").style.display = "none";
+        document.getElementById("nextStage").style.display = "none";
+        document.getElementById("result").textContent = `مجموع درجاتك النهائية: ${totalScore} من ${stages.flat().length}`;
+        document.getElementById("restart").style.display = "block";
+    }
+
+    function goToNextStage() {
+        document.getElementById("nextStage").style.display = "none";
+        loadQuestion();
+    }
+
+    function restartGame() {
+        currentStageIndex = 0;
+        currentQuestionIndex = 0;
+        totalScore = 0;
+        document.getElementById("question").style.display = "block";
+        document.getElementById("options").style.display = "block";
+        document.getElementById("checkAnswer").style.display = "block";
+        document.getElementById("restart").style.display = "none";
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
