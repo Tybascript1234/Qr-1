@@ -693,16 +693,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+let previousScrollState = ''; // متغير لتخزين حالة التمرير السابقة
+
 function showModal() {
+    // تخزين حالة التمرير السابقة
+    previousScrollState = document.body.style.overflow;
+    // منع التمرير عند ظهور الديف
     document.querySelector('.modal').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block';
-    document.body.style.overflow = 'hidden'; // منع التمرير عند ظهور الديف
+    document.body.style.overflow = 'hidden';
 }
 
 function hideModal() {
+    // إخفاء الديف
     document.querySelector('.modal').style.display = 'none';
     document.querySelector('.overlay').style.display = 'none';
-    document.body.style.overflow = ''; // إعادة التمرير لحالته الأصلية
+    // إعادة التمرير لحالته الأصلية
+    document.body.style.overflow = previousScrollState;
 }
 
 
