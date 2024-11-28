@@ -120,7 +120,6 @@ function reloadPage() {
                     <style>
                         body {
                             font-family: system-ui;
-                            margin: 0;
                         }
                         .xllle {
                             margin-left: 17px;
@@ -161,7 +160,7 @@ function reloadPage() {
                     </style>
                 </head>
                 <body>
-                    <div id="container"></div>
+                    // <div id="container"></div>
                     <p>Not allowed <span class="xllle">F1-F12</span></p>
                     <p>Not allowed <span class="xllle">Right click</span></p>
                     <p>Not allowed <span class="xllle">Ctrl + S</span></p>
