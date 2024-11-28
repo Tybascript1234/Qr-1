@@ -160,7 +160,7 @@ function reloadPage() {
                     </style>
                 </head>
                 <body>
-                    // <div id="container"></div>
+                    <!-- <div id="container" style="z-index: 1500;"></div> -->
                     <p>Not allowed <span class="xllle">F1-F12</span></p>
                     <p>Not allowed <span class="xllle">Right click</span></p>
                     <p>Not allowed <span class="xllle">Ctrl + S</span></p>
