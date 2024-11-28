@@ -2027,24 +2027,35 @@ body .token.boolean, .token.constant, .token.deleted, .token.number, .token.prop
     user-select: all;
 }
 
-::-webkit-scrollbar {
+.page-1::-webkit-scrollbar {
     width: 5px;
 }
-::-webkit-scrollbar-thumb {
+pre[class*=language-]::-webkit-scrollbar-thumb {
     background: #b8b8b85d;
     border-radius: 10px;
 }
-::-webkit-scrollbar-track {
+pre[class*=language-]::-webkit-scrollbar-track {
     background: #f1f1f100;
     border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
+pre[class*=language-]::-webkit-scrollbar-thumb:hover {
+    background: #c9c9c9;
+}
+.page-1::-webkit-scrollbar-thumb {
+    background: #b8b8b85d;
+    border-radius: 10px;
+}
+.page-1::-webkit-scrollbar-track {
+    background: #f1f1f100;
+    border-radius: 10px;
+}
+.page-1::-webkit-scrollbar-thumb:hover {
     background: #c9c9c9;
 }
 .controlse::-webkit-scrollbar {
     height: 0px;
 }
-body pre[class*=language-]::-webkit-scrollbar {
+pre[class*=language-]::-webkit-scrollbar {
     height: 5px;
 }
 
