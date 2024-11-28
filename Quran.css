@@ -2027,6 +2027,27 @@ body .token.boolean, .token.constant, .token.deleted, .token.number, .token.prop
     user-select: all;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: #b8b8b85d;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f100;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #c9c9c9;
+}
+.controlse::-webkit-scrollbar {
+    height: 0px;
+}
+body pre[class*=language-]::-webkit-scrollbar {
+    height: 5px;
+}
+
 
 
 
