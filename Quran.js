@@ -694,16 +694,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function showModal() {
+    // تخزين حالة التمرير الحالية في خاصية data على document.body
+    document.body.dataset.previousScrollState = document.body.style.overflow;
+    // منع التمرير عند ظهور الديف
     document.querySelector('.modal').style.display = 'block';
     document.querySelector('.overlay').style.display = 'block';
-    document.body.style.overflow = 'hidden'; // منع التمرير عند ظهور الديف
+    document.body.style.overflow = 'hidden';
 }
 
 function hideModal() {
+    // إعادة التمرير لحالته الأصلية باستخدام البيانات المخزنة
+    document.body.style.overflow = document.body.dataset.previousScrollState || '';
+    // إخفاء الديف
     document.querySelector('.modal').style.display = 'none';
     document.querySelector('.overlay').style.display = 'none';
-    document.body.style.overflow = ''; // إعادة التمرير لحالته الأصلية
 }
+
 
 
 
