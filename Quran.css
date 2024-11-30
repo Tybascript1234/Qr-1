@@ -2026,7 +2026,6 @@ body .token.boolean, .token.constant, .token.deleted, .token.number, .token.prop
     /* background-color: #b3d4fc; */
     user-select: all;
 }
-
 .page-1::-webkit-scrollbar {
     width: 5px;
 }
@@ -2060,6 +2059,121 @@ pre[class*=language-]::-webkit-scrollbar {
 }
 
 
+
+
+.video-container {
+    transition: ease 0.3s;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+.video-container .containersk-button {
+    margin: 0;
+}
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 649px;
+}
+video {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block;
+}
+.controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px; */
+    background-color: #f1f1f100;
+    /* border-radius: 8px; */
+    border-top: solid 1px #dadada;
+    padding-top: 8px;
+    direction: rtl;
+}
+.control-button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.control-button:hover {
+    background-color: #0056b3;
+}
+.control-button:focus {
+    outline: none;
+}
+.control-button ion-icon {
+    font-size: 24px;
+}
+.video-time {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* استعلامات الوسائط */
+@media (max-width: 768px) {
+    .video-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+    video {
+        width: 100%;
+        height: auto;
+    }
+    .video-wrapper {
+        height: auto;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .video-container {
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .video-container {
+        max-width: 40%;
+    }
+}
+
+.Report {
+    transition: ease 0.2s;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 15px;
+    border-radius: 25px;
+    height: 38px;
+    width: 38px;
+    background: #ffffffcf;
+    border: solid 1px #dadada;
+}
+.Report:hover {
+    background: #e4e4e4cf;
+}
+.Report ion-icon {
+    font-size: 18px;
+    margin: auto;
+}
 
 
 
