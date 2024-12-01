@@ -2114,7 +2114,7 @@ video {
     display: block;
 }
 body .ccas {
-    overflow: hidden;
+    overflow: auto;
 }
 .controls {
     text-shadow: 1px 1px 5px #000;
