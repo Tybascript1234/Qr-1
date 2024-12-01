@@ -2,6 +2,24 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentVideo = null; // لتخزين الفيديو المشغل حاليًا
     let currentPlayPauseButton = null; // لتخزين زر التشغيل/الإيقاف الحالي
 
+    function createButtonWithLabel(iconName, labelText, onClickHandler) {
+        const buttonWrapper = document.createElement('div');
+        buttonWrapper.classList.add('button-wrapper');
+
+        const button = document.createElement('button');
+        button.classList.add('containersk-button');
+        button.innerHTML = `<ion-icon name="${iconName}"></ion-icon>`;
+        button.addEventListener('click', onClickHandler);
+
+        const label = document.createElement('span');
+        label.textContent = labelText;
+
+        buttonWrapper.appendChild(button);
+        buttonWrapper.appendChild(label);
+
+        return buttonWrapper;
+    }
+
     function addVideoDiv(videoSrc) {
         // إنشاء ديف الحاوي
         const container = document.createElement('div');
@@ -29,52 +47,45 @@ document.addEventListener("DOMContentLoaded", () => {
         timeLeft.textContent = 'الوقت: 0 ثانية'; // عرض الوقت المتبقي كـ "0 ثانية"
         controls.appendChild(timeLeft);
 
-        // زر إيقاف وتشغيل الفيديو باستخدام أيقونة
-        const playPauseButton = document.createElement('button');
-        playPauseButton.classList.add('containersk-button');
-        playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // أيقونة تشغيل
-        playPauseButton.addEventListener('click', () => {
-            // إذا كان هناك فيديو قيد التشغيل سابقًا، أوقفه وأعد زر التشغيل/الإيقاف إلى حالة التشغيل
+        // زر إيقاف وتشغيل الفيديو
+        const playPauseButton = createButtonWithLabel('play', 'تشغيل', () => {
+            // إيقاف الفيديو الحالي إذا كان هناك فيديو آخر قيد التشغيل
             if (currentVideo && currentVideo !== video) {
-                currentVideo.pause(); // إيقاف الفيديو السابق
-                currentVideo.currentTime = 0; // إعادة تعيين الزمن إلى البداية
+                currentVideo.pause();
+                currentVideo.currentTime = 0; // إعادة الفيديو إلى البداية
                 if (currentPlayPauseButton) {
-                    currentPlayPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // تغيير أيقونة الزر السابق
+                    const icon = currentPlayPauseButton.querySelector('ion-icon');
+                    if (icon) {
+                        icon.setAttribute('name', 'play');
+                    }
                 }
             }
 
-            if (video.paused) {
+            // تحقق من حالة الفيديو وتجنب التعارض بين التشغيل والإيقاف
+            if (video.paused || video.ended) {
                 video.play().then(() => {
-                    playPauseButton.innerHTML = '<ion-icon name="pause"></ion-icon>'; // تغيير الأيقونة إلى إيقاف
+                    const icon = playPauseButton.querySelector('ion-icon');
+                    if (icon) {
+                        icon.setAttribute('name', 'pause');
+                    }
                 }).catch((error) => {
                     console.error("خطأ في تشغيل الفيديو:", error);
                 });
             } else {
                 video.pause();
-                playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // تغيير الأيقونة إلى تشغيل
+                const icon = playPauseButton.querySelector('ion-icon');
+                if (icon) {
+                    icon.setAttribute('name', 'play');
+                }
             }
 
-            // تحديث الفيديو وزر التشغيل الحالي
             currentVideo = video;
             currentPlayPauseButton = playPauseButton;
         });
         controls.appendChild(playPauseButton);
 
-        // حدث عندما ينتهي الفيديو
-        video.addEventListener('ended', () => {
-            playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // تغيير الأيقونة إلى تشغيل عند الانتهاء
-            if (currentVideo === video) {
-                currentVideo = null; // إعادة تعيين الفيديو المشغل
-                currentPlayPauseButton = null; // إعادة تعيين زر التشغيل
-            }
-            timeLeft.textContent = 'الوقت: 0 ثانية'; // عرض "0 ثانية" عند نهاية الفيديو
-        });
-
         // زر مشاركة الفيديو
-        const shareButton = document.createElement('button');
-        shareButton.classList.add('containersk-button');
-        shareButton.innerHTML = '<ion-icon name="share-social"></ion-icon>'; // أيقونة المشاركة
-        shareButton.addEventListener('click', () => {
+        const shareButton = createButtonWithLabel('share-social', 'شارك', () => {
             if (navigator.share) {
                 navigator.share({
                     title: 'فيديو مميز',
@@ -91,15 +102,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         controls.appendChild(shareButton);
 
-        // زر تنزيل الفيديو
-        const downloadButton = document.createElement('button');
-        downloadButton.classList.add('containersk-button');
-        downloadButton.innerHTML = '<ion-icon name="download-outline"></ion-icon>'; // أيقونة التنزيل
-        downloadButton.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = videoSrc;
-            link.download = videoSrc.split('/').pop(); // استخدام اسم الملف من الرابط
-            link.click(); // تنفيذ عملية التنزيل
+        // زر تنزيل الفيديو مع رسالة تأكيد
+        const downloadButton = createButtonWithLabel('download-outline', 'تنزيل', () => {
+            const userConfirmed = confirm('هل تريد بالتأكيد تنزيل هذا الفيديو؟');
+            if (userConfirmed) {
+                const link = document.createElement('a');
+                link.href = videoSrc;
+                link.download = videoSrc.split('/').pop(); // استخدام اسم الملف من الرابط
+                link.click();
+            } else {
+                alert('تم إلغاء التنزيل.');
+            }
         });
         controls.appendChild(downloadButton);
 
@@ -111,13 +124,115 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // تحديث الوقت المتبقي بعد تحميل الفيديو
         video.addEventListener('loadedmetadata', () => {
-            const videoDuration = video.duration; // مدة الفيديو
+            const videoDuration = video.duration;
             video.addEventListener('timeupdate', () => {
                 const remainingTime = Math.max(0, Math.round(videoDuration - video.currentTime));
-                timeLeft.textContent = `الوقت: ${remainingTime} ثانية`; // تحديث الوقت المتبقي
+                timeLeft.textContent = `الوقت: ${remainingTime} ثانية`;
             });
         });
+
+        // حدث عندما ينتهي الفيديو
+        video.addEventListener('ended', () => {
+            const icon = playPauseButton.querySelector('ion-icon');
+            if (icon) {
+                icon.setAttribute('name', 'play');
+            }
+            if (currentVideo === video) {
+                currentVideo = null;
+                currentPlayPauseButton = null;
+            }
+            timeLeft.textContent = 'الوقت: 0 ثانية';
+
+            // الانتقال إلى الفيديو التالي بعد الانتهاء من الفيديو الحالي
+            scrollToNextVideo(container);
+        });
     }
+
+    // دالة التمرير إلى الفيديو التالي
+    function scrollToNextVideo(currentVideoContainer) {
+        const nextVideoContainer = currentVideoContainer.nextElementSibling; // الحصول على العنصر التالي
+        if (nextVideoContainer) {
+            nextVideoContainer.scrollIntoView({
+                behavior: 'smooth', // التمرير بشكل سلس
+                block: 'start' // التمرير ليظهر في أعلى الشاشة
+            });
+
+            // تشغيل الفيديو التالي وإيقاف الفيديو الحالي
+            const nextVideo = nextVideoContainer.querySelector('video');
+            if (nextVideo) {
+                if (currentVideo) {
+                    currentVideo.pause(); // إيقاف الفيديو الحالي
+                }
+                nextVideo.play(); // تشغيل الفيديو التالي
+                currentVideo = nextVideo;
+                const nextPlayPauseButton = nextVideoContainer.querySelector('.containersk-button');
+                if (nextPlayPauseButton) {
+                    const icon = nextPlayPauseButton.querySelector('ion-icon');
+                    if (icon) {
+                        icon.setAttribute('name', 'pause'); // تعيين زر التشغيل/الإيقاف للفيديو التالي
+                    }
+                }
+            }
+        }
+    }
+
+    // دالة الانتقال إلى الفيديو السابق
+    function scrollToPreviousVideo(currentVideoContainer) {
+        const prevVideoContainer = currentVideoContainer.previousElementSibling; // الحصول على العنصر السابق
+        if (prevVideoContainer) {
+            prevVideoContainer.scrollIntoView({
+                behavior: 'smooth', // التمرير بشكل سلس
+                block: 'start' // التمرير ليظهر في أعلى الشاشة
+            });
+
+            // تشغيل الفيديو السابق وإيقاف الفيديو الحالي
+            const prevVideo = prevVideoContainer.querySelector('video');
+            if (prevVideo) {
+                if (currentVideo) {
+                    currentVideo.pause(); // إيقاف الفيديو الحالي
+                }
+                prevVideo.play(); // تشغيل الفيديو السابق
+                currentVideo = prevVideo;
+                const prevPlayPauseButton = prevVideoContainer.querySelector('.containersk-button');
+                if (prevPlayPauseButton) {
+                    const icon = prevPlayPauseButton.querySelector('ion-icon');
+                    if (icon) {
+                        icon.setAttribute('name', 'pause'); // تعيين زر التشغيل/الإيقاف للفيديو السابق
+                    }
+                }
+            }
+        }
+    }
+
+    // إضافة أزرار التنقل بين الفيديوهات (القديم والجديد)
+    function addNavigationButtons() {
+        const navigationWrapper = document.createElement('div');
+        navigationWrapper.classList.add('navigation-buttons');
+
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'الفيديو السابق';
+        prevButton.addEventListener('click', () => {
+            if (currentVideo) {
+                const currentVideoContainer = currentVideo.closest('.video-container');
+                scrollToPreviousVideo(currentVideoContainer);
+            }
+        });
+
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'الفيديو التالي';
+        nextButton.addEventListener('click', () => {
+            if (currentVideo) {
+                const currentVideoContainer = currentVideo.closest('.video-container');
+                scrollToNextVideo(currentVideoContainer);
+            }
+        });
+
+        navigationWrapper.appendChild(prevButton);
+        navigationWrapper.appendChild(nextButton);
+
+        document.getElementById('video-wrapper-container').appendChild(navigationWrapper);
+    }
+
 
     // قائمة روابط الفيديوهات
     const videoLinks = [
@@ -138,8 +253,9 @@ document.addEventListener("DOMContentLoaded", () => {
         'https://videos.pexels.com/video-files/8165766/8165766-sd_360_640_25fps.mp4'
     ];
 
-    // إضافة الفيديوهات عند تحميل الصفحة
-    videoLinks.forEach(link => {
-        addVideoDiv(link);
-    });
+    // إضافة الفيديوهات إلى الصفحة
+    videoLinks.forEach(link => addVideoDiv(link));
+
+    // إضافة أزرار التنقل بين الفيديوهات
+    addNavigationButtons();
 });
