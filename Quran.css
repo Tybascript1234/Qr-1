@@ -2113,6 +2113,9 @@ video {
     border-radius: 8px;
     display: block;
 }
+body .xc2 {
+    overflow: hidden;
+}
 .controls {
     text-shadow: 1px 1px 5px #000;
     position: absolute;
