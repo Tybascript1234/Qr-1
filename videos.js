@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentVideo = null; // لتخزين الفيديو المشغل حاليًا
     let currentPlayPauseButton = null; // لتخزين زر التشغيل/الإيقاف الحالي
 
+    // إضافة الزر مع النص والحدث
     function createButtonWithLabel(iconName, labelText, onClickHandler) {
         const buttonWrapper = document.createElement('div');
         buttonWrapper.classList.add('button-wrapper');
@@ -20,12 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return buttonWrapper;
     }
 
+    // إضافة فيديو إلى الصفحة
     function addVideoDiv(videoSrc) {
-        // إنشاء ديف الحاوي
         const container = document.createElement('div');
         container.classList.add('video-container');
 
-        // إنشاء ديف الفيديو
         const videoWrapper = document.createElement('div');
         videoWrapper.classList.add('video-wrapper');
 
@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
         video.src = videoSrc;
         video.controls = false; // تعطيل أدوات الفيديو المدمجة
         video.style.width = '100%'; // التأكد من أن الفيديو يأخذ المساحة كاملة
+        video.preload = 'auto'; // تحميل الفيديو بالكامل مسبقًا
 
-        // إضافة الفيديو إلى ال div
         videoWrapper.appendChild(video);
         container.appendChild(videoWrapper);
 
@@ -42,17 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const controls = document.createElement('div');
         controls.classList.add('controls');
 
-        // وقت الفيديو المتبقي
         const timeLeft = document.createElement('span');
-        timeLeft.textContent = 'الوقت: 0 ثانية'; // عرض الوقت المتبقي كـ "0 ثانية"
+        timeLeft.textContent = 'الوقت: 0 ثانية';
         controls.appendChild(timeLeft);
 
         // زر إيقاف وتشغيل الفيديو
         const playPauseButton = createButtonWithLabel('play', 'تشغيل', () => {
-            // إيقاف الفيديو الحالي إذا كان هناك فيديو آخر قيد التشغيل
             if (currentVideo && currentVideo !== video) {
                 currentVideo.pause();
-                currentVideo.currentTime = 0; // إعادة الفيديو إلى البداية
+                currentVideo.currentTime = 0;
                 if (currentPlayPauseButton) {
                     const icon = currentPlayPauseButton.querySelector('ion-icon');
                     if (icon) {
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            // تحقق من حالة الفيديو وتجنب التعارض بين التشغيل والإيقاف
             if (video.paused || video.ended) {
                 video.play().then(() => {
                     const icon = playPauseButton.querySelector('ion-icon');
@@ -108,21 +105,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (userConfirmed) {
                 const link = document.createElement('a');
                 link.href = videoSrc;
-                link.download = videoSrc.split('/').pop(); // استخدام اسم الملف من الرابط
+                link.download = videoSrc.split('/').pop();
                 link.click();
             } else {
-                alert('تم إلغاء التنزيل.');
+                alert('تمت إلغاء التنزيل.');
             }
         });
         controls.appendChild(downloadButton);
 
-        // إضافة التحكمات إلى الحاوية
         container.appendChild(controls);
-
-        // إضافة المحتوى إلى الصفحة
         document.getElementById('video-wrapper-container').appendChild(container);
 
-        // تحديث الوقت المتبقي بعد تحميل الفيديو
         video.addEventListener('loadedmetadata', () => {
             const videoDuration = video.duration;
             video.addEventListener('timeupdate', () => {
@@ -131,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // حدث عندما ينتهي الفيديو
         video.addEventListener('ended', () => {
             const icon = playPauseButton.querySelector('ion-icon');
             if (icon) {
@@ -142,34 +134,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentPlayPauseButton = null;
             }
             timeLeft.textContent = 'الوقت: 0 ثانية';
-
-            // الانتقال إلى الفيديو التالي بعد الانتهاء من الفيديو الحالي
             scrollToNextVideo(container);
         });
     }
 
     // دالة التمرير إلى الفيديو التالي
     function scrollToNextVideo(currentVideoContainer) {
-        const nextVideoContainer = currentVideoContainer.nextElementSibling; // الحصول على العنصر التالي
+        const nextVideoContainer = currentVideoContainer.nextElementSibling || document.querySelector('.video-container'); // العودة إلى أول فيديو
         if (nextVideoContainer) {
             nextVideoContainer.scrollIntoView({
-                behavior: 'smooth', // التمرير بشكل سلس
-                block: 'start' // التمرير ليظهر في أعلى الشاشة
+                behavior: 'smooth',
+                block: 'start'
             });
 
-            // تشغيل الفيديو التالي وإيقاف الفيديو الحالي
             const nextVideo = nextVideoContainer.querySelector('video');
             if (nextVideo) {
                 if (currentVideo) {
-                    currentVideo.pause(); // إيقاف الفيديو الحالي
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0; // إرجاع الفيديو الحالي إلى البداية
                 }
-                nextVideo.play(); // تشغيل الفيديو التالي
+                nextVideo.play();
                 currentVideo = nextVideo;
                 const nextPlayPauseButton = nextVideoContainer.querySelector('.containersk-button');
                 if (nextPlayPauseButton) {
                     const icon = nextPlayPauseButton.querySelector('ion-icon');
                     if (icon) {
-                        icon.setAttribute('name', 'pause'); // تعيين زر التشغيل/الإيقاف للفيديو التالي
+                        icon.setAttribute('name', 'pause');
                     }
                 }
             }
@@ -178,39 +168,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // دالة الانتقال إلى الفيديو السابق
     function scrollToPreviousVideo(currentVideoContainer) {
-        const prevVideoContainer = currentVideoContainer.previousElementSibling; // الحصول على العنصر السابق
+        const prevVideoContainer = currentVideoContainer.previousElementSibling;
         if (prevVideoContainer) {
             prevVideoContainer.scrollIntoView({
-                behavior: 'smooth', // التمرير بشكل سلس
-                block: 'start' // التمرير ليظهر في أعلى الشاشة
+                behavior: 'smooth',
+                block: 'start'
             });
 
-            // تشغيل الفيديو السابق وإيقاف الفيديو الحالي
             const prevVideo = prevVideoContainer.querySelector('video');
             if (prevVideo) {
                 if (currentVideo) {
-                    currentVideo.pause(); // إيقاف الفيديو الحالي
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0; // إرجاع الفيديو الحالي إلى البداية
                 }
-                prevVideo.play(); // تشغيل الفيديو السابق
+                prevVideo.play();
                 currentVideo = prevVideo;
                 const prevPlayPauseButton = prevVideoContainer.querySelector('.containersk-button');
                 if (prevPlayPauseButton) {
                     const icon = prevPlayPauseButton.querySelector('ion-icon');
                     if (icon) {
-                        icon.setAttribute('name', 'pause'); // تعيين زر التشغيل/الإيقاف للفيديو السابق
+                        icon.setAttribute('name', 'pause');
                     }
                 }
             }
         }
     }
 
-    // إضافة أزرار التنقل بين الفيديوهات (القديم والجديد)
+    // إضافة أزرار التنقل بين الفيديوهات
     function addNavigationButtons() {
         const navigationWrapper = document.createElement('div');
         navigationWrapper.classList.add('navigation-buttons');
 
         const prevButton = document.createElement('button');
-        prevButton.textContent = 'الفيديو السابق';
+        prevButton.innerHTML = '<ion-icon name="arrow-up-outline"></ion-icon>';
         prevButton.addEventListener('click', () => {
             if (currentVideo) {
                 const currentVideoContainer = currentVideo.closest('.video-container');
@@ -219,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const nextButton = document.createElement('button');
-        nextButton.textContent = 'الفيديو التالي';
+        nextButton.innerHTML = '<ion-icon name="arrow-down-outline"></ion-icon>';
         nextButton.addEventListener('click', () => {
             if (currentVideo) {
                 const currentVideoContainer = currentVideo.closest('.video-container');
@@ -233,29 +223,66 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('video-wrapper-container').appendChild(navigationWrapper);
     }
 
+    // إضافة خاصية التمرير باللمس
+    function addTouchEventListeners() {
+        const videoContainer = document.getElementById('video-wrapper-container');
+        videoContainer.addEventListener('touchstart', (event) => {
+            touchStartY = event.touches[0].clientY;
+        });
 
-    // قائمة روابط الفيديوهات
-    const videoLinks = [
-        'https://videos.pexels.com/video-files/7401908/7401908-hd_1920_1080_25fps.mp4',
-        'https://videos.pexels.com/video-files/8165553/8165553-uhd_1440_2560_25fps.mp4',
-        'https://videos.pexels.com/video-files/7318806/7318806-hd_1080_1920_30fps.mp4',
-        'https://videos.pexels.com/video-files/16510575/16510575-sd_360_640_30fps.mp4',
-        'https://videos.pexels.com/video-files/28077962/12294863_360_640_60fps.mp4',
-        'https://videos.pexels.com/video-files/11803764/11803764-sd_360_640_30fps.mp4',
-        'https://videos.pexels.com/video-files/28077960/12294761_360_640_60fps.mp4',
-        'https://videos.pexels.com/video-files/27411331/12138025_360_640_60fps.mp4',
-        'https://videos.pexels.com/video-files/8165100/8165100-sd_360_640_25fps.mp4',
-        'https://videos.pexels.com/video-files/8165766/8165766-sd_360_640_25fps.mp4',
-        'https://videos.pexels.com/video-files/7157380/7157380-sd_640_360_24fps.mp4',
-        'https://videos.pexels.com/video-files/8165768/8165768-sd_360_640_25fps.mp4',
-        'https://videos.pexels.com/video-files/8165170/8165170-sd_360_640_25fps.mp4',
-        'https://videos.pexels.com/video-files/8165914/8165914-sd_360_640_25fps.mp4',
-        'https://videos.pexels.com/video-files/8165766/8165766-sd_360_640_25fps.mp4'
-    ];
+        videoContainer.addEventListener('touchmove', (event) => {
+            touchEndY = event.touches[0].clientY;
+        });
 
-    // إضافة الفيديوهات إلى الصفحة
-    videoLinks.forEach(link => addVideoDiv(link));
+        videoContainer.addEventListener('touchend', () => {
+            if (touchStartY - touchEndY > 50) {
+                if (currentVideo) {
+                    const currentVideoContainer = currentVideo.closest('.video-container');
+                    scrollToNextVideo(currentVideoContainer);
+                }
+            } else if (touchEndY - touchStartY > 50) {
+                if (currentVideo) {
+                    const currentVideoContainer = currentVideo.closest('.video-container');
+                    scrollToPreviousVideo(currentVideoContainer);
+                }
+            }
+        });
 
-    // إضافة أزرار التنقل بين الفيديوهات
+        // التمرير باستخدام عجلة الماوس
+        videoContainer.addEventListener('wheel', (event) => {
+            if (event.deltaY > 0) {
+                if (currentVideo) {
+                    const currentVideoContainer = currentVideo.closest('.video-container');
+                    scrollToNextVideo(currentVideoContainer);
+                }
+            } else {
+                if (currentVideo) {
+                    const currentVideoContainer = currentVideo.closest('.video-container');
+                    scrollToPreviousVideo(currentVideoContainer);
+                }
+            }
+        });
+    }
+
+    const initialVideos = [
+        'https://upload.mp3quran.net/tadabbor/01%D8%A7%D9%84%D8%B0%D9%8A_%D8%AC%D8%B9%D9%84_%D9%84%D9%83%D9%85_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D9%81%D8%B1%D8%A7%D8%B4%D8%A7_-_%D8%AC%D9%85%D8%B9%D8%A7%D9%86_%D8%A8%D8%A7_%D8%B9%D8%A7%D9%85%D8%B1.mp4',
+        'https://upload.mp3quran.net/tadabbor/02%D9%88%D8%A3%D9%85%D8%A7_%D8%A7%D9%84%D8%B0%D9%8A%D9%86_%D8%B3%D8%B9%D8%AF%D9%88%D8%A7_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87_%D8%A7%D9%84%D8%AE%D9%84%D9%81.mp4',
+        'https://upload.mp3quran.net/tadabbor/03%D8%A5%D9%86%D8%A7_%D8%AC%D8%B9%D9%84%D9%86%D8%A7_%D9%85%D8%A7_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D8%B2%D9%8A%D9%86%D8%A9_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%85%D8%AD%D8%B3%D9%86_%D8%A7%D9%84%D8%B6%D8%A8%D8%A7%D8%AD.mp4',
+        'https://upload.mp3quran.net/tadabbor/04%D9%81%D8%A7%D8%B5%D8%A8%D8%B1_%D9%84%D8%AD%D9%83%D9%85_%D8%B1%D8%A8%D9%83_-_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D9%85%D9%84%D9%8A%D9%83%D9%8A_%D8%B1%D8%AD%D9%85%D9%87_%D8%A7%D9%84%D9%84%D9%87.mp4',
+        'https://upload.mp3quran.net/tadabbor/06%D9%88%D8%A3%D9%86_%D8%A7%D9%84%D9%85%D8%B3%D8%A7%D8%AC%D8%AF_%D9%84%D9%84%D9%87_-_%D9%87%D9%8A%D8%AB%D9%85_%D8%A7%D9%84%D8%AF%D8%AE%D9%8A%D9%86.mp4',
+        'https://upload.mp3quran.net/tadabbor/07%D9%82%D9%84_%D8%A3%D9%88%D8%AD%D9%8A_%D8%A5%D9%84%D9%8A_-_%D8%A8%D8%AF%D8%B1_%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A.mp4',
+        'https://upload.mp3quran.net/tadabbor/08%D8%A5%D8%B0_%D8%A3%D9%88%D9%89_%D8%A7%D9%84%D9%81%D8%AA%D9%8A%D8%A9_%D8%A5%D9%84%D9%89_%D8%A7%D9%84%D9%83%D9%87%D9%81_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87_%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%89.mp4',
+        'https://upload.mp3quran.net/tadabbor/09%D8%A5%D9%86%D9%85%D8%A7_%D8%A8%D8%BA%D9%8A%D9%83%D9%85_%D8%B9%D9%84%D9%89_%D8%A3%D9%86%D9%81%D8%B3%D9%83%D9%85_-_%D9%85%D8%B5%D8%B7%D9%81%D9%89_%D9%82%D8%AF%D8%B3%D9%8A.mp4',
+        'https://upload.mp3quran.net/tadabbor/100%D9%8A%D8%B9%D9%84%D9%85_%D8%AE%D8%A7%D8%A6%D9%86%D8%A9_%D8%A7%D9%84%D8%A3%D8%B9%D9%8A%D9%86_-_%D8%A3%D8%AD%D9%85%D8%AF_%D8%A7%D9%84%D9%86%D9%81%D9%8A%D8%B3.mp4',
+        'https://upload.mp3quran.net/tadabbor/15%D9%88%D9%84%D8%A7%D8%AA%D8%B2%D8%B1%D9%88%D8%A7_%D9%88%D8%A7%D8%B2%D8%B1%D8%A9_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86_%D8%A7%D9%84%D9%85%D8%A7%D8%AC%D8%AF.mp4',
+        'https://upload.mp3quran.net/tadabbor/14%D8%A3%D9%81%D9%85%D9%86_%D8%B2%D9%8A%D9%86_%D9%84%D9%87_%D8%B3%D9%88%D8%A1_%D8%B9%D9%85%D9%84%D9%87.mp4',
+        'https://upload.mp3quran.net/tadabbor/13%D8%B5%D9%85_%D8%A8%D9%83%D9%85_%D8%B9%D9%85%D9%8A_-_%D8%B3%D8%B9%D9%88%D8%AF_%D8%A7%D9%84%D9%81%D8%A7%D9%8A%D8%B2.mp4',
+        'https://upload.mp3quran.net/tadabbor/18%D9%84%D8%A7%D8%AA%D8%AC%D8%AF_%D9%82%D9%88%D9%85%D8%A7%D9%8B_%D9%8A%D8%A4%D9%85%D9%86%D9%88%D9%86_%D8%A8%D8%A7%D9%84%D9%84%D9%87_%D9%88%D8%A7%D9%84%D9%8A%D9%88%D9%85_%D8%A7%D9%84%D8%A2%D8%AE%D8%B1_-_%D8%B1%D9%8A%D8%A7%D9%86_%D8%A7%D9%84%D9%85%D8%AD%D9%8A%D8%B3%D9%86%D9%8A.mp4',
+        'https://upload.mp3quran.net/tadabbor/11%D8%A5%D8%B0_%D8%A3%D9%88%D9%89_%D8%A7%D9%84%D9%81%D8%AA%D9%8A%D8%A9_%D8%A5%D9%84%D9%89_%D8%A7%D9%84%D9%83%D9%87%D9%81_-_%D9%87%D8%B2%D8%A7%D8%B9_%D8%A7%D9%84%D8%A8%D9%84%D9%88%D8%B4%D9%8A.mp4',
+        'https://upload.mp3quran.net/tadabbor/12%D9%82%D8%A7%D9%84_%D8%B3%D9%86%D9%86%D8%B8%D8%B1_%D8%A3%D8%B5%D8%AF%D9%82%D8%AA_-_%D8%B9%D9%85%D8%B1_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87.mp4'
+      ];        
+
+    initialVideos.forEach(videoSrc => addVideoDiv(videoSrc));
     addNavigationButtons();
+    addTouchEventListeners();
 });
