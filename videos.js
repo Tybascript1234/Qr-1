@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentVideo = null; 
     let currentPlayPauseButton = null; 
     let touchStartY = 0;
-    let touchEndY = 0;
 
     // وظيفة لإنشاء الأزرار مع التسميات
     function createButtonWithLabel(iconName, labelText, onClickHandler) {
@@ -215,11 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
         touchStartY = event.touches[0].clientY;
     });
 
-    window.addEventListener('touchmove', (event) => {
-        touchEndY = event.touches[0].clientY;
-    });
-
     window.addEventListener('touchend', (event) => {
+        const touchEndY = event.changedTouches[0].clientY;
         const touchDiff = touchStartY - touchEndY;
 
         if (Math.abs(touchDiff) > 50) { // التأكد من أن الفرق أكبر من 50 بكسل
@@ -270,7 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addNavigationButtons();
 
-    // إضافة الفيديوهات
     addVideoDiv('https://upload.mp3quran.net/tadabbor/01%D8%A7%D9%84%D8%B0%D9%8A_%D8%AC%D8%B9%D9%84_%D9%84%D9%83%D9%85_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D9%81%D9%8A%D8%B1%D8%A7%D8%B4%D8%A7_-_%D8%AC%D9%85%D8%B9%D8%A7%D9%86_%D8%A8%D8%A7_%D8%B9%D8%A7%D9%85%D8%B1.mp4');
     addVideoDiv('https://upload.mp3quran.net/tadabbor/02%D9%88%D8%A3%D9%85%D8%A7_%D8%A7%D9%84%D8%B0%D9%8A%D9%86_%D8%B3%D8%B9%D8%AF%D9%88%D8%A7_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87_%D8%A7%D9%84%D8%AE%D9%84%D9%81.mp4');
     addVideoDiv('https://upload.mp3quran.net/tadabbor/03%D8%A5%D9%86%D8%A7_%D8%AC%D8%B9%D9%84%D9%86%D8%A7_%D9%85%D8%A7_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D8%B2%D9%8A%D9%86%D8%A9_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%85%D8%AD%D8%B3%D9%86_%D8%A7%D9%84%D8%B6%D8%A8%D8%A7%D8%AD.mp4');
