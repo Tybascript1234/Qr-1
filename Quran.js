@@ -435,6 +435,7 @@ function getDivTitle(divId) {
         case 'Page7': return 'سياسة الموقع';
         case 'Page8': return 'مساهمة تقنية';
         case 'Page9': return 'API سيلسة استعمال ال';
+        case 'Page10': return 'مقاطع دينية';
         default: return 'Quran recited';
     }
 }
@@ -485,6 +486,16 @@ function restoreState() {
     }
 }
 
+// دالة لإيقاف الفيديو عند إغلاق الديف
+function stopVideo(divId) {
+    const div = document.getElementById(divId);
+    const video = div.querySelector('video');
+    if (video) {
+        video.pause(); // إيقاف الفيديو
+        video.currentTime = 0; // إعادة الفيديو إلى البداية
+    }
+}
+
 // حدث عند الضغط على الأزرار لفتح/إغلاق الديف
 document.addEventListener('click', function (event) {
     const target = event.target;
@@ -500,6 +511,7 @@ document.addEventListener('click', function (event) {
                 div.classList.remove('visible');
                 div.classList.add('coffees');
                 div.style.display = 'none';
+                stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
             });
 
             // عرض الديف الهدف
@@ -523,6 +535,9 @@ document.addEventListener('click', function (event) {
             targetDiv.classList.add('coffees');
             targetDiv.style.display = 'none';
 
+            // إيقاف الفيديو عند إغلاق الديف
+            stopVideo(targetId);
+
             // إرجاع العنوان للحالة الافتراضية
             document.title = 'Quran recited';
             toggleScroll(false);
@@ -543,6 +558,7 @@ window.addEventListener('popstate', function (event) {
         div.classList.remove('visible');
         div.classList.add('coffees');
         div.style.display = 'none';
+        stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
     });
 
     if (divId) {
@@ -567,7 +583,6 @@ window.addEventListener('popstate', function (event) {
 window.addEventListener('load', function () {
     restoreState();
 });
-
 
 
 
@@ -709,7 +724,6 @@ function hideModal() {
     document.querySelector('.modal').style.display = 'none';
     document.querySelector('.overlay').style.display = 'none';
 }
-
 
 
 
