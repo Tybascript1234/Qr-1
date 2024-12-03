@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentVideo = null; 
     let currentPlayPauseButton = null; 
     let touchStartY = 0;
+    let touchEndY = 0;
 
     // وظيفة لإنشاء الأزرار مع التسميات
     function createButtonWithLabel(iconName, labelText, onClickHandler) {
@@ -214,8 +215,11 @@ document.addEventListener("DOMContentLoaded", () => {
         touchStartY = event.touches[0].clientY;
     });
 
+    window.addEventListener('touchmove', (event) => {
+        touchEndY = event.touches[0].clientY;
+    });
+
     window.addEventListener('touchend', (event) => {
-        const touchEndY = event.changedTouches[0].clientY;
         const touchDiff = touchStartY - touchEndY;
 
         if (Math.abs(touchDiff) > 50) { // التأكد من أن الفرق أكبر من 50 بكسل
