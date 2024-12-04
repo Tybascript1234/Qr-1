@@ -2129,11 +2129,14 @@ zero {
     bottom: 0;
     height: 3px;
     display: block;
-    padding: 10px 0;
-    width: 100%;
+    padding: 16px 0px;
+    width: -webkit-fill-available;
     text-align: left;
     display: flex;
+    align-items: center;
     justify-content: left;
+    margin: 0 16px;
+    border-radius: 5px;
 }
 zero::before {
     transition: ease 0.3s;
@@ -2141,6 +2144,7 @@ zero::before {
     height: 3px;
     width: 100%;
     content: '';
+    border-radius: 5px;
     background: rgba(255, 255, 255, 0.377);
 }
 zero:hover::before {
@@ -2157,6 +2161,7 @@ zero:hover::before {
     align-items: center;
     overflow: visible;
     padding: 0;
+    border-radius: 5px;
 }
 .progress-bar::before {
     transition: ease 0.2s;
@@ -2167,10 +2172,16 @@ zero:hover::before {
     padding: 4px;
     border-radius: 10px;
     background-color: white;
+    z-index: 1;
+    box-shadow: -1px 1px 2px #00000047;
     margin-right: -5px;
 }
 zero:hover .progress-bar::before {
     transform: scale(1.5);
+}
+zero:hover .progress-bar {
+    transition: ease 0.2s;
+    padding: 1px 0;
 }
 .controls {
     /* opacity: 0; */
@@ -2280,6 +2291,10 @@ zero:hover .progress-bar::before {
     height: 3px;
     background-color: white;
 }
+body .xc2 {
+    width: -webkit-fill-available;
+    margin: 0;
+}
 
 /* استعلامات الوسائط */
 @media (max-width: 768px) {
@@ -2349,6 +2364,7 @@ zero:hover .progress-bar::before {
         left: 0;
         top: auto;
         transform: none;
+        margin-bottom: 70px;
     }
     body .Report {
         bottom: auto;
@@ -2371,7 +2387,7 @@ zero:hover .progress-bar::before {
 
 @media (min-width: 1025px) {
     .video-container {
-        max-width: 28.1%;
+        max-width: 22.5%;
     }
 }
 
