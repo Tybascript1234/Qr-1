@@ -214,20 +214,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // التمرير باستخدام العجلة على الكمبيوتر
-    window.addEventListener('wheel', (event) => {
-        if (event.deltaY < 0) {
-            // التمرير للأعلى
-            if (currentVideo) {
-                const currentVideoContainer = currentVideo.closest('.video-container');
-                scrollToPreviousVideo(currentVideoContainer);
+    // السماح بالتمرير فقط داخل عناصر .xc2
+    document.querySelectorAll('.xc2').forEach(container => {
+        container.addEventListener('wheel', (event) => {
+            event.preventDefault(); // منع السلوك الافتراضي للتمرير
+
+            if (event.deltaY > 0) {
+                // التمرير للأسفل
+                const currentVideoContainer = currentVideo?.closest('.video-container');
+                if (currentVideoContainer) {
+                    scrollToNextVideo(currentVideoContainer);
+                }
+            } else if (event.deltaY < 0) {
+                // التمرير للأعلى
+                const currentVideoContainer = currentVideo?.closest('.video-container');
+                if (currentVideoContainer) {
+                    scrollToPreviousVideo(currentVideoContainer);
+                }
             }
-        } else if (event.deltaY > 0) {
-            // التمرير للأسفل
-            if (currentVideo) {
-                const currentVideoContainer = currentVideo.closest('.video-container');
-                scrollToNextVideo(currentVideoContainer);
-            }
-        }
+        });
     });
 
     // إضافة أزرار التنقل
