@@ -106,15 +106,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         controls.appendChild(downloadButton);
 
+        // إضافة شريط التمرير داخل <zero></zero>
+        const progressBarContainer = document.createElement('zero');
+        const progressBar = document.createElement('hr');
+        progressBar.classList.add('progress-bar');
+        progressBarContainer.appendChild(progressBar);
+        controls.appendChild(progressBarContainer);
+
         container.appendChild(controls);
 
         document.getElementById('video-wrapper-container').appendChild(container);
 
         video.addEventListener('loadedmetadata', () => {
             const videoDuration = video.duration;
+
+            // تحديث الوقت المتبقي والتحرك في شريط التمرير
             video.addEventListener('timeupdate', () => {
                 const remainingTime = Math.max(0, Math.round(videoDuration - video.currentTime));
                 timeLeft.textContent = `الوقت: ${remainingTime} ثانية`;
+
+                // تحريك شريط التمرير
+                const progressPercentage = (video.currentTime / videoDuration) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
             });
         });
 
@@ -130,6 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
             timeLeft.textContent = 'الوقت: 0 ثانية';
 
             scrollToNextVideo(container);
+        });
+
+        // إضافة حدث الضغط على شريط التمرير
+        progressBarContainer.addEventListener('click', (event) => {
+            const progressBarWidth = progressBarContainer.offsetWidth;
+            const clickPosition = event.offsetX;
+            const newTime = (clickPosition / progressBarWidth) * video.duration;
+            video.currentTime = newTime;
+
+            // إذا كان الفيديو متوقفًا لا نقوم بتشغيله
+            if (!video.paused && !video.ended) {
+                video.play();
+            }
         });
     }
 
@@ -235,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addNavigationButtons();
 
-    addVideoDiv('https://upload.mp3quran.net/tadabbor/01%D8%A7%D9%84%D8%B0%D9%8A_%D8%AC%D8%B9%D9%84_%D9%84%D9%83%D9%85_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D9%81%D8%B1%D8%A7%D8%B4%D8%A7_-_%D8%AC%D9%85%D8%B9%D8%A7%D9%86_%D8%A8%D8%A7_%D8%B9%D8%A7%D9%85%D8%B1.mp4');
+    addVideoDiv('https://server14.mp3quran.net/islam/Rewayat-Hafs-A-n-Assem/001.mp3');
     addVideoDiv('https://upload.mp3quran.net/tadabbor/02%D9%88%D8%A3%D9%85%D8%A7_%D8%A7%D9%84%D8%B0%D9%8A%D9%86_%D8%B3%D8%B9%D8%AF%D9%88%D8%A7_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87_%D8%A7%D9%84%D8%AE%D9%84%D9%81.mp4');
     addVideoDiv('https://upload.mp3quran.net/tadabbor/03%D8%A5%D9%86%D8%A7_%D8%AC%D8%B9%D9%84%D9%86%D8%A7_%D9%85%D8%A7_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D8%A3%D8%B1%D8%B6_%D8%B2%D9%8A%D9%86%D8%A9_-_%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%85%D8%AD%D8%B3%D9%86_%D8%A7%D9%84%D8%B6%D8%A8%D8%A7%D8%AD.mp4');
     addVideoDiv('https://upload.mp3quran.net/tadabbor/04%D9%81%D8%A7%D8%B5%D8%A8%D8%B1_%D9%84%D8%AD%D9%83%D9%85_%D8%B1%D8%A8%D9%83_-_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D9%85%D9%84%D9%8A%D9%83%D9%8A_%D8%B1%D8%AD%D9%85%D9%87_%D8%A7%D9%84%D9%84%D9%87.mp4');
