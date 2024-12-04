@@ -440,9 +440,14 @@ function getDivTitle(divId) {
     }
 }
 
-// دالة لتفعيل/إلغاء إخفاء التمرير
-function toggleScroll(shouldHide) {
-    document.body.style.overflow = shouldHide ? 'hidden' : ''; // التحكم في التمرير
+// دالة لتعطيل التمرير بشكل دائم
+function disableScroll() {
+    document.body.style.overflow = 'hidden'; // تعطيل التمرير
+}
+
+// دالة لتمكين التمرير بعد إغلاق الديف
+function enableScroll() {
+    document.body.style.overflow = ''; // تمكين التمرير بعد إغلاق الديف
 }
 
 // دالة لتخزين حالة التمرير والديف المفتوح في الرابط
@@ -477,8 +482,8 @@ function restoreState() {
                 // تغيير عنوان النافذة بناءً على معرف الديف
                 document.title = getDivTitle(divId);
 
-                // إخفاء التمرير
-                toggleScroll(true);
+                // تعطيل التمرير نهائيًا
+                disableScroll();
 
                 // تخزين الحالة في الرابط
                 storeState(divId);
@@ -527,8 +532,8 @@ document.addEventListener('click', function (event) {
 
             // تغيير العنوان وحفظ الحالة
             document.title = getDivTitle(targetId);
-            toggleScroll(true);
-            storeState(targetId);
+            disableScroll(); // تعطيل التمرير عند فتح الديف
+            storeState(targetId); // حفظ حالة الديف في الرابط
         }
     }
 
@@ -546,7 +551,9 @@ document.addEventListener('click', function (event) {
 
             // إرجاع العنوان للحالة الافتراضية
             document.title = 'Quran recited';
-            toggleScroll(false);
+
+            // تمكين التمرير بعد إغلاق الديف
+            enableScroll();
 
             // تحديث الرابط
             storeState('');
@@ -576,12 +583,12 @@ window.addEventListener('popstate', function (event) {
 
             // تغيير العنوان وإخفاء التمرير
             document.title = getDivTitle(divId);
-            toggleScroll(true);
+            disableScroll(); // تعطيل التمرير عند عرض الديف
         }
     } else {
         // إذا لم يكن هناك ديف، ارجع العنوان والتمرير للحالة الافتراضية
         document.title = 'Quran recited';
-        toggleScroll(false);
+        enableScroll(); // تمكين التمرير إذا لم يكن هناك ديف مفتوح
     }
 });
 
@@ -589,6 +596,7 @@ window.addEventListener('popstate', function (event) {
 window.addEventListener('load', function () {
     restoreState();
 });
+
 
 
 
