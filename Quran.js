@@ -462,6 +462,7 @@ function restoreState() {
         div.classList.remove('visible');
         div.classList.add('coffees');
         div.style.display = 'none';
+        stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
     });
 
     if (divId) {
@@ -490,9 +491,14 @@ function restoreState() {
 function stopVideo(divId) {
     const div = document.getElementById(divId);
     const video = div.querySelector('video');
+    const audio = div.querySelector('audio'); // إضافة لإيقاف الصوت أيضا
     if (video) {
         video.pause(); // إيقاف الفيديو
         video.currentTime = 0; // إعادة الفيديو إلى البداية
+    }
+    if (audio) {
+        audio.pause(); // إيقاف الصوت
+        audio.currentTime = 0; // إعادة الصوت إلى البداية
     }
 }
 
@@ -583,6 +589,7 @@ window.addEventListener('popstate', function (event) {
 window.addEventListener('load', function () {
     restoreState();
 });
+
 
 
 
