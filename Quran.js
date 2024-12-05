@@ -855,17 +855,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // Download Quran recited app
-        function downloadAPK() {
-            // الرابط إلى ملف APK
-            const apkUrl = 'app-release.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+        function confirmAndDownload() {
+            // عرض رسالة التأكيد
+            const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل التطبيق؟");
 
-            // إنشاء رابط وتحفيز التنزيل
-            const link = document.createElement('a');
-            link.href = apkUrl;
-            link.download = 'Quran recited'; // يمكنك تحديد اسم الملف هنا
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            if (userConfirmed) {
+                // إذا وافق المستخدم، يتم بدء التنزيل
+                const apkUrl = 'app-release.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+
+                // إنشاء رابط وتحفيز التنزيل
+                const link = document.createElement('a');
+                link.href = apkUrl;
+                link.download = 'Quran recited'; // يمكنك تحديد اسم الملف هنا
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            // لا حاجة لعمل أي شيء إذا رفض المستخدم
         }
 
 
