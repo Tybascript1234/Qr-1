@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // دالة لإضافة الظل وتغيير لون الزر
 function applyBoxShadow(element, button) {
-    element.style.boxShadow = '0 0 0 3051px rgb(205 120 33 / 2%)';
+    element.style.boxShadow = '0 0 0 5051px rgb(255 174 90 / 7%)';
     button.classList.add('button-sss');
     localStorage.setItem('boxShadowApplied', 'true');
 }
