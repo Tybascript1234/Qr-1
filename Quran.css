@@ -286,6 +286,7 @@ body ion-icon {
     margin-top: 40px;
     text-align: center;
     /* height: 89%; */
+    width: 100%;
 }
 .menu-button {
     display: inline-flex;
@@ -1505,8 +1506,9 @@ body #ert .fof-dive::before {
     background: #4a596d09;
 }
 .name_12 {
+    animation: fadeInOut4 0.4s ease forwards;
     position: absolute;
-    z-index: 100;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1514,7 +1516,9 @@ body #ert .fof-dive::before {
     left: 0;
     width: 100%;
     height: 100%;
+    transition: ease 0.5s;
     background-color: white;
+    box-shadow: 0px 1px 0px #d7d9da;
 }
 .name_12 button {
     font-family: system-ui;
@@ -1754,25 +1758,29 @@ body #ert .fof-dive::before {
     background-size: cover;
 }
 .Shortcut-button button {
-    transition: ease 0.3s;
+    transition: ease 0.2s;
     margin-left: 20px;
     padding: 0 22px;
     height: 35px;
     border-radius: 25px;
-    background-color: #0f70e6;
-    color: white;
+    background-color: #0f70e600;
+    color: #065fd4;
+    border: solid 1px;
+    border-color: rgba(0, 0, 0, 0.1);
     font-weight: 500;
 }
 .Shortcut-button button:hover {
-    background-color: #0d5fc2;
+    background: #def1ff;
+    border-color: transparent;
 }
 body .Shortcut-button button:active {
-    background-color: #0f57ad;
+    background: #daecfa;
+    border-color: #0000000d;
 }
-.Shortcut-button button:focus {
+/* .Shortcut-button button:focus {
     background-color: #0d5fc2;
     box-shadow: 0 0 0 .2rem #3385ea80;
-}
+} */
 .Shortcut-close {
     transition: ease 0.2s;
     height: 34px;
@@ -2175,6 +2183,7 @@ zero:hover::before {
     z-index: 1;
     box-shadow: -1px 1px 2px #00000047;
     margin-right: -5px;
+    transform: scale(0);
 }
 zero:hover .progress-bar::before {
     transform: scale(1.5);
@@ -2429,6 +2438,9 @@ body .xc2 {
 
 
 @media screen and (max-width: 600px) {
+    body .name_12 {
+        z-index: 100;
+    }
     body .xx{
         display: flex;
     }
@@ -2590,7 +2602,7 @@ body .xc2 {
     body .oio-div-div a {
         cursor: context-menu;
     }
-    body .oio-div-div button,.navigation-buttons button,.Report,.Report button,zero,.cke .kkf {
+    body .oio-div-div button,.navigation-buttons button,.Report,.Report button,zero,.name_12 button,.cke .kkf {
         cursor: context-menu;
     }
     body .oio-div-div {
