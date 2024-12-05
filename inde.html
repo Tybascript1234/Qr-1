@@ -3,66 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدخال البيانات</title>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-      // إعداد Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyCg1oE4_BLB3CPN4NGSpDrJBR6NGYBFNuw",
-        authDomain: "project-4654816922614473640.firebaseapp.com",
-        projectId: "project-4654816922614473640",
-        storageBucket: "project-4654816922614473640.firebasestorage.app",
-        messagingSenderId: "1098493394347",
-        appId: "1:1098493394347:web:3a990a4beea93692e6a6ee",
-        measurementId: "G-TKB093SF21"
-      };
-
-      // تهيئة Firebase
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-
-      // دالة لحفظ البيانات في Firestore
-      async function saveData(event) {
-        event.preventDefault(); // منع إرسال النموذج بالطريقة الافتراضية
-
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-
-        try {
-          // حفظ البيانات في Firestore
-          await addDoc(collection(db, "messages"), {
-            name: name,
-            email: email,
-            message: message,
-            timestamp: new Date()
-          });
-
-          alert('تم حفظ البيانات بنجاح!');
-          // إعادة التوجيه لعرض البيانات
-          window.location.href = "display.html?name=" + name + "&email=" + email + "&message=" + message;
-        } catch (e) {
-          console.error("خطأ في حفظ البيانات: ", e);
-          alert("حدث خطأ أثناء حفظ البيانات");
+    <title>مشغل الفيديو</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
-      }
-    </script>
+        .video-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: auto;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+        }
+        .control-button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .control-button:hover {
+            background-color: #0056b3;
+        }
+        .control-button:focus {
+            outline: none;
+        }
+        .control-button ion-icon {
+            font-size: 24px;
+        }
+        .video-time {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* استعلامات الوسائط */
+        @media (max-width: 768px) {
+            .video-container {
+                max-width: 100%;
+                padding: 10px;
+            }
+            video {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .video-container {
+                max-width: 90%;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .video-container {
+                max-width: 80%;
+            }
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </head>
 <body>
-    <h1>أدخل معلوماتك</h1>
-    <form id="dataForm" onsubmit="saveData(event)">
-        <label for="name">الاسم:</label>
-        <input type="text" id="name" name="name" required><br><br>
+    <div id="video-wrapper-container"></div>
 
-        <label for="email">البريد الإلكتروني:</label>
-        <input type="email" id="email" name="email" required><br><br>
+    <script>
+        // لتخزين الفيديوهات المشغلة
+        let currentVideo = null;
 
-        <label for="message">الرسالة:</label>
-        <textarea id="message" name="message" required></textarea><br><br>
+        // الدالة لإضافة ديف جديد مع فيديو
+        function addVideoDiv(videoSrc) {
+            // إنشاء الديف الحاوي
+            const container = document.createElement('div');
+            container.classList.add('video-container');
 
-        <button type="submit">حفظ</button>
-    </form>
+            // إنشاء ديف الفيديو
+            const videoWrapper = document.createElement('div');
+            videoWrapper.classList.add('video-wrapper');
+
+            const video = document.createElement('video');
+            video.src = videoSrc;
+            video.controls = false; // تعطيل أدوات الفيديو المدمجة
+
+            // إضافة الفيديو إلى ال div
+            videoWrapper.appendChild(video);
+            container.appendChild(videoWrapper);
+
+            // ديف التحكمات أسفل الفيديو
+            const controls = document.createElement('div');
+            controls.classList.add('controls');
+
+            // وقت الفيديو المتبقي
+            const timeLeft = document.createElement('span');
+            timeLeft.textContent = 'الوقت المتبقي: جاري الحساب...';
+            controls.appendChild(timeLeft);
+
+            // زر إيقاف وتشغيل الفيديو باستخدام أيقونة
+            const playPauseButton = document.createElement('button');
+            playPauseButton.classList.add('control-button');
+            playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // أيقونة تشغيل
+            playPauseButton.addEventListener('click', () => {
+                if (video.paused) {
+                    // إذا كان هناك فيديو مشغل سابق، أوقفه
+                    if (currentVideo && currentVideo !== video) {
+                        currentVideo.video.pause(); // إيقاف الفيديو الحالي
+                        currentVideo.video.currentTime = 0; // إعادة تعيين الفيديو إلى البداية
+                        currentVideo.playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // إعادة الأيقونة إلى تشغيل
+                    }
+                    video.play(); // تشغيل الفيديو الجديد
+                    playPauseButton.innerHTML = '<ion-icon name="pause"></ion-icon>'; // تغيير الأيقونة إلى إيقاف
+                    currentVideo = { video, playPauseButton }; // تعيين الفيديو المشغل حاليا
+                } else {
+                    video.pause(); // إيقاف الفيديو
+                    playPauseButton.innerHTML = '<ion-icon name="play"></ion-icon>'; // تغيير الأيقونة إلى تشغيل
+                    currentVideo = null; // إيقاف الفيديو المشغل
+                }
+            });
+            controls.appendChild(playPauseButton);
+
+            // زر مشاركة الفيديو
+            const shareButton = document.createElement('button');
+            shareButton.classList.add('control-button');
+            shareButton.innerHTML = '<ion-icon name="share-social"></ion-icon>'; // أيقونة المشاركة
+            shareButton.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'فيديو مميز',
+                        text: 'شاهد هذا الفيديو الرائع!',
+                        url: videoSrc
+                    }).then(() => {
+                        console.log('تمت مشاركة الفيديو');
+                    }).catch((error) => {
+                        console.error('فشل المشاركة: ', error);
+                    });
+                } else {
+                    alert('هذه الميزة غير مدعومة في متصفحك.');
+                }
+            });
+            controls.appendChild(shareButton);
+
+            // إضافة التحكمات إلى الحاوية
+            container.appendChild(controls);
+
+            // إضافة المحتوى إلى الصفحة
+            document.getElementById('video-wrapper-container').appendChild(container);
+
+            // تحديث الوقت المتبقي بعد تحميل الفيديو
+            video.addEventListener('loadedmetadata', () => {
+                const videoDuration = video.duration; // مدة الفيديو
+                video.addEventListener('timeupdate', () => {
+                    const remainingTime = Math.max(0, Math.round(videoDuration - video.currentTime));
+                    timeLeft.textContent = `الوقت المتبقي: ${remainingTime} ثانية`;
+                });
+            });
+        }
+
+        // إضافة فيديوهات متعددة
+        addVideoDiv('https://videos.pexels.com/video-files/7401908/7401908-hd_1920_1080_25fps.mp4');
+        addVideoDiv('https://videos.pexels.com/video-files/8165553/8165553-uhd_1440_2560_25fps.mp4');
+    </script>
 </body>
 </html>
