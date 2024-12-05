@@ -854,25 +854,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-        // Download Quran recited app
-        function confirmAndDownload() {
-            // عرض رسالة التأكيد
-            const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل التطبيق؟");
+      // دالة تحميل التطبيق الأول
+      function confirmAndDownloadApp1() {
+        // عرض رسالة التأكيد
+        const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل تطبيق Quran recited؟");
 
-            if (userConfirmed) {
-                // إذا وافق المستخدم، يتم بدء التنزيل
-                const apkUrl = 'app-release.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+        if (userConfirmed) {
+            // إذا وافق المستخدم، يتم بدء التنزيل
+            const apkUrl = 'app-release.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
 
-                // إنشاء رابط وتحفيز التنزيل
-                const link = document.createElement('a');
-                link.href = apkUrl;
-                link.download = 'Quran recited'; // يمكنك تحديد اسم الملف هنا
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-            // لا حاجة لعمل أي شيء إذا رفض المستخدم
+            // إنشاء رابط وتحفيز التنزيل
+            const link = document.createElement('a');
+            link.href = apkUrl;
+            link.download = 'Quran recited.apk'; // اسم الملف عند التنزيل
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
+        // لا حاجة لعمل أي شيء إذا رفض المستخدم
+    }
+
+    // دالة تحميل التطبيق الثاني
+    function confirmAndDownloadApp2() {
+        // عرض رسالة التأكيد
+        const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل التطبيق الآخر؟");
+
+        if (userConfirmed) {
+            // إذا وافق المستخدم، يتم بدء التنزيل
+            const apkUrl = 'another-app.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+
+            // إنشاء رابط وتحفيز التنزيل
+            const link = document.createElement('a');
+            link.href = apkUrl;
+            link.download = 'Another app.apk'; // اسم الملف عند التنزيل
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        // لا حاجة لعمل أي شيء إذا رفض المستخدم
+    }
 
 
 
