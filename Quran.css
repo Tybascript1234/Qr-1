@@ -1369,6 +1369,7 @@ body .hidden {
     padding: 20px;
     padding-bottom: 100px;
     background-color: #f8f8fc;
+    position: relative;
 }
 .oio-div {
     width: 1152px;
