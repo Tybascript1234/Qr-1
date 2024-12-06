@@ -9,6 +9,7 @@
      <link rel="stylesheet" href="oo.css">
      <link rel="stylesheet" href="OZ.css">
      <link rel="icon" href="New Project.png">
+     <link rel="manifest" href="manifest.json">
      <script src="Quran.js"></script>
      <script src="mo.js"></script>
      <script src="data-Qur.js"></script>
@@ -16,7 +17,6 @@
      <script src="OZ2.js"></script>
      <script src="reload.js"></script>
      <script src="videos.js"></script>
-     <link rel="manifest" href="manifest.json">
      <!-- --------------- -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -231,8 +231,8 @@
                             <span><ion-icon name="checkmark-outline"></ion-icon>ومزايا اخرى ستعجبك</span>
                         </div>
                         <div class="xxxe">
-                            <a><img class="coc" src="https://profitbooks.net/wp-content/uploads/2021/05/58438-play-app-android-now-button-store.png" alt=""></a>
-                            <a onclick="confirmAndDownloadApp1()"><img style="height: 45px;" src="https://vboxxcloud.com/assets/img/download-it-on-google-play.png" alt=""></a>
+                            <a class="pagee"><img class="coc margin_0" src="https://profitbooks.net/wp-content/uploads/2021/05/58438-play-app-android-now-button-store.png" alt=""></a>
+                            <a class="pagee" onclick="confirmAndDownloadApp1()"><img style="height: 45px;" src="https://vboxxcloud.com/assets/img/download-it-on-google-play.png" alt=""></a>
                         </div>
                     </div>
                     
@@ -512,43 +512,44 @@
 
                         <!-- shareButton -->
                          <script>
-                            document.getElementById('shareButton').addEventListener('click', async () => {
-    if (navigator.share) {
-        // إذا كان المتصفح يدعم خاصية المشاركة
-        try {
-            await navigator.share({
-                title: 'مشاركة الرابط',
-                text: 'تفاصيل المشاركة هنا.',
-                url: 'index.html' // قم بتعديل الرابط حسب الحاجة
-            });
-            console.log('تمت المشاركة بنجاح');
-        } catch (error) {
-            console.error('حدث خطأ أثناء المشاركة:', error);
-        }
-    } else {
-        // بديل للمشاركة في المتصفحات التي لا تدعم Navigator.share
-        const shareFallback = `
-            <div id="shareModal" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: white; border: 1px solid #ccc; padding: 20px; z-index: 1000;">
-                <p>خاصية المشاركة غير مدعومة في متصفحك. يمكنك نسخ الرابط يدويًا:</p>
-                <input type="text" value="${window.location.href}" id="shareLink" style="width: 100%;" readonly>
-                <button onclick="document.getElementById('shareLink').select(); document.execCommand('copy'); alert('تم نسخ الرابط!');">
-                    نسخ الرابط
-                </button>
-                <button id="closeShareModal">إغلاق</button>
-            </div>
-            <div id="modalBackdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-        `;
-        const modalContainer = document.createElement('div');
-        modalContainer.innerHTML = shareFallback;
-        document.body.appendChild(modalContainer);
+                         document.getElementById('shareButton').addEventListener('click', async () => {
+                            if (navigator.share) {
+                                // إذا كان المتصفح يدعم خاصية المشاركة
+                                try {
+                                    await navigator.share({
+                                        title: 'مشاركة الرابط',
+                                        text: 'تفاصيل المشاركة هنا.',
+                                        url: 'index.html' // قم بتعديل الرابط حسب الحاجة
+                                    });
+                                    console.log('تمت المشاركة بنجاح');
+                                } catch (error) {
+                                    console.error('حدث خطأ أثناء المشاركة:', error);
+                                }
+                            } else {
+                                // بديل للمشاركة في المتصفحات التي لا تدعم Navigator.share
+                                const shareFallback = `
+                                    <div id="shareModal" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                                        background: white; border: 1px solid #ccc; padding: 20px; z-index: 1000;">
+                                        <p>خاصية المشاركة غير مدعومة في متصفحك. يمكنك نسخ الرابط يدويًا:</p>
+                                        <input type="text" value="${window.location.href}" id="shareLink" style="width: 100%;" readonly>
+                                        <button onclick="document.getElementById('shareLink').select(); document.execCommand('copy'); alert('تم نسخ الرابط!');">
+                                            نسخ الرابط
+                                        </button>
+                                        <button id="closeShareModal">إغلاق</button>
+                                    </div>
+                                    <div id="modalBackdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+                                `;
+                                const modalContainer = document.createElement('div');
+                                modalContainer.innerHTML = shareFallback;
+                                document.body.appendChild(modalContainer);
+                                
+                                // إضافة حدث للإغلاق
+                                document.getElementById('closeShareModal').addEventListener('click', () => {
+                                    document.body.removeChild(modalContainer);
+                                });
+                            }
+                        });
 
-        // إضافة حدث للإغلاق
-        document.getElementById('closeShareModal').addEventListener('click', () => {
-            document.body.removeChild(modalContainer);
-        });
-    }
-});
                          </script>
                     </div>
                 </div>
