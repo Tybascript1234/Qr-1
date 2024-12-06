@@ -1336,15 +1336,24 @@ body .hidden {
     align-items: center;
     justify-content: right;
 }
-.xxxe img {
+.xxxe a {
+    cursor: pointer;
+}
+.xxxe a img {
+    transition: ease 0.3s;
     height: 53px;
     margin-left: 8px;
     border-radius: 8px;
     cursor: pointer;
     margin-top: 15px;
 }
-.xxxe img:active {
-    transform: scale(0.98);
+.xxxe a:hover img {
+    transition: ease 0.2s;
+    opacity: 0.8;
+}
+.xxxe a:active img {
+    transition: ease 0.2s;
+    opacity: 0.5;
 }
 .ssdx {
     margin: 0 auto;
@@ -2595,13 +2604,16 @@ body .xc2 {
     body .xxxe img {
         cursor: context-menu;
     }
+    body .pagee .margin_0 {
+        margin-left: 0;
+    }
     body .oio {
         padding-bottom: 60px;
     }
     body .oio-div-div a {
         cursor: context-menu;
     }
-    body .oio-div-div button,.navigation-buttons button,.Report,.Report button,zero,.name_12 button,.cke .kkf {
+    body .oio-div-div button,.navigation-buttons button,.Report,.Report button,zero,.xxxe a,.name_12 button,.cke .kkf {
         cursor: context-menu;
     }
     body .oio-div-div {
