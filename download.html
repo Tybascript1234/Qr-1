@@ -4,13 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download File</title>
+  <style>
+    body {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .zoooo {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+    }
+    a {
+      text-decoration: none;
+      color: #565656;
+      margin: 4px;
+      cursor: context-menu;
+    }
+    .zoooo img {
+      height: 21px;
+      display: block;
+    }
+    button {
+      transition: ease 0.2s;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-bottom: 8px;
+    border: solid 1px #008972;
+    color: white;
+    background: #008972;
+    border-radius: 4px;
+    }
+    button:hover {
+      background: #009b81;
+      box-shadow: 0px 1px 3px #008f77;
+    }
+    button:active {
+      transition: ease 0.0s;
+      color: rgba(255, 255, 255, 0.863);
+    }
+  </style>
 </head>
 <body>
-  <h1>Download the File</h1>
-  <p>Click the button below to download the file.</p>
-  <a href="app-release.apk" download>
-    <button style="padding: 10px 20px; font-size: 16px;">Download File</button>
-  </a>
+  <div>
+    <h1>Download the App</h1>
+    <p>Click the button below to download the App.</p>
+    <br>
+    <br>
+    <a href="app-release.apk" download>
+      <button>Download Android</button>
+    </a>
+    <button style="opacity: 0.5;cursor: no-drop;">Download Apple</button>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="zoooo">
+    <a href="index.html"><img src="logo-no-background.png" alt=""></a>
+    <a href="https://creativecloudsit.com/page/privacy-policy">Creative Clouds IT سياسة شركة</a>
+    <a href="https://tybascript1234.github.io/Qr-1/?div=Page9">API سياسة الخصوصية</a>
+    <a href="https://tybascript1234.github.io/Qr-1/?div=Page7">سياسة الخصوصية</a>
+    <a href="index.html">الرئيسية</a>
+  </div>
   <script src="Safety.js"></script>
 </body>
 </html>
