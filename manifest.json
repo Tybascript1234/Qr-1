@@ -2,17 +2,23 @@
     "shortcuts": [
         {
             "name": "فتح الصفحة الرئيسية",
-            "short_name": "قراءة الرآن",
+            "short_name": "قراءة القرآن",
             "description": "اذهب إلى الصفحة الرئيسية",
-            "url": "https://tybascript1234.github.io/Qr-1/?div=Page2",
-            "icons": [{ "src": "https://github.com/Tybascript1234/Qr-1/blob/main/1-c.png", "sizes": "192x192" }]
+            "url": "/Qr-1/?div=Page2",
+            "icons": [
+                { "src": "https://raw.githubusercontent.com/Tybascript1234/Qr-1/main/1-c.png", "sizes": "192x192" }
+            ]
         },
         {
             "name": "الإعدادات",
-            "short_name": "اوقات الصلاة",
+            "short_name": "أوقات الصلاة",
             "description": "اذهب إلى صفحة الإعدادات",
-            "url": "/settings.html",
-            "icons": [{ "src": "https://github.com/Tybascript1234/Qr-1/blob/main/2-c.png", "sizes": "192x192" }]
+            "url": "/Qr-1/settings.html",
+            "icons": [
+                { "src": "https://raw.githubusercontent.com/Tybascript1234/Qr-1/main/2-c.png", "sizes": "192x192" }
+            ]
         }
-    ]
+    ],
+    "scope": "/Qr-1/",
+    "start_url": "/Qr-1/index.html"
 }
