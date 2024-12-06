@@ -896,6 +896,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+// دالة للمشاركة
+function shareContent() {
+    const url = window.location.href; // الحصول على الرابط الحالي للصفحة
+    const title = document.title; // الحصول على عنوان الصفحة
+    const text = "Check out this page!"; // النص الذي سيتم مشاركته (يمكن تخصيصه)
+
+    // إذا كان المتصفح يدعم واجهة المشاركة
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: url
+        }).then(() => {
+            console.log("تمت المشاركة بنجاح");
+        }).catch((error) => {
+            console.error("حدث خطأ في المشاركة: ", error);
+        });
+    } else {
+        // إذا كان المتصفح لا يدعم واجهة المشاركة
+        fallbackShare(url);
+    }
+}
+
+// دالة بديلة إذا كان المتصفح لا يدعم المشاركة
+function fallbackShare(url) {
+    const shareMenu = document.createElement('div');
+    shareMenu.style.position = 'fixed';
+    shareMenu.style.bottom = '20px';
+    shareMenu.style.left = '20px';
+    shareMenu.style.padding = '10px';
+    shareMenu.style.backgroundColor = '#fff';
+    shareMenu.style.border = '1px solid #ccc';
+    shareMenu.style.borderRadius = '5px';
+    shareMenu.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+    shareMenu.innerHTML = `
+        <p>نسخ الرابط إلى الحافظة:</p>
+        <button id="copyLinkButton" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">نسخ الرابط</button>
+    `;
+
+    document.body.appendChild(shareMenu);
+
+    document.getElementById('copyLinkButton').addEventListener('click', function() {
+        navigator.clipboard.writeText(url).then(function() {
+            alert('تم نسخ الرابط إلى الحافظة!');
+            document.body.removeChild(shareMenu);
+        }).catch(function(err) {
+            alert('فشل نسخ الرابط.');
+        });
+    });
+}
+
+// مراقبة عمليات المشاركة المحتملة عبر الحافظة (Clipboard API) أو عبر الرسائل
+document.addEventListener('copy', function(event) {
+    // مراقبة حدث نسخ النص من الصفحة
+    console.log("تم نسخ النص!");
+    shareContent(); // استدعاء دالة المشاركة
+});
+
+// مراقبة عمليات المشاركة التقليدية مثل المشاركة عبر النوافذ المنبثقة
+document.addEventListener('click', function(event) {
+    // تحقق من وجود علاقة بالعملية التي قد تشير إلى المشاركة
+    if (event.target.tagName === "A" && event.target.href && event.target.href.includes("mailto:")) {
+        console.log("مشاركة عبر البريد الإلكتروني!");
+        shareContent(); // استدعاء دالة المشاركة
+    }
+});
+
+
+
+
 // // تابع لتحديد الديف الذي سيتم عرضه
 // let messageDiv;
 
