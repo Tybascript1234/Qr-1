@@ -180,43 +180,49 @@
                             <img src="New Project.png" alt=""></div>
                             <!-- --- -->
                              <script>
-  function generateRandomText() {
-    const baseURL = "https://tybascript1234.github.io/Qr-1/download.html";
-    const randomCode = Math.random().toString(36).substring(2, 10); // توليد رمز عشوائي
-    return baseURL + randomCode;
+  // دالة لتوليد رابط ثابت بدون رمز عشوائي
+function generateRandomText() {
+  const baseURL = "https://tybascript1234.github.io/Qr-1/hello.html"; // رابط ثابت بدون تغيير
+  return baseURL; // العودة إلى الرابط الثابت فقط
+}
+
+// دالة لتحديث رمز QR
+function updateQRCode() {
+  const url = generateRandomText(); // استخدام الرابط الثابت
+  const qrContainer = document.getElementById('qrcode');
+  
+  // تنظيف المحتوى السابق (إزالة الباركود السابق)
+  qrContainer.innerHTML = "";
+  
+  // إنشاء رمز QR جديد
+  new QRCode(qrContainer, {
+    text: url,
+    width: 210,
+    height: 210,
+  });
+
+  // إعادة تعيين الوقت المتبقي عند تحديث الرمز
+  timeRemaining = 20; // إعادة تعيين الوقت المتبقي ليبدأ من 20 ثانية
+}
+
+// دالة لحساب الوقت المتبقي وعرضه في الـ span
+let timeRemaining = 20;
+function updateTimeRemaining() {
+  if (timeRemaining > 0) {
+    timeRemaining--;
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    document.getElementById('timeRemaining').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
+}
 
-  // دالة لتحديث رمز QR
-  function updateQRCode() {
-    const url = generateRandomText();
-    document.getElementById('qrcode').innerHTML = ""; // تنظيف المحتوى السابق
-    new QRCode(document.getElementById("qrcode"), {
-      text: url,
-      width: 210,
-      height: 210,
-    });
+// تحديث الوقت المتبقي كل ثانية
+setInterval(updateTimeRemaining, 1000);
 
-    // إعادة تعيين الوقت المتبقي عند تحديث الرمز
-    timeRemaining = 20; // إعادة تعيين الوقت المتبقي ليبدأ من 20 ثانية
-  }
+// تحديث رمز QR كل 20 ثانية
+updateQRCode();
+setInterval(updateQRCode, 20000);
 
-  // دالة لحساب الوقت المتبقي وعرضه في الـ span
-  let timeRemaining = 20;
-  function updateTimeRemaining() {
-    if (timeRemaining > 0) {
-      timeRemaining--;
-      const minutes = Math.floor(timeRemaining / 60);
-      const seconds = timeRemaining % 60;
-      document.getElementById('timeRemaining').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-  }
-
-  // تحديث الوقت المتبقي كل ثانية
-  setInterval(updateTimeRemaining, 1000);
-
-  // تحديث رمز QR كل 20 ثانية
-  updateQRCode();
-  setInterval(updateQRCode, 20000);
 
                              </script>
                              <!-- ---- -->
