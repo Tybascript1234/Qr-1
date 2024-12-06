@@ -6,7 +6,7 @@
             "description": "اذهب إلى الصفحة الرئيسية",
             "url": "/Qr-1/?div=Page2",
             "icons": [
-                { "src": "https://raw.githubusercontent.com/Tybascript1234/Qr-1/main/1-c.png", "sizes": "192x192" }
+                { "src": "/Qr-1/1-c.png", "sizes": "192x192" }
             ]
         },
         {
@@ -15,7 +15,7 @@
             "description": "اذهب إلى صفحة الإعدادات",
             "url": "/Qr-1/settings.html",
             "icons": [
-                { "src": "https://raw.githubusercontent.com/Tybascript1234/Qr-1/main/2-c.png", "sizes": "192x192" }
+                { "src": "/Qr-1/2-c.png", "sizes": "192x192" }
             ]
         }
     ],
