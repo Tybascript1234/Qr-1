@@ -1,0 +1,18 @@
+{
+    "shortcuts": [
+        {
+            "name": "فتح الصفحة الرئيسية",
+            "short_name": "قراءة الرآن",
+            "description": "اذهب إلى الصفحة الرئيسية",
+            "url": "https://tybascript1234.github.io/Qr-1/?div=Page2",
+            "icons": [{ "src": "1-c.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "الإعدادات",
+            "short_name": "اوقات الصلاة",
+            "description": "اذهب إلى صفحة الإعدادات",
+            "url": "/settings.html",
+            "icons": [{ "src": "2-c.png", "sizes": "192x192" }]
+        }
+    ]
+}
