@@ -34,6 +34,7 @@ function updateUIFromLocalStorage(selectElement, container) {
 
     if (savedTimings) {
         container.querySelector('.fajr-time').textContent = savedTimings.Fajr;
+        container.querySelector('.sunrise-time').textContent = savedTimings.Sunrise;
         container.querySelector('.dhuhr-time').textContent = savedTimings.Dhuhr;
         container.querySelector('.asr-time').textContent = savedTimings.Asr;
         container.querySelector('.maghrib-time').textContent = savedTimings.Maghrib;
@@ -132,6 +133,7 @@ function fetchPrayerTimes(city, country, selectElement) {
             const timings = data.data.timings;
             const container = selectElement.closest('.prayer-container');
             container.querySelector('.fajr-time').textContent = timings.Fajr;
+            container.querySelector('.sunrise-time').textContent = timings.Sunrise;
             container.querySelector('.dhuhr-time').textContent = timings.Dhuhr;
             container.querySelector('.asr-time').textContent = timings.Asr;
             container.querySelector('.maghrib-time').textContent = timings.Maghrib;
