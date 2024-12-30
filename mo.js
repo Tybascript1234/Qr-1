@@ -240,6 +240,71 @@ function closeAdhanAlert() {
     }
 }
 
+// طلب إذن الإشعارات
+function requestNotificationPermission() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission !== "granted") {
+                console.log("إذن الإشعارات مرفوض.");
+            }
+        });
+    }
+}
+
+// عرض الإشعار
+function showNotification(title, body) {
+    if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(title, { body });
+    }
+}
+
+// جدولة الإشعار
+function schedulePrayerNotification(prayerName, prayerTime) {
+    const now = moment();
+    const prayerMoment = moment(prayerTime, "HH:mm");
+    const diffMs = prayerMoment.diff(now);
+
+    if (diffMs > 0) {
+        setTimeout(() => {
+            showNotification("وقت الصلاة", `حان الآن وقت صلاة ${prayerName}`);
+        }, diffMs);
+    }
+}
+
+// تحديث العد التنازلي وجدولة الإشعارات
+function updateCountdownAndNotifications(timings, container) {
+    if (countdownTimeout) {
+        clearTimeout(countdownTimeout);
+    }
+
+    const now = moment();
+    const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+    let nextPrayerName = null;
+    let nextPrayerTime = null;
+
+    for (let prayer of prayers) {
+        const prayerMoment = moment(timings[prayer], "HH:mm");
+        if (prayerMoment.isAfter(now)) {
+            nextPrayerName = prayer;
+            nextPrayerTime = timings[prayer];
+            break;
+        }
+    }
+
+    if (nextPrayerName && nextPrayerTime) {
+        const diffMs = moment(nextPrayerTime, "HH:mm").diff(now);
+        container.querySelector('.next-prayer').textContent = `${nextPrayerName} - ${nextPrayerTime}`;
+
+        countdownTimeout = setTimeout(() => {
+            updateCountdownAndNotifications(timings, container);
+        }, diffMs);
+
+        // جدولة الإشعار
+        schedulePrayerNotification(nextPrayerName, nextPrayerTime);
+    }
+}
+
+
 
 
 
