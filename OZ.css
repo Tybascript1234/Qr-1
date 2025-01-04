@@ -147,6 +147,7 @@
     align-items: center;
     justify-content: center;
     padding: 0;
+    z-index: 100;
 }
 #addTextButton:hover {
     background-color: #f9f9fa;
