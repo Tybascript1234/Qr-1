@@ -2446,7 +2446,7 @@ body .xc2 {
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
     body .name_12 {
         z-index: 100;
     }
