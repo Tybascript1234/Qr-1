@@ -424,6 +424,23 @@ if (shareButton) {
 
 
 
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const isAndroidApp = navigator.userAgent.includes("YourAppName"); // استبدل بـ اسم تطبيقك إذا كان موجودًا في User-Agent
+  
+    if (isAndroidApp) {
+      const divToHide = document.getElementById("screen"); // استبدل بـ id الديف
+      if (divToHide) {
+        divToHide.style.display = "none";
+      }
+    }
+  });  
+
+
+
 // دالة لتحديد العنوان بناءً على معرف الديف
 function getDivTitle(divId) {
     switch (divId) {
@@ -960,7 +977,6 @@ function fallbackShare(url) {
         .then(() => alert("تم نسخ الرابط إلى الحافظة!"))
         .catch(() => alert("تعذر نسخ الرابط إلى الحافظة."));
 }
-
 
 
 
