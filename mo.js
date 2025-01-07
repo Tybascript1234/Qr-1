@@ -308,7 +308,6 @@ function updateCountdownAndNotifications(timings, container) {
 
 
 
-
 function updateDate() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const today = new Date();
