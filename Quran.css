@@ -355,7 +355,6 @@ body ion-icon {
     width: 100%;
     height: -webkit-fill-available;
     margin-top: 63px;
-    padding-bottom: 20px;
     left: 0;
     top: 0;
     right: 0;
@@ -2436,6 +2435,16 @@ body .xc2 {
     margin: auto;
 }
 
+.listen-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 25px;
+    background: white;
+    border: solid 1px #dadada;
+}
 
 
 
@@ -2446,7 +2455,8 @@ body .xc2 {
 
 
 
-@media screen and (max-width: 768px) {
+
+@media screen and (max-width: 600px) {
     body .name_12 {
         z-index: 100;
     }
@@ -2602,7 +2612,7 @@ body .xc2 {
     .ssdx {
         font-size: 17px;
     }
-    body .xxxe img {
+    body .xxxe img,.sold {
         cursor: context-menu;
     }
     body .pagee .margin_0 {
@@ -2676,5 +2686,8 @@ body .xc2 {
     }
     body pre[class*=language-] {
         width: -webkit-fill-available;
+    }
+    body .listen-button {
+        padding: 6px;
     }
 }
