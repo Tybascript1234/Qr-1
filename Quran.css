@@ -2445,8 +2445,31 @@ body .xc2 {
     background: white;
     border: solid 1px #dadada;
 }
-
-
+html #translation_buttons .Translate-div {
+    cursor: pointer;
+    border: none;
+    background: #00000000;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    width: -webkit-fill-available;
+    padding: 0 14px;
+    border-radius: 0;
+    color: #4a596d;
+    margin: 0;
+}
+html #translation_buttons .Translate-div:hover {
+    background: #4a596d09;
+}
+html .links-Translate-search {
+    border-radius: 6px;
+}
+html .links-Translate-div {
+    border-radius: 5px;
+}
+html .links-Translate-search input {
+    border-radius: 5px;
+}
 
 
 
