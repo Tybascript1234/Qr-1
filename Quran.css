@@ -2446,7 +2446,6 @@ body .xc2 {
     border: solid 1px #dadada;
 }
 html #translation_buttons .Translate-div {
-    cursor: pointer;
     border: none;
     background: #00000000;
     display: flex;
