@@ -343,6 +343,8 @@ body ion-icon {
     background-color: #4a596d09;
 }
 .c {
+    position: relative;
+    z-index: 20;
     cursor: pointer;
     padding: 10px 14px;
     border-radius: 50px;
