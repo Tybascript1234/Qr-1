@@ -18,6 +18,8 @@
      <script src="reload.js"></script>
      <script src="videos.js"></script>
      <!-- --------------- -->
+     <script src="https://cdn.jsdelivr.net/npm/howler"></script>
+
      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" />
@@ -166,7 +168,7 @@
                             </div>
                         </div>
                     </a>
-                    <div class="menu-buttons pagee show-btn" data-target="Page10">
+                    <div class="menu-buttons pagee show-btn" data-target="Page10" style="display: none;">
                         <div>
                             <img src="https://github.com/Tybascript1234/Qr-1/blob/main/camera+video+icon-1320184411724820637.png?raw=true" alt="" style="border-radius: 0;">
                             <br>
@@ -436,8 +438,8 @@ setInterval(updateQRCode, 20000);
                 <!-- 2 -->
                 <div id="Page1" class="kk">
                     <div class="div-page">
-                        <button onclick="requestNotificationPermission()" class="page-close" style="right: auto;left: 0;"><ion-icon name="notifications-outline"></ion-icon></button>
-                        <button class="page-close hide-btn pagee cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
+                        <button onclick="requestNotificationPermission()" class="page-close wave-button" style="right: auto;left: 0;"><ion-icon name="notifications-outline"></ion-icon></button>
+                        <button class="page-close hide-btn pagee wave-button cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
                         
                          <!-- ديف يحتوي على أوقات الصلاة وزر لإغلاقه -->
                         <div class="prayer-container">
@@ -475,7 +477,7 @@ setInterval(updateQRCode, 20000);
                                     </tr>
                                     <tr class="isha-prayer-row">
                                         <td style="border-bottom-color: #00000000;" class="prayer-times-data">العشاء</td>
-                                        <td style="border-bottom-color: #00000000;" class="isha-time prayer-times-data">PM 7:15</td>
+                                        <td style="border-bottom-color: #00000000;" class="isha-time prayer-times-data">No time</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -993,8 +995,6 @@ setInterval(updateQRCode, 20000);
 <p class="message" id="message"></p>
 
 <p class="message" id="repeatCount">عدد التكرارات <span id="repeatCountValue">0</span></p>
-<script src="https://cdn.jsdelivr.net/npm/howler"></script>
-
 <!-- <script src="Safety.js"></script> -->
 </body>
 </html>
