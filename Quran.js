@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const audioButton = document.createElement('button');
             audioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
-            audioButton.className = 'audio-button';
+            audioButton.className = 'audio-button wave-button';
 
             audioButton.addEventListener('click', function () {
                 const surahNumber = wrapper.getAttribute('data-number');
@@ -978,6 +978,65 @@ function fallbackShare(url) {
         .catch(() => alert("تعذر نسخ الرابط إلى الحافظة."));
 }
 
+
+document.addEventListener("touchstart", function (event) {
+    event.target.style.cursor = "context-menu";
+});
+
+
+
+// repply
+
+window.addEventListener("load", function () {
+    setTimeout(() => {
+        // تأكد من أنه لا توجد رسائل JavaScript قبل تنفيذ الموجة
+        if (!window.alertOpen) {
+            initializeWaveButtons();
+        }
+    }, 100); // تأخير بسيط للتأكد من تحميل العناصر
+
+    function initializeWaveButtons() {
+        const elements = document.querySelectorAll('.wave-button');
+
+        elements.forEach(element => {
+            let isRippleActive = false;
+
+            function createRipple(e) {
+                if (isRippleActive) return;
+
+                isRippleActive = true;
+
+                const ripple = document.createElement('span');
+                const rect = element.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+
+                let x, y;
+                if (e.clientX && e.clientY) {
+                    x = e.clientX - rect.left - size / 2;
+                    y = e.clientY - rect.top - size / 2;
+                } else if (e.touches && e.touches[0]) {
+                    x = e.touches[0].clientX - rect.left - size / 2;
+                    y = e.touches[0].clientY - rect.top - size / 2;
+                }
+
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.classList.add('ripple');
+
+                element.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                    isRippleActive = false;
+                }, 600);
+            }
+
+            element.addEventListener('mousedown', createRipple);
+            element.addEventListener('touchstart', createRipple);
+        });
+    }
+});
 
 
 
