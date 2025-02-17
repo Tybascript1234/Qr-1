@@ -56,18 +56,18 @@ const code1 = `
       container.innerHTML = `
       <div style="top: 0; display: flex ; align-items: center; justify-content: space-between; width: -webkit-fill-available; height: 38px; background: white; /* box-shadow: 1px 1px 0px #f5f2f0 inset, -1px 0px 0px #f5f2f0 inset; */ overflow: hidden; border-radius: 10px 10px 0px 0px; padding: 0 3px; border: solid 1px #f5f2f0;">
           <div class="buttons-container">
-          <button class="copy-btn pagee ccitme cvme" type="button" data-tooltip="نسخ"><ion-icon name="copy-outline"></ion-icon></button>
-          <button class="share-btn pagee ccitme cvme" type="button" data-tooltip="مشاركة"><ion-icon name="share-social-outline"></ion-icon></button>
-          <label for="file-input-${containerId}" type="button" class="file-label pagee cvme" data-tooltip="رفع ملف">
+          <button class="copy-btn wave-button pagee ccitme cvme" type="button" data-tooltip="نسخ"><ion-icon name="copy-outline"></ion-icon></button>
+          <button class="share-btn wave-button pagee ccitme cvme" type="button" data-tooltip="مشاركة"><ion-icon name="share-social-outline"></ion-icon></button>
+          <label for="file-input-${containerId}" type="button" class="file-label wave-button pagee cvme" data-tooltip="رفع ملف">
               <i class="fi fi-tr-file-upload" style="display: flex ; font-size: 18px;"></i>
           </label>
           <input id="file-input-${containerId}" type="file" class="file-input ccitme" name="dlut">
-          <button class="reset-btn pagee ccitme cvme" type="button" data-tooltip="إعاده"><ion-icon name="reload-outline" class="uspe"></ion-icon></button>
+          <button class="reset-btn wave-button pagee ccitme cvme" type="button" data-tooltip="إعاده"><ion-icon name="reload-outline" class="uspe"></ion-icon></button>
         </div>  
         <div class="codeng">
             Quran recited 
-            <button class="fullscreen-btn pagee ccitme cvme" type="button" data-tooltip="مساعدة" id="showContentButtonForDiv4" style="margin-right: 0;margin-left: 8px;"><ion-icon name="accessibility-outline"></ion-icon></button>
-            <button class="fullscreen-btn pagee ccitme cvme" type="button" data-tooltip="اغلاق" id="closeContentButtonForDiv4" style="display: none;margin-right: 0;margin-left: 8px;"><ion-icon name="close-outline"></ion-icon></button>
+            <button class="fullscreen-btn wave-button pagee ccitme cvme" type="button" data-tooltip="مساعدة" id="showContentButtonForDiv4" style="margin-right: 0;margin-left: 8px;"><ion-icon name="accessibility-outline"></ion-icon></button>
+            <button class="fullscreen-btn wave-button pagee ccitme cvme" type="button" data-tooltip="اغلاق" id="closeContentButtonForDiv4" style="display: none;margin-right: 0;margin-left: 8px;"><ion-icon name="close-outline"></ion-icon></button>
         </div>
 
         <div class="ccc" id="contentDivWithDetails4">
