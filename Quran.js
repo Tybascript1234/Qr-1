@@ -769,7 +769,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
 function showModal() {
     document.body.dataset.previousScrollState = document.body.style.overflow;
     document.querySelector('.overlay').style.display = 'flex';
@@ -792,7 +791,6 @@ document.querySelector('.modal').addEventListener('mousedown', function(event) {
 document.querySelector('.modal').addEventListener('touchstart', function(event) {
     event.stopPropagation();
 });
-
 
 
 
