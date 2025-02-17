@@ -699,8 +699,16 @@ function removeBoxShadow(element, button) {
 document.addEventListener('DOMContentLoaded', function () {
     const popupDiv = document.getElementById('popupDivWithLongIdName');
     const overlay = document.getElementById('ass');
+    const showDivButton = document.getElementById('showDivButtonWithLongName');
+    const closeDivButton = document.getElementById('closeDivButtonWithLongName');
 
-    document.getElementById('showDivButtonWithLongName').addEventListener('click', function () {
+    let startX = 0;
+    let isSwiping = false;
+
+    showDivButton.addEventListener('click', function () {
+        // إخفاء زر إظهار الديف
+        showDivButton.style.display = 'none';
+
         // إظهار النافذة مع الأنميشن
         popupDiv.classList.remove('hide');
         popupDiv.classList.add('show');
@@ -708,8 +716,7 @@ document.addEventListener('DOMContentLoaded', function () {
         overlay.style.display = 'block';
     });
 
-    document.getElementById('closeDivButtonWithLongName').addEventListener('click', function () {
-        // إخفاء النافذة مع الأنميشن
+    function closePopup() {
         popupDiv.classList.remove('show');
         popupDiv.classList.add('hide');
 
@@ -717,21 +724,42 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             popupDiv.style.display = 'none';
             overlay.style.display = 'none';
+
+            // إعادة إظهار زر إظهار الديف
+            showDivButton.style.display = 'flex';
         }, 500); // نفس مدة الأنميشن في CSS
-    });
+    }
+
+    closeDivButton.addEventListener('click', closePopup);
 
     // عند الضغط في أي مكان في النافذة
     window.addEventListener('click', function (event) {
         if (event.target === overlay) {
-            popupDiv.classList.remove('show');
-            popupDiv.classList.add('hide');
-
-            // الانتظار حتى انتهاء الأنميشن قبل الإخفاء
-            setTimeout(() => {
-                popupDiv.style.display = 'none';
-                overlay.style.display = 'none';
-            }, 500); // نفس مدة الأنميشن في CSS
+            closePopup();
         }
+    });
+
+    // إضافة ميزة السحب لليسار على الهاتف
+    popupDiv.addEventListener('touchstart', function (event) {
+        startX = event.touches[0].clientX;
+        isSwiping = true;
+    });
+
+    popupDiv.addEventListener('touchmove', function (event) {
+        if (!isSwiping) return;
+
+        let moveX = event.touches[0].clientX;
+        let diffX = startX - moveX;
+
+        // إذا تم السحب لليسار بمسافة كافية
+        if (diffX > 100) {
+            isSwiping = false; // منع المزيد من السحب
+            closePopup();
+        }
+    });
+
+    popupDiv.addEventListener('touchend', function () {
+        isSwiping = false;
     });
 });
 
@@ -740,22 +768,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
 function showModal() {
-    // تخزين حالة التمرير الحالية في خاصية data على document.body
     document.body.dataset.previousScrollState = document.body.style.overflow;
-    // منع التمرير عند ظهور الديف
-    document.querySelector('.modal').style.display = 'block';
-    document.querySelector('.overlay').style.display = 'block';
+    document.querySelector('.overlay').style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
 
 function hideModal() {
-    // إعادة التمرير لحالته الأصلية باستخدام البيانات المخزنة
     document.body.style.overflow = document.body.dataset.previousScrollState || '';
-    // إخفاء الديف
-    document.querySelector('.modal').style.display = 'none';
     document.querySelector('.overlay').style.display = 'none';
 }
+
+// عند النقر أو لمس الـ overlay يتم إغلاق المودال
+document.querySelector('.overlay').addEventListener('mousedown', hideModal);
+document.querySelector('.overlay').addEventListener('touchstart', hideModal);
+
+// منع إغلاق المودال عند النقر أو لمسه
+document.querySelector('.modal').addEventListener('mousedown', function(event) {
+    event.stopPropagation();
+});
+document.querySelector('.modal').addEventListener('touchstart', function(event) {
+    event.stopPropagation();
+});
+
+
 
 
 
@@ -985,58 +1023,6 @@ document.addEventListener("touchstart", function (event) {
 
 
 
-// repply
-
-window.addEventListener("load", function () {
-    setTimeout(() => {
-        // تأكد من أنه لا توجد رسائل JavaScript قبل تنفيذ الموجة
-        if (!window.alertOpen) {
-            initializeWaveButtons();
-        }
-    }, 100); // تأخير بسيط للتأكد من تحميل العناصر
-
-    function initializeWaveButtons() {
-        const elements = document.querySelectorAll('.wave-button');
-
-        elements.forEach(element => {
-            let isRippleActive = false;
-
-            function createRipple(e) {
-                if (isRippleActive) return;
-
-                isRippleActive = true;
-
-                const ripple = document.createElement('span');
-                const rect = element.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-
-                let x, y;
-                if (e.clientX && e.clientY) {
-                    x = e.clientX - rect.left - size / 2;
-                    y = e.clientY - rect.top - size / 2;
-                } else if (e.touches && e.touches[0]) {
-                    x = e.touches[0].clientX - rect.left - size / 2;
-                    y = e.touches[0].clientY - rect.top - size / 2;
-                }
-
-                ripple.style.width = ripple.style.height = `${size}px`;
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-                ripple.classList.add('ripple');
-
-                element.appendChild(ripple);
-
-                setTimeout(() => {
-                    ripple.remove();
-                    isRippleActive = false;
-                }, 600);
-            }
-
-            element.addEventListener('mousedown', createRipple);
-            element.addEventListener('touchstart', createRipple);
-        });
-    }
-});
 
 
 
