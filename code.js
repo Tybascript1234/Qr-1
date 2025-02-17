@@ -54,7 +54,7 @@ const code1 = `
 
       // إنشاء محتوى الكود
       container.innerHTML = `
-      <div style="top: 0; display: flex ; align-items: center; justify-content: space-between; width: -webkit-fill-available; height: 38px; background: white; /* box-shadow: 1px 1px 0px #f5f2f0 inset, -1px 0px 0px #f5f2f0 inset; */ overflow: hidden; border-radius: 10px 10px 0px 0px; padding: 0 3px; border: solid 1px #f5f2f0;">
+      <div style="top: 0; display: flex ; align-items: center; justify-content: space-between; width: -webkit-fill-available; height: 38px; background: white; /* box-shadow: 1px 1px 0px #f5f2f0 inset, -1px 0px 0px #f5f2f0 inset; */ overflow: hidden; border-radius: 10px 10px 0px 0px; padding: 0 2px; border: solid 1px #f5f2f0;">
           <div class="buttons-container">
           <button class="copy-btn wave-button pagee ccitme cvme" type="button" data-tooltip="نسخ"><ion-icon name="copy-outline"></ion-icon></button>
           <button class="share-btn wave-button pagee ccitme cvme" type="button" data-tooltip="مشاركة"><ion-icon name="share-social-outline"></ion-icon></button>
