@@ -2542,6 +2542,7 @@ html .links-Translate-search input {
         padding: 0px 16px;
         font-size: 23px;
         scrollbar-width: auto;
+        padding-bottom: 16px;
     }
     body strong {
         width: 38px;
