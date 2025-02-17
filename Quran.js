@@ -1017,11 +1017,6 @@ function fallbackShare(url) {
 }
 
 
-document.addEventListener("touchstart", function (event) {
-    event.target.style.cursor = "context-menu";
-});
-
-
 
 
 
