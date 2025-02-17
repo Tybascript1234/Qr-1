@@ -55,8 +55,8 @@ input,select {
 select {
     text-align: right;
     outline: none;
-    border: solid 1px #ccc;
-    background-color: #4a596d09;
+    border: solid 1px #cccccc00;
+    background-color: #4a596d00;
     padding: 4px;
     padding-right: 20px;
     font-family: system-ui;
@@ -67,11 +67,14 @@ select {
     background-position: calc(100% - 5px) center;
     background-size: 10px;
     max-width: 180px;
+    color: #4a596d;
+    transition: background-position 0.1s ease-in-out; /* الانتقال بسلاسة */
 }
 select:hover {
     box-shadow: 0px 1px 2px #00000024;
 }
 select:active {
+    background-position: calc(100% - 5px) 60%;
     box-shadow: 0px 1px 2px #00000024 inset;
 }
 
@@ -188,6 +191,7 @@ select:active {
     margin-left: 9px;
     display: flex;
     justify-content: center;
+    border-radius: 25px;
 }
 .fof-div:hover .fof-dive {
     box-shadow: 0px 6px 11px #00000024, 0px -1px 0px #d7d9da;
@@ -344,7 +348,8 @@ body ion-icon {
 }
 .c {
     position: relative;
-    z-index: 20;
+    width: -webkit-fill-available;
+    z-index: 53;
     cursor: pointer;
     padding: 10px 14px;
     border-radius: 50px;
@@ -416,6 +421,7 @@ body .page-1 {
     padding: 0px 200px;
     line-height: 2em;
     font-size: 2.2em;
+    padding-bottom: 16px;
     /* height: 91.1%; */
     /* overflow-y: auto; */
     /* height: 100%; */
@@ -471,7 +477,8 @@ body .page-1 {
 .text-inpu span {
     position: absolute;
     left: 0;
-    margin-left: 10px;
+    margin-left: 16px;
+    font-size: 21px;
 }
 .text-inpu input {
     font-size: 16px;
@@ -522,6 +529,7 @@ strong {
     width: 0px;
     height: 0px;
     padding: 0;
+    opacity: 1;
 }
 .sura-wrapper.selected {
     padding-right: 51px;
@@ -574,6 +582,7 @@ body .sura-wrapper.selected .audio-button {
     color: #4a596d;
     /* margin-left: 16px; */
     cursor: pointer;
+    opacity: .0;
 }
 body .page-close {
     z-index: 15;
@@ -628,6 +637,7 @@ body .cc {
     z-index: 51;
 }
 .ayah {
+    border-radius: 8px;
     transition: ease 0.3s;
     position: relative;
     cursor: pointer;
@@ -1600,11 +1610,7 @@ body #ert .fof-dive::before {
 
 .API {
     transition: ease 0.3s;
-    display: none;
     text-align: right;
-    position: fixed;
-    top: 0;
-    z-index: 2020;
     padding: 15px;
     background: #ffffff;
     border: solid 1px #dadada;
@@ -1612,8 +1618,6 @@ body #ert .fof-dive::before {
     box-shadow: 0px 3px 5px #00000014;
     margin: 10px;
     width: 400px;
-    left: 50%;
-    transform: translateX(-50%);
     animation: fadeInOut4 0.4s ease forwards;
 }
 .API-text {
@@ -1645,7 +1649,7 @@ body #ert .fof-dive::before {
     justify-content: right;
 }
 .api-share {
-    height: 38px;
+    height: 40px;
     width: 40px;
     justify-content: center;
     display: flex;
@@ -1712,6 +1716,9 @@ body #ert .fof-dive::before {
     left: 0;
     width: 100%;
     height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: baseline;
     background-color: rgb(0 0 0 / 0%);
     z-index: 2000;
 }
@@ -2740,5 +2747,11 @@ html .links-Translate-search input {
     }
     body .listen-button {
         padding: 6px;
+    }
+    body .xox {
+        display: none;
+    }
+    body .text-inpu {
+        padding-right: 0;
     }
 }
