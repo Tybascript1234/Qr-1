@@ -2754,4 +2754,10 @@ html .links-Translate-search input {
     body .text-inpu {
         padding-right: 0;
     }
+    body .text-inpu input {
+        width: -webkit-fill-available;
+    }
+    body .page-1 {
+        width: 240px;
+    }
 }
