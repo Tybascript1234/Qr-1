@@ -9,7 +9,7 @@
      <link rel="stylesheet" href="oo.css">
      <link rel="stylesheet" href="OZ.css">
      <link rel="icon" href="New Project.png">
-     <link rel="manifest" href="/manifest.json">
+     <link rel="manifest" href="manifest.json">
      <script src="Quran.js"></script>
      <script src="mo.js"></script>
      <script src="data-Qur.js"></script>
@@ -142,21 +142,21 @@
                         <div>
                             <img src="https://png.pngtree.com/png-vector/20230424/ourmid/pngtree-azan-prayer-call-vector-png-image_6728480.png" alt="">
                             <br>
-                            <a class="c wave-button">اوقات الصلاة اليوم</a> 
+                            <button class="c wave-button show-btn" data-target="Page1">اوقات الصلاة اليوم</button> 
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page2">
                         <div>
                             <img src="https://alhafidzacademy.com/wp-content/uploads/2023/10/pngimg.com-quran_PNG33-1024x734.png" alt="">
                             <br>
-                            <a class="c wave-button">قرائة القرآن</a>   
+                            <button class="c wave-button show-btn" data-target="Page2">قرائة القرآن</button>   
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page3">
                         <div>
                             <img src="https://png.pngtree.com/png-clipart/20240605/original/pngtree-yellow-crescent-moon-with-fluffy-clouds-png-image_15251413.png" alt="" style="border-radius: 0;">
                             <br>
-                            <a class="c wave-button">اذكار الصباح والمساء</a>   
+                            <button class="c wave-button show-btn" data-target="Page3">اذكار الصباح والمساء</button>   
                         </div>
                     </div>
                     <a href="hello.html" class="menu-buttons pagee" data-target="">
@@ -164,7 +164,7 @@
                             <div>
                                 <img src="https://png.pngtree.com/png-clipart/20230328/original/pngtree-map-pin-location-with-red-png-image_9006526.png" alt="" style="border-radius: 0;">
                                 <br>
-                                <a class="c wave-button">خريطة العالم</a>   
+                                <button class="c wave-button">خريطة العالم</button>   
                             </div>
                         </div>
                     </a>
@@ -172,14 +172,14 @@
                         <div>
                             <img src="https://github.com/Tybascript1234/Qr-1/blob/main/camera+video+icon-1320184411724820637.png?raw=true" alt="" style="border-radius: 0;">
                             <br>
-                            <a class="c wave-button">مقاطع دينية</a>   
+                            <button class="c wave-button show-btn" data-target="Page10">مقاطع دينية</button>   
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page5">
                         <div>
                             <img src="https://png.pngtree.com/png-clipart/20231101/original/pngtree-sport-cup-cup-photo-png-image_13470918.png" alt="" style="border-radius: 0;">
                             <br>
-                            <a class="c wave-button">مسابقة دينية</a>   
+                            <button class="c wave-button show-btn" data-target="Page5">مسابقة دينية</button>   
                         </div>
                     </div>
                 </div>
@@ -338,7 +338,7 @@ setInterval(updateQRCode, 20000);
                 <div class="div-page myDiv123">
                     <div id="ass"></div>
                     <div class="page-1 popupDivWithLongClassName" id="popupDivWithLongIdName" style="display: none;">
-                        <div class="text-inpu search-box"><span class="material-symbols-outlined notranslate"> search </span><input id="searchInput" type="text" placeholder="ابحث عن سورة"><button class="logo_button cc buttonToCloseDivWithLongClassName pagee" style="position: absolute;margin-bottom: 4px;margin-right: 0;margin-left: 0;right: 0;left: auto;" id="closeDivButtonWithLongName"><ion-icon name="close-outline"></ion-icon></button></div>
+                        <div class="text-inpu search-box"><span class="material-symbols-outlined notranslate"> search </span><input id="searchInput" type="text" placeholder="ابحث عن سورة"><button class="logo_button cc xox buttonToCloseDivWithLongClassName pagee" style="position: absolute;margin-bottom: 4px;margin-right: 0;margin-left: 0;right: 0;left: auto;" id="closeDivButtonWithLongName"><ion-icon name="close-outline"></ion-icon></button></div>
                         <div id="suraContainer"></div>
                     </div>
                     <div class="page-2">
@@ -961,8 +961,8 @@ setInterval(updateQRCode, 20000);
         });
      </script>
 
-
-     <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe6_LqQKChGVBv83Q48NCUGD4Ycd2zeu47UFS0mVE4sTc8cCg/formResponse" method="" class="API modal">
+<div class="overlay" onmousedown="hideModal()" ontouchstart="hideModal()">
+     <form onmousedown="event.stopPropagation();" ontouchstart="event.stopPropagation();" action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe6_LqQKChGVBv83Q48NCUGD4Ycd2zeu47UFS0mVE4sTc8cCg/formResponse" method="" class="API modal">
         <div class="API-text">تواصل معنا</div>
         <span>خلال 24 ساعة Emile سيتم ارسال الرد عن طريق</span>
         <div class="zz">
@@ -984,12 +984,13 @@ setInterval(updateQRCode, 20000);
         </select>
         <span>إختر سبب الإرسال</span>
         <div class="API-button">
-            <button class="api-share" type="button"><ion-icon name="cloud-upload-outline"></ion-icon></button>
+            <input type="file" id="send-input" style="display: none;">
+            <label for="send-input" class="api-share" type="button"><ion-icon name="cloud-upload-outline"></ion-icon></label>
             <button class="api-butt" id="api-butt" type="submit">Send</button>
             <button class="api-butt" onclick="hideModal()">Cancel</button>
         </div>
      </form>
-     <div class="overlay" onclick="hideModal()"></div>
+     </div>
      <script src="form.js"></script>     
 
 <p class="message" id="message"></p>
