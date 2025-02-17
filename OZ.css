@@ -69,13 +69,14 @@
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -6px;
     width: 100%;
     z-index: 1;
     height: 68px;
-    box-shadow: 0px -65px 88px #ffffff;
+    box-shadow: 0px -22px 16px #ffffff;
 }
 .containersk-button {
+    animation: containersk 0.3s ease forwards;
     transition: ease 0.2s;
     cursor: pointer;
     width: 45px;
@@ -99,6 +100,14 @@
 
 .containersk-button {
     position: relative;
+}
+@keyframes containersk {
+    0% {
+        opacity: .0;
+    }
+    100% {
+    /* width: 100%; */
+    }
 }
 .active22  {
     background-color: lightblue;
