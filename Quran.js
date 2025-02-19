@@ -405,6 +405,45 @@ if (shareButton) {
     } catch (error) {
         console.error('Error fetching surah data:', error);
     }
+
+
+// الدالة التي تقوم بالتمرير للأعلى داخل الديف
+function scrollToTop(scrollableDiv) {
+    scrollableDiv.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  // اختيار جميع الديفات التي تحتوي على صنف .scrollable-div
+  var scrollableDivs = document.querySelectorAll(".scrollable-div");
+  var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  var hideBtns = document.querySelectorAll(".hide-btn");  // اختيار جميع الأزرار التي تحتوي على الكلاس .hide-btn
+  
+  // ربط الزر بالدالة عند النقر عليه باستخدام addEventListener
+  scrollToTopBtn.addEventListener("click", function() {
+    // تمرير إلى الأعلى في كل ديف يتم تمرير الزر له
+    scrollableDivs.forEach(function(scrollableDiv) {
+      scrollToTop(scrollableDiv);
+    });
+  });
+  
+  // إضافة حدث التمرير لكل ديف
+  scrollableDivs.forEach(function(scrollableDiv) {
+    scrollableDiv.onscroll = function() {
+      // تحقق من إذا كان التمرير داخل الديف قد تجاوز 100px
+      if (scrollableDiv.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    };
+  });
+  
+  // إخفاء الزر عند النقر على أي زر يحتوي على الكلاس .hide-btn
+  hideBtns.forEach(function(hideBtn) {
+    hideBtn.addEventListener("click", function() {
+      scrollToTopBtn.style.display = "none";  // إخفاء زر التمرير للأعلى
+    });
+  });  
+  
 });
 
 
@@ -706,10 +745,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSwiping = false;
 
     showDivButton.addEventListener('click', function () {
-        // إخفاء زر إظهار الديف
-        showDivButton.style.display = 'none';
-
-        // إظهار النافذة مع الأنميشن
+        showDivButton.style.display = 'none'; // إخفاء زر الإظهار
         popupDiv.classList.remove('hide');
         popupDiv.classList.add('show');
         popupDiv.style.display = 'block';
@@ -720,20 +756,24 @@ document.addEventListener('DOMContentLoaded', function () {
         popupDiv.classList.remove('show');
         popupDiv.classList.add('hide');
 
-        // الانتظار حتى انتهاء الأنميشن قبل الإخفاء
         setTimeout(() => {
             popupDiv.style.display = 'none';
             overlay.style.display = 'none';
-
-            // إعادة إظهار زر إظهار الديف
-            showDivButton.style.display = 'flex';
-        }, 500); // نفس مدة الأنميشن في CSS
+            showDivButton.style.display = 'flex'; // إعادة زر الإظهار
+        }, 500); // مدة الأنميشن
     }
 
     closeDivButton.addEventListener('click', closePopup);
 
-    // عند الضغط في أي مكان في النافذة
-    window.addEventListener('click', function (event) {
+    // إغلاق عند الضغط خارج النافذة حتى لو لم يتم تحرير الضغط
+    overlay.addEventListener('mousedown', function (event) {
+        if (event.target === overlay) {
+            closePopup();
+        }
+    });
+
+    // إغلاق عند لمس الخارج على الهاتف
+    overlay.addEventListener('touchstart', function (event) {
         if (event.target === overlay) {
             closePopup();
         }
@@ -769,28 +809,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-function showModal() {
-    document.body.dataset.previousScrollState = document.body.style.overflow;
-    document.querySelector('.overlay').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
+document.addEventListener("DOMContentLoaded", function () {
+    function showModal() {
+        document.body.dataset.previousScrollState = document.body.style.overflow;
+        document.querySelector('.overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 
-function hideModal() {
-    document.body.style.overflow = document.body.dataset.previousScrollState || '';
-    document.querySelector('.overlay').style.display = 'none';
-}
+    function hideModal() {
+        document.body.style.overflow = document.body.dataset.previousScrollState || '';
+        document.querySelector('.overlay').style.display = 'none';
+    }
 
-// عند النقر أو لمس الـ overlay يتم إغلاق المودال
-document.querySelector('.overlay').addEventListener('mousedown', hideModal);
-document.querySelector('.overlay').addEventListener('touchstart', hideModal);
+    // التحقق من وجود العناصر قبل إضافة الأحداث لتجنب الأخطاء
+    const overlay = document.querySelector('.overlay');
+    const modal = document.querySelector('.modal');
 
-// منع إغلاق المودال عند النقر أو لمسه
-document.querySelector('.modal').addEventListener('mousedown', function(event) {
-    event.stopPropagation();
+    if (overlay) {
+        overlay.addEventListener('mousedown', hideModal);
+        overlay.addEventListener('touchstart', hideModal);
+    }
+
+    if (modal) {
+        modal.addEventListener('mousedown', function (event) {
+            event.stopPropagation();
+        });
+
+        modal.addEventListener('touchstart', function (event) {
+            event.stopPropagation();
+        });
+    }
+
+    // جعل `showModal` و `hideModal` متاحين عالميًا للاستدعاء من HTML
+    window.showModal = showModal;
+    window.hideModal = hideModal;
 });
-document.querySelector('.modal').addEventListener('touchstart', function(event) {
-    event.stopPropagation();
-});
+
+
 
 
 
