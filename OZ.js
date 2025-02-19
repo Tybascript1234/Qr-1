@@ -22,7 +22,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر النسخ
     const copyButton = document.createElement('button');
-    copyButton.className = 'containersk-button cvme';
+    copyButton.className = 'containersk-button wave-button cvme';
     copyButton.innerHTML = '<ion-icon name="copy-outline"></ion-icon>';
     copyButton.setAttribute('data-tooltip', 'نسخ النص');
     copyButton.onclick = () => {
@@ -39,7 +39,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر المشاركة
     const shareButton = document.createElement('button');
-    shareButton.className = 'containersk-button cvme';
+    shareButton.className = 'containersk-button wave-button cvme';
     shareButton.innerHTML = '<ion-icon name="arrow-redo-outline"></ion-icon>';
     shareButton.setAttribute('data-tooltip', 'مشاركة النص');
     shareButton.onclick = async () => {
@@ -57,7 +57,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر التحميل
     const downloadButton = document.createElement('button');
-    downloadButton.className = 'containersk-button cvme';
+    downloadButton.className = 'containersk-button wave-button cvme';
     downloadButton.innerHTML = '<ion-icon name="download-outline"></ion-icon>';
     downloadButton.setAttribute('data-tooltip', 'تحميل النص');
     downloadButton.onclick = () => {
@@ -74,7 +74,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر الاستماع
     const listenButton = document.createElement('button');
-    listenButton.className = 'containersk-button cvme';
+    listenButton.className = 'containersk-button wave-button cvme';
     listenButton.innerHTML = '<ion-icon name="volume-high-outline"></ion-icon>';
     listenButton.setAttribute('data-tooltip', 'الاستماع إلى النص');
 
