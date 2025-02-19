@@ -9,7 +9,7 @@
      <link rel="stylesheet" href="oo.css">
      <link rel="stylesheet" href="OZ.css">
      <link rel="icon" href="New Project.png">
-     <link rel="manifest" href="manifest.json">
+     <!-- <link rel="manifest" href="manifest.json"> -->
      <script src="Quran.js"></script>
      <script src="mo.js"></script>
      <script src="data-Qur.js"></script>
@@ -347,7 +347,7 @@ setInterval(updateQRCode, 20000);
                         <div class="text-inpu search-box"><span class="material-symbols-outlined notranslate"> search </span><input id="searchInput" type="text" placeholder="ابحث عن سورة"><button class="logo_button cc xox buttonToCloseDivWithLongClassName pagee" style="position: absolute;margin-bottom: 4px;margin-right: 0;margin-left: 0;right: 0;left: auto;" id="closeDivButtonWithLongName"><ion-icon name="close-outline"></ion-icon></button></div>
                         <div id="suraContainer"></div>
                     </div>
-                    <div class="page-2">
+                    <div class="page-2 scrollable-div">
                             <div class="Name" style="z-index: 5;">
                                 <button class="logo_button cc buttonWithLongClassName pagee" id="showDivButtonWithLongName"><ion-icon name="menu-outline"></ion-icon></button>
                                 <div id="controlsContainer"></div>
@@ -441,9 +441,12 @@ setInterval(updateQRCode, 20000);
                     </div>
                 </div>
             </div>
-                <!-- 2 -->
+
+            <button class="opacity wave-button" id="scrollToTopBtn"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 244l144-144 144 144M256 120v292"/></svg></button>
+               
+            <!-- 2 -->
                 <div id="Page1" class="kk">
-                    <div class="div-page">
+                    <div class="div-page scrollable-div">
                         <button onclick="requestNotificationPermission()" class="page-close wave-button" style="right: auto;left: 0;"><ion-icon name="notifications-outline"></ion-icon></button>
                         <button class="page-close hide-btn pagee wave-button cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
                         
@@ -587,7 +590,7 @@ setInterval(updateQRCode, 20000);
                 <div id="Page3" class="kk">
                     <div class="div-page">
                         <button class="page-close hide-btn pagee wave-button cvme" data-target="Page3" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="gooo">
+                        <div class="gooo scrollable-div">
                             <div class="gooo-button">
                                 <div>
                                     <button id="toggleBtn1" class="toggle-button wave-button">الادعية</button>
