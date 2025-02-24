@@ -1,1017 +1,1193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran recited</title>
-    <!-- links -->
-     <link rel="stylesheet" href="Quran.css">
-     <link rel="stylesheet" href="oo.css">
-     <link rel="stylesheet" href="OZ.css">
-     <link rel="icon" href="New Project.png">
-     <!-- <link rel="manifest" href="manifest.json"> -->
-     <script src="Quran.js"></script>
-     <script src="mo.js"></script>
-     <script src="data-Qur.js"></script>
-     <script src="OZ.js"></script>
-     <script src="OZ2.js"></script>
-     <script src="reload.js"></script>
-     <script src="videos.js"></script>
-     <!-- --------------- -->
-     <script src="https://cdn.jsdelivr.net/npm/howler"></script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const suraContainer = document.getElementById('suraContainer');
+    const suraTextDiv = document.getElementById('suraText');
+    const suraTextContainer = document.getElementById('suraTextContainer');
+    const closeButton = document.getElementById('closeButton');
+    const searchInput = document.getElementById('searchInput');
+    const forwardButton = document.getElementById('forwardButton');
+    const rewindButton = document.getElementById('rewindButton');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeSpan = document.getElementById('currentTime');
+    const durationTimeSpan = document.getElementById('durationTime');
+    const repeatCountSpan = document.getElementById('repeatCount');
+    const togglePlayButton = document.getElementById('togglePlayButton');
+    const repeatButton = document.getElementById('repeatButton');
+    const downloadButton = document.getElementById('downloadButton'); // زر التنزيل
 
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" />
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
-<!-- إضافة CSS الخاص بـ Prism.js لتنسيق الأكواد -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet"/>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+    let allSurahs = [];
+    let selectedAyah = null;
+    let audio = null;
+    let isPlaying = false;
+    let previousAudioButton = null;
 
-<script>
-    document.addEventListener("touchstart", function (event) {
-    event.target.style.cursor = "context-menu";
-});
-</script>
-</head>
-<body>
-    <!-- Reload -->
-    <div class="Reload" id="Reload-logo">
-        <div class="Reload-div">
-            <div class="i-freem">
-                <div class="Reload-div-logo">
-                    <div class="logo">
-                        <img src="logo-no-background.png" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="ome"><span id="progress-bar"></span></div>
-            <br>
-            <div class="hom">
-                <button onclick="openInternetSettings()">WiFi settings</button>
-                <button onclick="reloadPage()">Reload</button>
-            </div>
-            <br>
-            <div id="status-text" style="color: rgb(117, 117, 117);">Internet disconnected.</div>
-        </div>
-     </div>
+    repeatCountSpan.style.display = 'none'; // إخفاء عدد التكرار عند التحميل
 
-    <div id="sssd" class=""></div>
+    try {
+        const response = await fetch('https://api.alquran.cloud/v1/surah');
+        const data = await response.json();
+        allSurahs = data.data;
 
-    <div class="container">
-        <div class="reload" id=""><span id="" class=""></span></div>
+        function createSurahElement(surah) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'sura-wrapper';
+            wrapper.style.backgroundImage = `url('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-images@master/surah/${surah.number}.jpg')`;
+            wrapper.setAttribute('data-number', surah.number);
 
-        <!-- Add shortcut -->
-         <div id="contentDivWithDetails1" class="Add-shortcut" style="display: none;">
-            <div style="justify-content: space-between;width: -webkit-fill-available;align-items: center;height: 100%;">
-                <div class="Add-only">
-                    <div class="pagee"><div class="add-image"></div><span class="jos"><span class="vo1">Download Quran recited app</span></span></div>
-                    <div class="Shortcut-button"><button onclick="confirmAndDownloadApp1()">Download app</button></div>
-                </div>
-                <div class="Add-only">
-                    <button class="Shortcut-close pagee" id="showContentButtonForDiv2"><ion-icon name="document-text-outline"></ion-icon></button>
-                    <button class="Shortcut-close pagee" id="closeContentButtonForDiv1"><ion-icon name="close-outline"></ion-icon></button>
-                </div>
-            </div>
-         </div>
+            const typeImg = document.createElement('img');
+            typeImg.className = 'sura-type-image';
+            typeImg.src = surah.revelationType === 'Meccan'
+                ? 'https://png.pngtree.com/png-clipart/20220605/original/pngtree-kaaba-illustration-png-image_7965087.png'
+                : 'https://png.pngtree.com/png-vector/20230620/ourmid/pngtree-madina-vector-png-image_7297129.png';
 
-        <!-- Home -->
-         <div class="home">
-            <div class="home-div">
-                <a href=""><div class="logo pagee">
-                    <img src="logo-no-background.png" class="xx2" alt="">
-                    <img src="logo-no-background22.png" class="xx img-logo" alt="">
-                </div></a>
-                <div class="fof">
-                        <button class="logo_button cvme" id="coos" data-tooltip="Eye protection"><ion-icon name="eye-outline"></ion-icon></button>
-                    <div class="fof-div vo1">
-                        <button class="logo_button"><ion-icon name="download-outline"></ion-icon></button>
-                        <div class="fof-dive">
-                            <div>
-                                <button class="download-button-link">Apple<ion-icon name="logo-apple"></ion-icon></button>
-                                <button class="download-button-link">Android<ion-icon name="logo-android"></ion-icon></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fof-div">
-                        <button class="logo_button pagee"><ion-icon name="code"></ion-icon></button>
-                        <div class="fof-dive">
-                            <div>
-                                <span><div style="color: #b0bcc4;display: inline-flex;">< frame ></div> قم بنسخ ال </span>
-                                <br>
-                                <span>لإضافة اوقات الصلاة الى موقعك بالإضافه الى اذكار الصباح والمساء وغيرها من الاشياء</span>
-                                <br>
-                                <textarea readonly class="frame copyable"><iframe src="https://tybascript1234.github.io/Quranrecited1/" width="357px" height="616px" frameborder="0"></iframe></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fof-div cke">
-                        <button class="logo_button"><ion-icon name="arrow-redo"></ion-icon></button>
-                        <div class="fof-dive" style="margin-top: auto;">
-                            <div>
-                                <button class="kkf" id="shareButton"><ion-icon name="share-social"></ion-icon>Share</button>
-                                <div id="ert" style="display: none;">
-                                    <button class="kkf"><ion-icon name="language-outline"></ion-icon>Language</button>
-                                    <div class="fof-dive" style="padding: 0; width: max-content; right: 11px; box-shadow: none; background: #0000;">
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fof-div cke vo" style="display: none;">
-                        <button class="logo_button"><ion-icon name="ellipsis-vertical"></ion-icon></button>
-                        <div class="fof-dive">
-                            <div>
-                                <button class="kkf"><ion-icon name="code-outline"></ion-icon>Copy code</button>
-                                <hr>
-                                <button class="kkf"><ion-icon name="download-outline"></ion-icon>Apple</button>
-                                <button class="kkf"><ion-icon name="download-outline"></ion-icon>Android</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-         </div>
-         <!-- button-link -->
-            <div class="button-link">
-                <h1>اختر من المحتوى</h1>
-                <div class="menu-button">
-                    <div class="menu-buttons pagee show-btn" data-target="Page1">
-                        <div>
-                            <img src="https://png.pngtree.com/png-vector/20230424/ourmid/pngtree-azan-prayer-call-vector-png-image_6728480.png" alt="">
-                            <br>
-                            <button class="c wave-button show-btn" data-target="Page1">اوقات الصلاة اليوم</button> 
-                        </div>
-                    </div>
-                    <div class="menu-buttons pagee show-btn" data-target="Page2">
-                        <div>
-                            <img src="https://alhafidzacademy.com/wp-content/uploads/2023/10/pngimg.com-quran_PNG33-1024x734.png" alt="">
-                            <br>
-                            <button class="c wave-button show-btn" data-target="Page2">قرائة القرآن</button>   
-                        </div>
-                    </div>
-                    <div class="menu-buttons pagee show-btn" data-target="Page3">
-                        <div>
-                            <img src="https://png.pngtree.com/png-clipart/20240605/original/pngtree-yellow-crescent-moon-with-fluffy-clouds-png-image_15251413.png" alt="" style="border-radius: 0;">
-                            <br>
-                            <button class="c wave-button show-btn" data-target="Page3">اذكار الصباح والمساء</button>   
-                        </div>
-                    </div>
-                    <a href="hello.html" class="menu-buttons pagee" data-target="">
-                        <div>
-                            <div>
-                                <img src="https://png.pngtree.com/png-clipart/20230328/original/pngtree-map-pin-location-with-red-png-image_9006526.png" alt="" style="border-radius: 0;">
-                                <br>
-                                <button class="c wave-button">خريطة العالم</button>   
-                            </div>
-                        </div>
-                    </a>
-                    <div class="menu-buttons pagee show-btn" data-target="Page10">
-                        <div>
-                            <img src="https://github.com/Tybascript1234/Qr-1/blob/main/camera+video+icon-1320184411724820637.png?raw=true" alt="" style="border-radius: 0;">
-                            <br>
-                            <button class="c wave-button show-btn" data-target="Page10">مقاطع دينية</button>   
-                        </div>
-                    </div>
-                    <div class="menu-buttons pagee show-btn" data-target="Page5">
-                        <div>
-                            <img src="https://png.pngtree.com/png-clipart/20231101/original/pngtree-sport-cup-cup-photo-png-image_13470918.png" alt="" style="border-radius: 0;">
-                            <br>
-                            <button class="c wave-button show-btn" data-target="Page5">مسابقة دينية</button>   
-                        </div>
-                    </div>
-                </div>
+            const suraNameDiv = document.createElement('div');
+            suraNameDiv.className = 'sura-name';
+            suraNameDiv.textContent = surah.name;
 
-                <div class="qr">
-                    <div class="qr-bd">
-                        <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-                            <div class="qr-container">
-                            <div id="qrcode" style="transform: scale(0.87);"><img src="" alt="Icon" class="icon-overlay"></div>
-                            <span id="timeRemaining">00:00</span>
-                            </div><div class="sold">
-                            <a href="https://tybascript1234.github.io/Qr-1/download.html"><img src="New Project.png" alt=""></a></div>
-                            <!-- --- -->
-                             <script>
-  // دالة لتوليد رابط ثابت بدون رمز عشوائي
-function generateRandomText() {
-  const baseURL = "https://tybascript1234.github.io/Qr-1/download.html"; // رابط ثابت بدون تغيير
-  return baseURL; // العودة إلى الرابط الثابت فقط
-}
+            const audioButton = document.createElement('button');
+            audioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
+            audioButton.className = 'audio-button wave-button';
 
-// دالة لتحديث رمز QR
-function updateQRCode() {
-  const url = generateRandomText(); // استخدام الرابط الثابت
-  const qrContainer = document.getElementById('qrcode');
-  
-  // تنظيف المحتوى السابق (إزالة الباركود السابق)
-  qrContainer.innerHTML = "";
-  
-  // إنشاء رمز QR جديد
-  new QRCode(qrContainer, {
-    text: url,
-    width: 210,
-    height: 210,
-  });
-
-  // إعادة تعيين الوقت المتبقي عند تحديث الرمز
-  timeRemaining = 20; // إعادة تعيين الوقت المتبقي ليبدأ من 20 ثانية
-}
-
-// دالة لحساب الوقت المتبقي وعرضه في الـ span
-let timeRemaining = 20;
-function updateTimeRemaining() {
-  if (timeRemaining > 0) {
-    timeRemaining--;
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    document.getElementById('timeRemaining').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }
-}
-
-// تحديث الوقت المتبقي كل ثانية
-setInterval(updateTimeRemaining, 1000);
-
-// تحديث رمز QR كل 20 ثانية
-updateQRCode();
-setInterval(updateQRCode, 20000);
-
-
-                             </script>
-                             <!-- ---- -->
-                    </div>
-                    <div class="qr-txt" id="screen">
-                        <span style="font-size: 20px; font-weight: 600;">قم بتنزيل التطبيق لتجربة افضل</span>
-                        <div class="qr-text">
-                            <span><ion-icon name="checkmark-outline"></ion-icon>تصفح بدون انترنت</span>
-                            <span><ion-icon name="checkmark-outline"></ion-icon>استماع الى القرآن وأقرئه بدون انترنت</span>
-                            <span><ion-icon name="checkmark-outline"></ion-icon>ضمان فرصتك في الفوز بالمسابقات</span>
-                            <span><ion-icon name="checkmark-outline"></ion-icon>ومزايا اخرى ستعجبك</span>
-                        </div>
-                        <div class="xxxe">
-                            <a class="pagee"><img class="coc margin_0" src="https://profitbooks.net/wp-content/uploads/2021/05/58438-play-app-android-now-button-store.png" alt=""></a>
-                            <a class="pagee" onclick="confirmAndDownloadApp1()"><img style="height: 45px;" src="https://vboxxcloud.com/assets/img/download-it-on-google-play.png" alt=""></a>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="sof">
-                    <!-- <div></div> -->
-                    <div class="old">
-                        <button style="background-color: #00000000;color: #4a596d;border-color: #dadada;" class="show-btn" data-target="Page6">المسابقات الشهرية</button>
-                        <button>ادعمنا الأن</button>
-                        <a class="fo_url" data-url="https://tybascript1234.github.io/settings/page1.html" style="width: fit-content;margin: auto;border-radius: 25px;"><button>اشترك معنا</button></a>
-                    </div>
-                </div>
-
-                <div class="opin_link" style="display: none;">
-                    <button class="opin_link-button"><div><ion-icon name="logo-github"></ion-icon><span>Github</span></div><ion-icon name="open-outline"></ion-icon></button>
-                    <button class="opin_link-button"><div><ion-icon name="logo-youtube"></ion-icon><span>Youtube</span></div><ion-icon name="open-outline"></ion-icon></button>
-                    <button class="opin_link-button"><div><ion-icon name="logo-twitter"></ion-icon><span>Twitter</span></div><ion-icon name="open-outline"></ion-icon></button>
-                </div>
-
-                <div class="oio">
-                    <div class="oio-div">
-                        <div class="oio-div-div">
-                            <span>تواصل معنا</span>
-                            <button style="background-color: white;"><ion-icon style="color: rgb(22, 22, 22);" name="logo-github"></ion-icon></button>
-                            <button style="background-color: white;"><ion-icon style="color: #f70000;" name="logo-youtube"></ion-icon></button>
-                            <button style="background-color: #1c9cea;"><ion-icon style="color: white;" name="logo-twitter"></ion-icon></button>
-                            <button style="background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf)"><ion-icon style="color: white;" name="logo-instagram"></ion-icon></button>
-                            <div class="">
-                               <a>tybascript@gmail.com</a>
-                                <a>eyadscript@gmail.com</a>
-                                <a>0597 730 31300</a> 
-                            </div>
-                        </div>
-
-                        <!-- 2 -->
-                        <div class="oio-div-div">
-                            <span style="direction: rtl;">ربط API</span>
-                            <div class="">
-                              <a onclick="showModal()">اوقات الصلاة</a>
-                                <a onclick="showModal()">القرآن الكريم</a>
-                                <a onclick="showModal()">اذكار الصباح والمساء</a>
-                                <a onclick="showModal()">خريطة العالم</a>
-                                <a onclick="showModal()">ماسبقة دينية</a>
-                                <a id="showContentButtonForDiv1">تنزيل التطبيق</a>  
-                            </div>
-                        </div>
-                        
-                        <!-- 3 -->
-                        <div class="oio-div-div">
-                            <span>الشركة المطورة</span>
-                            <div class="">
-                               <a href="https://creativecloudsit.com/?srsltid=AfmBOoqhIIQ-hBKGRq7z8zOxr3NQJtVEhUScWBEXb-nnoonagbRuirVh">Creative Clouds IT</a>
-                                <a>منذ عام 2019م</a> 
-                            </div>
-                        </div>
-
-                        <!-- 4 -->
-                        <div class="oio-div-div" style="direction: rtl;">
-                            <span>السياسات والاحكام</span>
-                            <div class="">
-                                <a class="show-btn" data-target="Page7">سياسة الموقع</a>
-                                <a href="https://creativecloudsit.com/page/privacy-policy">سياسة شركة Creative Clouds IT</a>
-                                <a href="https://creativecloudsit.com/page/terms-of-use">سروط الإستخدام   Creative Clouds IT</a>
-                                <a class="show-btn" data-target="Page9">سياسة استخدام ال API</a>
-                            </div>
-                        </div>
-                        
-                        <!-- 5 -->
-                        <div class="oio-div-div">
-                            <span>المساهمات</span>
-                            <div class="">
-                                <a class="show-btn" data-target="Page8">مساهمة تقنية</a>
-                                <a onclick="showModal()">مساهمة مالية</a>
-                                <a onclick="showModal()">مساهمة ادارية وغيرها</a>
-                            </div>
-                        </div>
-                        <div style="position: absolute;margin: auto;bottom: 8px;filter: opacity(0.7);width: -webkit-fill-available;right: 0;">Released under MIT License | Copyright @ 2024</div>
-                    </div>
-                </div>
+            audioButton.addEventListener('click', function () {
+                const surahNumber = wrapper.getAttribute('data-number');
+                const audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`;
             
-            <!-- 1 -->
-             <div id="Page2" class="kk">
-                <div class="div-page myDiv123">
-                    <div id="ass"></div>
-                    <div class="page-1 popupDivWithLongClassName" id="popupDivWithLongIdName" style="display: none;">
-                        <div class="text-inpu search-box"><span class="material-symbols-outlined notranslate"> search </span><input id="searchInput" type="text" placeholder="ابحث عن سورة"><button class="logo_button cc xox buttonToCloseDivWithLongClassName pagee" style="position: absolute;margin-bottom: 4px;margin-right: 0;margin-left: 0;right: 0;left: auto;" id="closeDivButtonWithLongName"><ion-icon name="close-outline"></ion-icon></button></div>
-                        <div id="suraContainer"></div>
-                    </div>
-                    <div class="page-2 scrollable-div">
-                            <div class="Name" style="z-index: 5;">
-                                <button class="logo_button wave-button cc buttonWithLongClassName pagee" id="showDivButtonWithLongName"><ion-icon name="menu-outline"></ion-icon></button>
-                                <div id="controlsContainer"></div>
-                                <span id="bismillah">محتوى السورة هنا</span><button class="close-button closeButton" id="closeButton"><span class="material-symbols-outlined notranslate"> refresh </span></button> <!-- زر الإغلاق -->
-                                <button class="close-button closeButton" id="playPauseAudio" style="display: none;"><ion-icon name="radio-outline"></ion-icon></button>
-                                <button class="page-close hide-btn pagee wave-button cvme" data-target="Page2" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                                <!-- --------- -->
-                                 <div class="name_12" id="selectionDiv" style="display: none;">
-                                    <div class="name_12_div">
-                                        <div>
-                                            <div class="name_13"><span id="selectedCount">0</span> العدد المحدد</div>
-                                            <select name="" id="downloadType" class="name_14">
-                                                <option value="video">فيديو</option>
-                                                <option value="text">نص</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <button class="name_14" id="downloadFiles"><ion-icon name="download-outline"></ion-icon>تنزيل</button>
-                                            <button id="closeSelection" class="name_15" style="background: #f7f7f7; color: #555555;"><ion-icon name="close-outline"></ion-icon></button>
-                                        </div>
-                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-                                    </div>
-                                 </div>
-                            </div>
-
-                            <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
-                            <div id="controls" class="Name" style="z-index: 10;justify-content: left;display: flex;box-shadow: 0px -1px 0px #e3e3e3;">
-                                <div class="controlse">
-                                    <div style="display: flex;">
-                                        <button id="togglePlayButton" class="logo_button wave-button cccx"><ion-icon name="caret-forward-outline"></ion-icon></button>
-                                        <button id="rewindButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> undo </span></button>
-                                        <button id="forwardButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> redo </span></button>
-                                    </div>
-                                <div style="margin: 0 8px;" class="svs">
-                                    <span id="currentTime" class="sv">0:00</span> / <span class="sv" id="durationTime">0:00</span>
-                                </div>
-                                <input type="range" id="progressBar" min="0" max="100" value="0" style="margin-right: 8px;"> 
-                                </div>
-                                <div class="fof-div cke xxd" style="margin-right: 8px;justify-content: right;margin-left: 0;">
-                                    <button class="logo_button cccx"><ion-icon name="settings-outline"></ion-icon></button>
-                                    <div class="fof-dive" id="kn">
-                                        <div>
-                                            <!-- <button class="kkf" id="nextSuraButton"><ion-icon name="return-up-forward-outline"></ion-icon>Skip Next</button>
-                                            <button class="kkf" id="prevSuraButton"><ion-icon name="return-up-back-outline"></ion-icon>Skip Previous</button> -->
-                                            <button class="kkf" id="showContentButtonForDiv3"><ion-icon name="search-outline"></ion-icon>البحث بالسورة</button>
-                                            <button class="kkf" id="repeatButton"><ion-icon name="repeat-outline"></ion-icon>إعادة</button>
-                                            <div id="ert" style="display: none;">
-                                                <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>الصوت</button>
-                                                <div class="fof-dive" id="">
-                                                    <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>عالي</button>
-                                                    <button class="kkf" id=""><ion-icon name="volume-medium"></ion-icon>متوسط</button>
-                                                    <button class="kkf" id=""><ion-icon name="volume-low"></ion-icon>منخفض</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert">
-                                                <button class="kkf"><ion-icon name="share-social"></ion-icon>مشاركة</button>
-                                                <div class="fof-dive" id="">
-                                                    <button class="kkf" id="shareButton234"><ion-icon name="checkbox-outline"></ion-icon>اية محددة</button>
-                                                    <button class="kkf" id="shareButtonc"><ion-icon name="reader-outline"></ion-icon>نص السورة</button>
-                                                    <button class="kkf" id=""><ion-icon name="videocam-outline"></ion-icon>فيديو السورة</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert">
-                                                <button class="kkf" id=""><span class="material-symbols-outlined notranslate"> download </span>تنزيل</button>
-                                                <div class="fof-dive" id="">
-                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-                                                    <button class="kkf" id="downloadButton"><span class="material-symbols-outlined notranslate"> movie </span>فيديو</button>
-                                                    <button class="kkf" id="downloadTextButton"><ion-icon name="document-text-outline"></ion-icon>نص</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert" style="display: block;">
-                                                <button class="kkf" id=""><ion-icon name="ellipsis-horizontal"></ion-icon>اخرى</button>
-                                                <div class="fof-dive" style="bottom: -11px; top: auto;">
-                                                    <div id="">
-                                                        <select id="audioSelect">
-                                                            <option value="ar.alafasy">مشاري العفاسي</option>
-                                                            <option value="ar.abdulsamad">عبد الباسط عبد الصمد</option>
-                                                            <option value="ar.husary">محمود الحصري</option>
-                                                            <option value="ar.shuraym">سعود الشريم</option>
-                                                        </select>   
-                                                    </div>
-                                                    <button class="kkf" id="toggleButton123" style="justify-content: right;">اخفاء الشريط العلوي</button>
-                                                    <button class="kkf" id="" onclick="showModal()"><span class="material-symbols-outlined notranslate"> flag </span>ابلاغ عن مشكلة</button>
-                                                </div>
-                                            </div>
-                                            <!-- <button class="kkf" id=""><ion-icon name="download-outline"></ion-icon>Download MP4</button> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="contentDivWithDetails3" style="display: none;"><ion-icon style="font-size: 19px;color: #4a596d;" name="search"></ion-icon><input type="text" placeholder="ابحث" id="searchAyahInput"><button id="closeContentButtonForDiv3" class="Shortcut-close"><ion-icon name="close-outline"></ion-icon></button></div>
-                            </div> 
-                        <div id="suraTextContainer">
-                            <div class="oo" id="suraText">
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="opacity wave-button" id="scrollToTopBtn"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 244l144-144 144 144M256 120v292"/></svg></button>
-               
-            <!-- 2 -->
-                <div id="Page1" class="kk">
-                    <div class="div-page scrollable-div">
-                        <button onclick="requestNotificationPermission()" class="page-close wave-button" style="right: auto;left: 0;"><ion-icon name="notifications-outline"></ion-icon></button>
-                        <button class="page-close hide-btn pagee wave-button cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        
-                         <!-- ديف يحتوي على أوقات الصلاة وزر لإغلاقه -->
-                        <div class="prayer-container">
-                            <div class="">
-                                <h2 class="selected-location-title" id="date">0/0/0000</h2>
-                                <div class="prayer-countdown-timer">00:00:00</div>
-                                <div class="next-prayer-time-display">متبقي على الصلاة القادمة: <span class="next-prayer-time">PM 5:45</span></div>
-                                <table class="prayer-times-table">
-                                    <thead>
-                                    <tr>
-                                        <th style="border-top-color: #00000000;" class="prayer-times-header">الصلاة</th>
-                                        <th style="border-top-color: #00000000;" class="prayer-times-header">الوقت</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="prayer-times-body">
-                                    <tr class="fajr-prayer-row">
-                                        <td class="prayer-times-data">الفجر</td>
-                                        <td class="fajr-time prayer-times-data">No time</td>
-                                    </tr>
-                                    <tr class="sunrise-prayer-row">
-                                        <td class="prayer-times-data">الشروق</td>
-                                        <td class="sunrise-time prayer-times-data">No time</td>
-                                    </tr>
-                                    <tr class="dhuhr-prayer-row">
-                                        <td class="prayer-times-data">الظهر</td>
-                                        <td class="dhuhr-time prayer-times-data">No time</td>
-                                    </tr>
-                                    <tr class="asr-prayer-row">
-                                        <td class="prayer-times-data">العصر</td>
-                                        <td class="asr-time prayer-times-data">No time</td>
-                                    </tr>
-                                    <tr class="maghrib-prayer-row">
-                                        <td class="prayer-times-data">المغرب</td>
-                                        <td class="maghrib-time prayer-times-data">No time</td>
-                                    </tr>
-                                    <tr class="isha-prayer-row">
-                                        <td style="border-bottom-color: #00000000;" class="prayer-times-data">العشاء</td>
-                                        <td style="border-bottom-color: #00000000;" class="isha-time prayer-times-data">No time</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            
-                            </div>
-                        
-                            <div class="omg">
-                                <select onchange="handleCountryChange(this)" class="dropdown-selector custom-select mySelect">
-                                    <option value="">اختر الدولة</option>
-                                </select>
-                                <select onchange="handleCityChange(this)" class="dropdown-selector custom-select mySelect">
-                                    <option value="">اختر المدينة</option>
-                                </select>
-                            </div>
-                        </div>
-                        </div>
-
-                        <!-- 1 -->
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-                        <!-- 2 -->
-                        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-                        <script>
-                        $(document).ready(function() {
-                            $('.mySelect').select2({
-                                placeholder: "اختر من القائمة",
-                                allowClear: true
-                            });
-                        
-                            $('.mySelect').on('select2:open', function() {
-                                // الوصول إلى حقل البحث داخل Select2
-                                let searchField = $('.select2-container .select2-search__field');
-
-                                // جعل الحقل في وضع القراءة فقط عند فتح القائمة
-                                searchField.prop('readonly', true);
-
-                                // السماح بالكتابة فقط عند النقر على الحقل
-                                searchField.off('mousedown').on('mousedown', function(e) {
-                                    e.preventDefault(); // منع السلوك الافتراضي
-                                    $(this).prop('readonly', false).focus(); // السماح بالكتابة بعد النقر
-                                });
-                            
-                                // ضبط placeholder ليظهر النص الافتراضي أو العنصر المختار
-                                let selectedOption = $(this).find(':selected').text();
-                                searchField.attr('placeholder', selectedOption || 'ابحث هنا');
-                            });
-                        });
-
-                        </script>
-
-
-                        <!-- shareButton -->
-                         <script>
-                         document.getElementById('shareButton').addEventListener('click', async () => {
-                            if (navigator.share) {
-                                // إذا كان المتصفح يدعم خاصية المشاركة
-                                try {
-                                    await navigator.share({
-                                        title: 'مشاركة الرابط',
-                                        text: 'تفاصيل المشاركة هنا.',
-                                        url: 'index.html' // قم بتعديل الرابط حسب الحاجة
-                                    });
-                                    console.log('تمت المشاركة بنجاح');
-                                } catch (error) {
-                                    console.error('حدث خطأ أثناء المشاركة:', error);
-                                }
-                            } else {
-                                // بديل للمشاركة في المتصفحات التي لا تدعم Navigator.share
-                                const shareFallback = `
-                                    <div id="shareModal" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                                        background: white; border: 1px solid #ccc; padding: 20px; z-index: 1000;">
-                                        <p>خاصية المشاركة غير مدعومة في متصفحك. يمكنك نسخ الرابط يدويًا:</p>
-                                        <input type="text" value="${window.location.href}" id="shareLink" style="width: 100%;" readonly>
-                                        <button onclick="document.getElementById('shareLink').select(); document.execCommand('copy'); alert('تم نسخ الرابط!');">
-                                            نسخ الرابط
-                                        </button>
-                                        <button id="closeShareModal">إغلاق</button>
-                                    </div>
-                                    <div id="modalBackdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-                                `;
-                                const modalContainer = document.createElement('div');
-                                modalContainer.innerHTML = shareFallback;
-                                document.body.appendChild(modalContainer);
-                                
-                                // إضافة حدث للإغلاق
-                                document.getElementById('closeShareModal').addEventListener('click', () => {
-                                    document.body.removeChild(modalContainer);
-                                });
-                            }
-                        });
-
-                         </script>
-                    </div>
-                </div>
-                <!-- 3 -->
-                <div id="Page3" class="kk">
-                    <div class="div-page">
-                        <button class="page-close hide-btn pagee wave-button cvme" data-target="Page3" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="gooo scrollable-div">
-                            <div class="gooo-button">
-                                <div>
-                                    <button id="toggleBtn1" class="toggle-button wave-button">الادعية</button>
-                                    <button id="toggleBtn2" class="toggle-button wave-button">اذكار الصباح والمساء</button>
-                                </div>
-                            </div>
-                            <div id="containersk" class="containersk">
-                            <!-- map -->
-                             <button id="addTextButton" style="display: flex;" class="wave-button"><span class="material-symbols-outlined notranslate"> add </span></button>
-                            </div>  
-                            <div id="container-second" class="containersk hidden">
-
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4 -->
-                <div id="Page5" class="kk">
-                    <div class="div-page">
-                        <label class="page-close hide-btn pagee wave-button cvme" data-target="Page5" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></label>
-                            <div class="start-screen">
-                                <button id="start-button" class="wave-button">ابدأ المسابقة الشهرية</button> <!-- يمكن ترجمة النصوص للعربية -->
-                              </div>
-                              <div id="display-container">
-                                <div class="header">
-                                  <div class="number-of-count">
-                                    <span class="number-of-question">1 من 3 أسئلة</span> <!-- ترجمة النصوص -->
-                                  </div>
-                                  <div class="timer-div">
-                                    <img src="timer-icon.svg" />
-                                    <span class="time-left">10 ثواني</span> <!-- ترجمة النصوص -->
-                                  </div>
-                                </div>
-                                <div id="container">
-                                  <!-- الأسئلة والخيارات ستظهر هنا -->
-                                </div>
-                                <button id="next-button">التالي</button> <!-- ترجمة النصوص -->
-                              </div>
-                              <div class="score-container hide">
-                                <img class="copyable" src="trophee-de-recompense-10918726-8828894.gif" alt="" height="300px">
-                                <div id="user-score" class="copyable">النتيجة: 0</div> <!-- ترجمة النصوص -->
-                                <button id="restart">إعادة التشغيل</button> <!-- ترجمة النصوص -->
-                              </div>
-                            <!-- Script -->
-                             <link rel="stylesheet" href="ssw.css">
-                            <script src="ssw.js"></script>
-                    </div>
-                </div>
-
-
-
-                <!-- 5 -->
-                <div id="Page6" class="kk">
-                    <div class="div-page">
-                        <button class="page-close hide-btn pagee wave-button cvme" data-target="Page6" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="ssdx containersk">
-                            <span>.موعد نزول المسابقه الجديدة: يكون كل عشرة ايام</span>
-                            <br>
-                            <span>.عدد الاسئلة: 25 ومن المحتمل ان تكون اكثر</span>
-                            <br>
-                            <span>.محتوى المسابقة: محتوى ديني من الكتاب والسنة</span>
-                            <br>
-                            <span>.تواصل معنا في حين ان كان هناك مشكلة او تريد المساهمة بميزة جديدة</span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 6 -->
-                <div class="kk" id="contentDivWithDetails2">
-                    <div class="div-page">
-                        <button id="closeContentButtonForDiv2" class="page-close pagee wave-button cvme" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="ssdx containersk">
-                            <span>.بضغطة زر Apple أو Android قم بتنزيل الموقع لـ</span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 7 -->
-                <div class="kk" id="Page7">
-                    <div class="div-page">
-                        <button data-target="Page7" class="page-close hide-btn pagee wave-button cvme" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="ssdx containersk erw">
-                            <h1>سياسة موقع قراءة القرآن الكريم والاستماع إليه ومعرفة أوقات الصلاة والأذكار</h1>
-                            <section>
-                                <h2>1. الهدف من الموقع</h2>
-                                <ul>
-                                    <li>توفير وسيلة سهلة لقراءة القرآن الكريم والاستماع إلى تلاوته بصوت عدد من القراء.</li>
-                                    <li>تقديم خدمة دقيقة لمعرفة أوقات الصلاة بما يتناسب مع موقع المستخدم الجغرافي.</li>
-                                    <li>تذكير المستخدمين بالأذكار اليومية والأدعية المستحبة.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>2. الخصوصية والأمان</h2>
-                                <ul>
-                                    <li>نحترم خصوصية جميع المستخدمين. يتم جمع البيانات الشخصية (مثل الموقع الجغرافي) فقط لتحسين الخدمات.</li>
-                                    <li>يتم تشفير جميع البيانات الحساسة لضمان عدم وصول أي أطراف غير مصرح لها إليها.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>3. استخدام المحتوى</h2>
-                                <ul>
-                                    <li>جميع المحتويات مخصصة للاستخدام الشخصي والدعوي فقط.</li>
-                                    <li>يُمنع استخدام المحتوى لأي غرض تجاري دون إذن مسبق.</li>
-                                    <li>يحق للموقع تحديث المحتوى أو تغييره لضمان الدقة والالتزام بالشريعة الإسلامية.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>4. مسؤوليات المستخدم</h2>
-                                <ul>
-                                    <li>استخدام الموقع بما يتوافق مع الأخلاق الإسلامية وعدم الإساءة أو نشر محتوى غير لائق.</li>
-                                    <li>التأكد من صحة الموقع الجغرافي المُدخل لضمان دقة أوقات الصلاة.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>5. أوقات الصلاة والتنبيهات</h2>
-                                <ul>
-                                    <li>تُحدث أوقات الصلاة تلقائيًا باستخدام خوارزميات دقيقة ومصادر موثوقة.</li>
-                                    <li>يتم توفير إشعارات للتذكير بالصلاة وبالأذكار اليومية، مع إمكانية إيقافها من خلال إعدادات المستخدم.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>6. حقوق الملكية الفكرية</h2>
-                                <ul>
-                                    <li>جميع حقوق النصوص القرآنية والتلاوات محفوظة لمصدرها الشرعي.</li>
-                                    <li>يحق للموقع إزالة أي محتوى مُضاف من قِبل المستخدمين إذا كان غير ملائم أو ينتهك الحقوق.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>7. حدود المسؤولية</h2>
-                                <ul>
-                                    <li>لا يتحمل الموقع مسؤولية أي انقطاع أو خلل تقني في الخدمات.</li>
-                                    <li>تُبذل الجهود لتحديث أوقات الصلاة والمحتوى، ولكن يُوصى بالتحقق من المعلومات لضمان دقتها.</li>
-                                </ul>
-                            </section>
-                        
-                            <section>
-                                <h2>8. تحديث السياسة</h2>
-                                <p>يحتفظ الموقع بالحق في تعديل هذه السياسة من وقت لآخر. يُرجى مراجعة السياسة بانتظام للتعرف على أي تغييرات.</p>
-                            </section>
-                        
-                            <section>
-                                <h2>9. التواصل معنا</h2>
-                                <p>لأي استفسارات أو ملاحظات، يُرجى التواصل معنا عبر البريد الإلكتروني أو النموذج المخصص لذلك في الموقع.</p>
-                            </section>
-                        
-                            <footer>
-                                <p>نتمنى لكم تجربة روحانية مميزة ونسأل الله أن يجعل هذا العمل خالصًا لوجهه الكريم.</p>
-                            </footer>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 8 -->
-                <div class="kk" id="Page9">
-                    <div class="div-page">
-                        <button data-target="Page9" class="page-close hide-btn pagee wave-button cvme" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                        <div class="ssdx containersk erw">
-                            <section>
-                                <h1>سياسة استعمال API لموقع [اسم موقعك]</h1>
-                                <ul>
-                                    <li>
-                                        <h2>1. مقدمة:</h2>
-                                        <p>توضح هذه السياسة شروط الاستخدام الخاصة بخدمات API التي يقدمها موقع [اسم موقعك]. باستخدامك لهذه الخدمات، فإنك توافق على الالتزام بكافة الشروط والأحكام الواردة في هذه السياسة.</p>
-                                    </li>
-                                    <li>
-                                        <h2>2. الأغراض المشمولة:</h2>
-                                        <ul>
-                                            <li>
-                                                <h3>API أوقات الصلاة:</h3>
-                                                <p>تتيح هذه الخدمة للمستخدمين الحصول على أوقات الصلاة اليومية حسب الموقع الجغرافي أو المدينة المحددة.</p>
-                                            </li>
-                                            <li>
-                                                <h3>API القرآن الكريم:</h3>
-                                                <p>تتيح هذه الخدمة الوصول إلى نصوص القرآن الكريم والتفسير، بالإضافة إلى تقديم الآيات والسور بمختلف الأشكال.</p>
-                                            </li>
-                                            <li>
-                                                <h3>API الأذكار:</h3>
-                                                <p>توفر هذه الخدمة الأذكار اليومية مثل أذكار الصباح والمساء، مع إمكانية تخصيص الأذكار وفقًا للمحتوى المطلوب.</p>
-                                            </li>
-                                            <li>
-                                                <h3>API خريطة العالم:</h3>
-                                                <p>تتيح هذه الخدمة عرض خريطة تفاعلية للعالم مع إمكانية استعراض مواقع الصلاة في مدن مختلفة باستخدام تقنيات GPS.</p>
-                                            </li>
-                                            <li>
-                                                <h3>API المسابقة الدينية:</h3>
-                                                <p>تتيح هذه الخدمة تقديم أسئلة مسابقات دينية متنوعة مع خيارات متعددة للمشاركة في التحديات الدينية.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>3. القيود والحقوق:</h2>
-                                        <ul>
-                                            <li>
-                                                <p>يجب ألا يتم استخدام الـ API بطريقة تؤثر سلبًا على أداء الموقع أو الخدمات أو تؤدي إلى تحميل البيانات بشكل مفرط أو غير قانوني.</p>
-                                            </li>
-                                            <li>
-                                                <p>يجب على المستخدمين الالتزام بالقوانين المحلية والدولية عند استخدام هذه الخدمات.</p>
-                                            </li>
-                                            <li>
-                                                <p>يحق لموقع [اسم موقعك] تعليق أو إيقاف الوصول إلى الـ API في حال اكتشاف أي استخدام غير قانوني أو يخالف هذه الشروط.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>4. الأمان والخصوصية:</h2>
-                                        <ul>
-                                            <li>
-                                                <p>يلتزم موقع [اسم موقعك] بحماية بيانات المستخدمين والمعلومات الخاصة بالـ API من الوصول غير المصرح به.</p>
-                                            </li>
-                                            <li>
-                                                <p>يجب على المطورين اتخاذ التدابير اللازمة لضمان حماية البيانات عند استخدام الـ API في تطبيقاتهم.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>5. استخدام API:</h2>
-                                        <ul>
-                                            <li>
-                                                <p>يتم الوصول إلى خدمات الـ API عبر مفتاح API الذي يتم توفيره بعد التسجيل في الموقع. يُستخدم هذا المفتاح للتحقق من هوية المستخدم.</p>
-                                            </li>
-                                            <li>
-                                                <p>يحتفظ موقع [اسم موقعك] بحق مراقبة استخدام الـ API لضمان الامتثال للسياسات والشروط المحددة.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>6. تعديل الشروط:</h2>
-                                        <p>يحتفظ موقع [اسم موقعك] بحق تعديل هذه السياسة في أي وقت. سيتم إخطار المستخدمين بأي تغييرات جوهرية عبر الموقع الإلكتروني أو من خلال البريد الإلكتروني.</p>
-                                    </li>
-                                    <li>
-                                        <h2>7. تعليق أو إنهاء الخدمة:</h2>
-                                        <ul>
-                                            <li>
-                                                <p>يحق لموقع [اسم موقعك] تعليق أو إنهاء الوصول إلى الـ API في حال تبين أن الخدمة قد تم استخدامها بطريقة غير قانونية أو تخالف الشروط والأحكام.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>8. حدود المسؤولية:</h2>
-                                        <ul>
-                                            <li>
-                                                <p>لا يتحمل موقع [اسم موقعك] أي مسؤولية عن الأضرار أو الخسائر التي قد تنشأ نتيجة لاستخدام الـ API، بما في ذلك على سبيل المثال لا الحصر فقدان البيانات أو انقطاع الخدمة.</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <h2>9. دعم العملاء:</h2>
-                                        <p>لأي استفسارات أو مشاكل تتعلق باستخدام API، يمكن للمستخدمين التواصل مع فريق الدعم عبر [البريد الإلكتروني/نموذج الاتصال] المتاح على الموقع الإلكتروني.</p>
-                                    </li>
-                                </ul>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9 -->
-            <div id="Page8" class="kk">
-                <div class="div-page">
-                    <button class="page-close hide-btn pagee wave-button cvme" data-target="Page8" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                    <form class="gooo" action="" id="myForm">
-                        <h2>ارسال مساهمة تقنية</h2>
-                    <!-- إضافة أكثر من div لعرض الأكواد -->
-                    <div id="code-container-1"></div>
-                    <h2>معلومات المرسل</h2>
-                    <div class="code-container-div">
-                        <div>
-                            <label for="name">الإسم</label>
-                            <br>
-                            <input id="name" name="" type="text" placeholder="الإسم" required>
-                        </div>
-                        <div>
-                            <label for="email">البريد الإلكتروني</label>
-                            <br>
-                            <input id="email" name="" type="email" placeholder="البريد الالكتروني" required>
-                        </div>
-                        <div>
-                            <label for="password2">كلمة المرور</label>
-                            <br>
-                            <input id="password2" name="" type="password" placeholder="كلمة المرور" required>
-                        </div>
-                        <div>
-                            <label for="password">تأكيد كلمة المرور</label>
-                            <br>
-                            <input id="password" name="" type="password" placeholder="تأكيد كلمة المرور" required>
-                        </div>
-                        <div class="send-kkk" style="width: 100%; text-align: right;">
-                            <button type="submit" class="wave-button">إرسال</button>
-                        </div>
-                    </div>                    
-
-                    <!-- إضافة JS الخاص بـ Prism.js لتحليل الأكواد -->
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-                    <script src="code.js"></script>
-
-                    </form>
-                </div>
-                <script>
-                    // التأكد من الإرسال يتم عبر زر submit فقط
-                    document.getElementById('myForm').addEventListener('submit', function(event) {
-                        const submitter = event.submitter; // الزر الذي تم الضغط عليه
-                        if (!submitter || submitter.type !== "submit") {
-                            alert("يمكنك الإرسال فقط من خلال الزر المخصص!");
-                            event.preventDefault(); // إيقاف الإرسال
-                        }
+                // إيقاف الصوت الحالي إذا كان قيد التشغيل
+                if (audio && isPlaying && previousAudioButton && previousAudioButton !== audioButton) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    previousAudioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
+                    isPlaying = false;
+                    togglePlayButton.innerHTML = '<ion-icon name="caret-forward-outline"></ion-icon>';
+                }
+            
+                // إنشاء كائن الصوت الجديد فقط إذا لم يكن الصوت الحالي هو نفسه
+                if (previousAudioButton !== audioButton) {
+                    audio = new Audio(audioUrl);
+                    audio.addEventListener('timeupdate', updateProgressBar);
+                    audio.onended = () => {
+                        isPlaying = false;
+                        audioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
+                        togglePlayButton.innerHTML = '<ion-icon name="caret-forward-outline"></ion-icon>';
+                        progressBar.value = 0;
+                        currentTimeSpan.textContent = '0:00';
+                        durationTimeSpan.textContent = '0:00';
+                    };
+            
+                    audio.addEventListener('loadedmetadata', function () {
+                        durationTimeSpan.textContent = formatTime(audio.duration);
                     });
-                </script>
-            </div>
-
-
-            <!-- 10 -->
-            <div class="kk" id="Page10">
-                <div class="div-page ccas">
-                    <button data-target="Page10" class="page-close hide-btn xc pagee wave-button cvme" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
-                    <div class="ssdx containersk erw xc2">
-                        <div id="video-wrapper-container"></div>
-                        <div class="Report">
-                            <button onclick="reloadPage()"><ion-icon name="reload-outline"></ion-icon></button>
-                            <button onclick="showModal()"><ion-icon name="flag-outline"></ion-icon></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                }
             
+                // Toggle play/pause state when clicking the button
+                if (isPlaying) {
+                    audio.pause();
+                    audioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
+                    togglePlayButton.innerHTML = '<ion-icon name="caret-forward-outline"></ion-icon>';
+                } else {
+                    audio.play();
+                    audioButton.innerHTML = '<span class="material-symbols-outlined">voice_over_off</span>';
+                    togglePlayButton.innerHTML = '<ion-icon name="pause-outline"></ion-icon>'; // Update main play button
+                }
+            
+                isPlaying = !isPlaying;
+                previousAudioButton = audioButton;
+            });            
 
-    </div>
+            wrapper.appendChild(typeImg);
+            wrapper.appendChild(suraNameDiv);
+            wrapper.appendChild(audioButton);
+            suraContainer.appendChild(wrapper);
 
-    <!-- ----- -->
-    <div class="tascar" id="adhan-alert-container" style="display: none;">
-        <audio id="adhan-audio" src="019--1.mp3"></audio>
-        <div class="tascar1 cor"><img src="New Project.png" alt=""></div>
-        <div class="tascar2">
-            <div class="tascar3"><span>مواقيت الصلاة</span><button onclick="closeAdhanAlert()" class="material-symbols-outlined notranslate times-button close-button">close</button></div>
-            <div class="cor alert-message">
-                لقد حان الأن وقت الأذان اترك ما بيدك واذهب الى الصلاة
-            </div>
-        </div>
-     </div>
-     
- <!-- تضمين مكتبة Popper.js الضرورية لـ tippy.js -->
- <script src="https://unpkg.com/@popperjs/core@2"></script>
- <!-- تضمين مكتبة Tippy.js -->
- <script src="https://unpkg.com/tippy.js@6"></script>
- <!-- تضمين CSS الخاص بـ Tippy.js (اختياري) -->
- <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
-     <script>
-        tippy('.cvme', {
-            content(reference) {
-                return reference.getAttribute('data-tooltip');
-            },
-            placement: 'bottom', // وضع الـ tooltip (أعلى، أسفل، يسار، يمين)
-            animation: 'scale', // نوع الحركة (اختياري)
-            theme: 'custom', // تطبيق الاستيل المخصص
+            wrapper.addEventListener('click', async function () {
+                document.querySelectorAll('.sura-wrapper').forEach(item => {
+                    item.classList.remove('selected');
+                    item.querySelector('.sura-name').style.color = 'black';
+                });
+                this.classList.add('selected');
+                this.querySelector('.sura-name').style.color = '#444';
+
+                const surahNumber = this.getAttribute('data-number');
+                localStorage.setItem('selectedSurah', surahNumber);
+
+                const textResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+                const textData = await textResponse.json();
+
+                function numberToArabic(num) {
+                    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                    return num.toString().split('').map(digit => arabicDigits[parseInt(digit)]).join('');
+                }
+                const surahText = textData.data.ayahs.map((ayah, index, array) => {
+                    const ayahNumberInArabic = numberToArabic(index + 1);  // تحويل رقم الآية إلى اللغة العربية
+                    const ayahTextWithNumberAtEnd = `
+                        <div class="ayah" data-ayah-number="${ayah.number}"> 
+                            ${ayah.text.replace(/ٱللَّهِ|بِرَبِّ/gi, match => `<span style="color: red;">${match}</span>`)} 
+                            <strong class="ayah-number">${ayahNumberInArabic}</strong>
+                        </div>
+                        ${index !== array.length - 1 ? '<hr>' : ''}`;
+                    
+                    return ayahTextWithNumberAtEnd;
+                }).join('');      
+
+                suraTextDiv.innerHTML = surahText;
+                suraTextContainer.style.display = 'block';
+
+                if (localStorage.getItem('selectedAyah')) {
+                    const savedAyah = localStorage.getItem('selectedAyah');
+                    const savedAyahElement = document.querySelector(`.ayah[data-ayah-number="${savedAyah}"]`);
+                    if (savedAyahElement) {
+                        highlightAyah(savedAyahElement);
+                        selectedAyah = savedAyahElement;
+                    }
+                }
+
+                // إضافة EventListener لجميع الآيات
+        document.querySelectorAll('.ayah').forEach(ayahElement => {
+            ayahElement.addEventListener('click', function () {
+                const ayahNumber = this.getAttribute('data-ayah-number'); // الحصول على رقم الآية
+            
+                // إلغاء تمييز الآية المحددة مسبقًا إذا كانت موجودة
+                if (selectedAyah) {
+                    unhighlightAyah(selectedAyah);
+                }
+            
+                // إذا كانت الآية الحالية هي نفسها الآية المحددة، قم بإلغاء التمييز
+                if (selectedAyah && selectedAyah.getAttribute('data-ayah-number') === ayahNumber) {
+                    unhighlightAyah(this);
+                    selectedAyah = null;
+                    localStorage.removeItem('selectedAyah');
+                } else {
+                    // تمييز الآية الجديدة
+                    highlightAyah(this);
+                    selectedAyah = this;
+                    localStorage.setItem('selectedAyah', ayahNumber);
+                }
+            });
         });
-     </script>
+        
+        // عند تحميل الصفحة، استرجاع الآية المحددة من localStorage
+        const savedAyahNumber = localStorage.getItem('selectedAyah');
+        if (savedAyahNumber) {
+            const savedAyahElement = document.querySelector(`.ayah[data-ayah-number="${savedAyahNumber}"]`);
+            if (savedAyahElement) {
+                highlightAyah(savedAyahElement);
+                selectedAyah = savedAyahElement;
+            }
+        }
+        
+        // دوال تمييز وإلغاء تمييز الآية
+        function highlightAyah(ayah) {
+            ayah.classList.add('highlighted'); // يمكن تخصيص التمييز حسب رغبتك
+        }
+        
+        function unhighlightAyah(ayah) {
+            ayah.classList.remove('highlighted');
+        }
+                    });
+                }
 
-     <script>
-        document.querySelectorAll('a.fo_url').forEach(function(link) {
-          link.addEventListener('click', function(e) {
-            e.preventDefault(); // منع التصرف الافتراضي (عرض الرابط في شريط الحالة)
+        allSurahs.forEach(surah => createSurahElement(surah));
 
-            const url = link.getAttribute('data-url'); // استخدام data-url بدلاً من href
-            window.location.assign(url); // استخدام window.location.assign لتمكين العودة للخلف
-          });
+        const savedSurahNumber = localStorage.getItem('selectedSurah');
+        if (savedSurahNumber) {
+            const savedSurahElement = document.querySelector(`.sura-wrapper[data-number="${savedSurahNumber}"]`);
+            if (savedSurahElement) {
+                savedSurahElement.click();
+            }
+        }
+
+        closeButton.addEventListener('click', function () {
+            suraTextContainer.style.display = 'none';
+            document.querySelectorAll('.sura-wrapper').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('.sura-name').style.color = 'black';
+            });
+            selectedAyah = null;
+            localStorage.removeItem('selectedAyah');
+            localStorage.removeItem('selectedSurah');
         });
-     </script>
 
-<div class="overlay" onmousedown="hideModal()" ontouchstart="hideModal()">
-     <form onmousedown="event.stopPropagation();" ontouchstart="event.stopPropagation();" action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe6_LqQKChGVBv83Q48NCUGD4Ycd2zeu47UFS0mVE4sTc8cCg/formResponse" method="" class="API modal">
-        <div class="API-text">تواصل معنا</div>
-        <span>خلال 24 ساعة Emile سيتم ارسال الرد عن طريق</span>
-        <div class="zz">
-            <input class="" type="text" name="entry.622719195" placeholder="الإسم" required>
-            <input class="" type="email" name="entry.1398539276" placeholder="الإميل" required>
-        </div>
-        <textarea class="API-cupy" typy="text" name="entry.744897344" placeholder="اكتب الطلب" required></textarea>
-        <select name="" id="" style="text-align: right;" required>
-            <option value="">سبب آخر</option>
-            <option value="">(قرائة الرآن) الإبلاغ عن مشكلة</option>
-            <option value="">الإعلانت</option>
-            <option value="">مساهمة مالية</option>
-            <option value="">مساهمة إدارية وغيرها</option>
-            <option value="">API اوقات الصلاة</option>
-            <option value="">API القرآن الكريم</option>
-            <option value="">API اذكار الصباح والمساء</option>
-            <option value="">API خريطة العالم</option>
-            <option value="">API مسابقة دينية</option>
-        </select>
-        <span>إختر سبب الإرسال</span>
-        <div class="API-button">
-            <input type="file" id="send-input" style="display: none;">
-            <label for="send-input" class="api-share" type="button"><ion-icon name="cloud-upload-outline"></ion-icon></label>
-            <button class="api-butt" id="api-butt" type="submit">Send</button>
-            <button class="api-butt" onclick="hideModal()">Cancel</button>
-        </div>
-     </form>
-     </div>
-     <script src="form.js"></script>     
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.trim().toLowerCase().normalize("NFC"); // تطبيع النص المدخل
+            const filteredSurahs = allSurahs.filter(surah => 
+                surah.name.trim().toLowerCase().normalize("NFC").includes(searchTerm) // تطبيع أسماء السور
+            );
+            
+            suraContainer.innerHTML = ''; // مسح المحتوى السابق
+            if (filteredSurahs.length > 0) {
+                filteredSurahs.forEach(surah => createSurahElement(surah));
+            } else {
+                suraContainer.innerHTML = '<p>السورة غير موجودة</p>'; // رسالة إذا لم يتم العثور على السورة
+            }
+        });
+        
 
-<p class="message" id="message"></p>
+        forwardButton.addEventListener('click', function () {
+            if (audio) {
+                audio.currentTime = Math.min(audio.currentTime + 5, audio.duration);
+            }
+        });
 
-<p class="message" id="repeatCount">عدد التكرارات <span id="repeatCountValue">0</span></p>
-<!-- <script src="Safety.js"></script> -->
-</body>
-</html>
+        rewindButton.addEventListener('click', function () {
+            if (audio) {
+                audio.currentTime = Math.max(audio.currentTime - 5, 0);
+            }
+        });
+
+        // تعديل progressBar لتمكين السحب
+        progressBar.addEventListener('input', function () {
+            if (audio) {
+                audio.currentTime = (progressBar.value / 100) * audio.duration; // تحديث الوقت بناءً على النسبة
+                currentTimeSpan.textContent = formatTime(audio.currentTime); // تحديث الوقت الحالي
+            }
+        });
+
+        function updateProgressBar() {
+            if (audio) {
+                progressBar.value = (audio.currentTime / audio.duration) * 100 || 0; // تحديث القيمة بالنسب المئوية
+                currentTimeSpan.textContent = formatTime(audio.currentTime); // عرض الوقت الحالي
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        togglePlayButton.addEventListener('click', function () {
+            if (audio) {
+                if (isPlaying) {
+                    audio.pause();
+                    togglePlayButton.innerHTML = '<ion-icon name="caret-forward-outline"></ion-icon>';
+                } else {
+                    audio.play();
+                    togglePlayButton.innerHTML = '<ion-icon name="pause-outline"></ion-icon>';
+                }
+                isPlaying = !isPlaying;
+            }
+        });
+
+        repeatButton.addEventListener('click', function () {
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play();
+                togglePlayButton.innerHTML = '<ion-icon name="pause-outline"></ion-icon>';
+                isPlaying = true;
+            }
+        });
+
+// إضافة وظيفة زر التنزيل
+downloadButton.addEventListener('click', function () {
+    // عرض رسالة تأكيد قبل التنزيل
+    const userConfirmed = confirm("الذهاب الى صفحة التنزيل");
+
+    if (userConfirmed) { // إذا وافق المستخدم
+        if (audio && audio.src) {
+            const link = document.createElement('a');
+            link.href = audio.src; // استخدم الرابط الموجود في audio.src
+            link.download = `surah_${audio.src.split('/').pop()}`; // تحديد اسم الملف بناءً على اسم الملف الصوتي
+            link.style.display = 'none'; // إخفاء الرابط
+            document.body.appendChild(link); // أضف الرابط إلى الـ DOM
+            link.click(); // يحاكي النقر على الرابط لتحميل الملف
+            document.body.removeChild(link); // إزالة الرابط بعد النقر
+        } else {
+            console.log("لم يتم تحميل المقطع الصوتي بعد.");
+        }
+    } else {
+        console.log("تم إلغاء التنزيل بواسطة المستخدم.");
+    }
+});
+        
+const downloadTextButton = document.getElementById('downloadTextButton');
+downloadTextButton.addEventListener('click', function () {
+    const confirmation = confirm("تأكيد تحميل نص السورة");
+    if (!confirmation) {
+        // إذا اختار المستخدم الإلغاء
+        return;
+    }
+
+    const suraTextContainer = document.getElementById('suraTextContainer');
+    const suraText = suraTextContainer ? suraTextContainer.innerText : '';
+
+    if (suraText) {
+        const htmlContent = `
+            <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: system-ui;
+                            font-size: 18px;
+                            line-height: 2em;
+                        }
+                        pre {
+                            font-family: system-ui;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <pre>${suraText}</pre>
+                    <a>Quran recited لا تنسنا من صالح دعائك</a>
+                </body>
+            </html>
+        `;
+        
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Quran recited_download-text.html'; // اسم الملف سيكون بصيغة .html
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        console.log("لم يتم العثور على نص السورة.");
+    }
+});
+
+const searchAyahInput = document.getElementById('searchAyahInput'); // تحديث المتغير ليحمل ID الجديد
+
+searchAyahInput.addEventListener('input', function () {
+    const searchTerm = this.value.trim().toLowerCase().normalize("NFC"); // تطبيع النص المدخل
+    const ayahs = document.querySelectorAll('.ayah'); // اختيار جميع الآيات في الـ suraTextDiv
+    
+    ayahs.forEach(ayah => {
+        const ayahText = ayah.innerHTML.toLowerCase();
+        const hr = ayah.nextElementSibling; // الحصول على العنصر التالي (الـ <hr>)
+
+        if (ayahText.includes(searchTerm)) {
+            ayah.style.display = 'block'; // إظهار الآية
+            if (hr) hr.style.display = 'block'; // إظهار الـ <hr>
+        } else {
+            ayah.style.display = 'none'; // إخفاء الآية
+            if (hr) hr.style.display = 'none'; // إخفاء الـ <hr>
+        }
+    });
+});
+
+
+const shareButton = document.getElementById('shareButton234');
+
+if (shareButton) {
+    shareButton.addEventListener('click', function () {
+        // الحصول على السورة المحددة من الـ div الذي يحمل id="suraContainer" والفئة selected
+        const surahContainer = document.querySelector('#suraContainer.selected');
+        const surahName = surahContainer ? surahContainer.innerText.trim() : 'Quran recited'; // اسم السورة من العنصر المحدد
+
+        // التحقق من وجود نص مميز داخل الـ div #suraText
+        const highlightedText = document.querySelectorAll('#suraText .highlighted');
+        let selectedText = '';
+
+        // دمج النصوص المميزة مع اسم السورة بين قوسين
+        highlightedText.forEach(function (element) {
+            selectedText += `${element.innerText} (${surahName})\n`; // إضافة اسم السورة بعد النص المميز
+        });
+
+        // إذا لم يتم تحديد أي نص
+        if (selectedText.trim() === '') {
+            alert('يرجى تحديد اية للمشاركة أولاً.');
+            return; // إنهاء التنفيذ
+        }
+
+        // إذا تم العثور على نص مميز، نشاركه
+        if (navigator.share) {
+            navigator.share({
+                title: 'مشاركة النص المميز',
+                text: selectedText
+            }).then(() => {
+                console.log('تمت المشاركة بنجاح');
+            }).catch((error) => {
+                console.log('فشل في المشاركة:', error);
+            });
+        } else {
+            // إذا لم يكن المدعوم، استخدام رابط للمشاركة عبر الوسائل الأخرى
+            const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(selectedText)}`;
+            window.open(shareUrl, '_blank');
+        }
+    });
+} else {
+    console.log('الزر غير موجود!');
+}
+
+
+    } catch (error) {
+        console.error('Error fetching surah data:', error);
+    }
+
+
+// الدالة التي تقوم بالتمرير للأعلى داخل الديف
+function scrollToTop(scrollableDiv) {
+    scrollableDiv.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  // اختيار جميع الديفات التي تحتوي على صنف .scrollable-div
+  var scrollableDivs = document.querySelectorAll(".scrollable-div");
+  var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  var hideBtns = document.querySelectorAll(".hide-btn");  // اختيار جميع الأزرار التي تحتوي على الكلاس .hide-btn
+  
+  // ربط الزر بالدالة عند النقر عليه باستخدام addEventListener
+  scrollToTopBtn.addEventListener("click", function() {
+    // تمرير إلى الأعلى في كل ديف يتم تمرير الزر له
+    scrollableDivs.forEach(function(scrollableDiv) {
+      scrollToTop(scrollableDiv);
+    });
+  });
+  
+  // إضافة حدث التمرير لكل ديف
+  scrollableDivs.forEach(function(scrollableDiv) {
+    scrollableDiv.onscroll = function() {
+      // تحقق من إذا كان التمرير داخل الديف قد تجاوز 100px
+      if (scrollableDiv.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    };
+  });
+  
+  // إخفاء الزر عند النقر على أي زر يحتوي على الكلاس .hide-btn
+  hideBtns.forEach(function(hideBtn) {
+    hideBtn.addEventListener("click", function() {
+      scrollToTopBtn.style.display = "none";  // إخفاء زر التمرير للأعلى
+    });
+  });  
+  
+//   مشراكة نص السورة
+const shareButtonc = document.getElementById('shareButtonc');
+
+shareButtonc.addEventListener('click', function () {
+    const textToShare = suraTextDiv.innerText.trim();
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'نص السورة',
+            text: textToShare
+        }).then(() => {
+            console.log('تمت مشاركة السورة بنجاح');
+        }).catch((error) => {
+            console.error('خطأ في مشاركة السورة:', error);
+        });
+    } else {
+        // إنشاء رابط مشاركة واتساب
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+});
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const isAndroidApp = navigator.userAgent.includes("YourAppName"); // استبدل بـ اسم تطبيقك إذا كان موجودًا في User-Agent
+  
+    if (isAndroidApp) {
+      const divToHide = document.getElementById("screen"); // استبدل بـ id الديف
+      if (divToHide) {
+        divToHide.style.display = "none";
+      }
+    }
+  });  
+
+
+
+// دالة لتحديد العنوان بناءً على معرف الديف
+function getDivTitle(divId) {
+    switch (divId) {
+        case 'Page1': return 'اوقات الصلاة اليوم';
+        case 'Page2': return 'قراءة القرآن';
+        case 'Page3': return 'اذكار الصباح والمساء';
+        case 'Page5': return 'مسابقة دينية';
+        case 'Page6': return 'المسابقات الشهرية';
+        case 'Page7': return 'سياسة الموقع';
+        case 'Page8': return 'مساهمة تقنية';
+        case 'Page9': return 'API سيلسة استعمال ال';
+        case 'Page10': return 'مقاطع دينية';
+        default: return 'Quran recited';
+    }
+}
+
+// دالة لتعطيل التمرير بشكل دائم
+function disableScroll() {
+    document.body.style.overflow = 'hidden'; // تعطيل التمرير
+}
+
+// دالة لتمكين التمرير بعد إغلاق الديف
+function enableScroll() {
+    document.body.style.overflow = ''; // تمكين التمرير بعد إغلاق الديف
+}
+
+// دالة لتخزين حالة التمرير والديف المفتوح في الرابط
+function storeState(divId) {
+    const newUrl = divId ? `${document.location.origin}${document.location.pathname}?div=${divId}` : `${document.location.origin}${document.location.pathname}`;
+    history.pushState({ divId: divId }, '', newUrl); // استخدام history API لتحديث الرابط
+}
+
+// دالة لاسترجاع حالة الديف المفتوح عند تحميل الصفحة
+function restoreState() {
+    const urlParams = new URLSearchParams(document.location.search);
+    const divId = urlParams.get('div');
+
+    // إغلاق جميع الديفات المفتوحة قبل فتح الديف الهدف
+    const divs = document.querySelectorAll('.visible');
+    divs.forEach(function (div) {
+        div.classList.remove('visible');
+        div.classList.add('coffees');
+        div.style.display = 'none';
+        stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
+    });
+
+    if (divId) {
+        const targetDiv = document.getElementById(divId);
+        if (targetDiv) {
+            // تأخير 2 ثانية بعد تحميل الصفحة
+            setTimeout(() => {
+                targetDiv.classList.add('visible');
+                targetDiv.classList.remove('coffees');
+                targetDiv.style.display = 'block';
+
+                // تغيير عنوان النافذة بناءً على معرف الديف
+                document.title = getDivTitle(divId);
+
+                // تعطيل التمرير نهائيًا
+                disableScroll();
+
+                // تخزين الحالة في الرابط
+                storeState(divId);
+            }, 2000); // تأخير 2 ثانية
+        }
+    }
+}
+
+// دالة لإيقاف الفيديو عند إغلاق الديف
+function stopVideo(divId) {
+    const div = document.getElementById(divId);
+    const video = div.querySelector('video');
+    const audio = div.querySelector('audio'); // إضافة لإيقاف الصوت أيضا
+    if (video) {
+        video.pause(); // إيقاف الفيديو
+        video.currentTime = 0; // إعادة الفيديو إلى البداية
+    }
+    if (audio) {
+        audio.pause(); // إيقاف الصوت
+        audio.currentTime = 0; // إعادة الصوت إلى البداية
+    }
+}
+
+// حدث عند الضغط على الأزرار لفتح/إغلاق الديف
+document.addEventListener('click', function (event) {
+    const target = event.target;
+
+    // فتح الديف عند الضغط على زر
+    if (target.matches('.show-btn')) {
+        const targetId = target.getAttribute('data-target');
+        const targetDiv = document.getElementById(targetId);
+        if (targetDiv && !targetDiv.classList.contains('visible')) {
+            // إغلاق أي ديف مفتوح
+            const openDivs = document.querySelectorAll('.visible');
+            openDivs.forEach(function (div) {
+                div.classList.remove('visible');
+                div.classList.add('coffees');
+                div.style.display = 'none';
+                stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
+            });
+
+            // عرض الديف الهدف
+            targetDiv.classList.add('visible');
+            targetDiv.classList.remove('coffees');
+            targetDiv.style.display = 'block';
+
+            // تغيير العنوان وحفظ الحالة
+            document.title = getDivTitle(targetId);
+            disableScroll(); // تعطيل التمرير عند فتح الديف
+            storeState(targetId); // حفظ حالة الديف في الرابط
+        }
+    }
+
+    // إغلاق الديف عند الضغط على زر إغلاق داخله
+    if (target.matches('.hide-btn')) {
+        const targetId = target.getAttribute('data-target');
+        const targetDiv = document.getElementById(targetId);
+        if (targetDiv) {
+            targetDiv.classList.remove('visible');
+            targetDiv.classList.add('coffees');
+            targetDiv.style.display = 'none';
+
+            // إيقاف الفيديو عند إغلاق الديف
+            stopVideo(targetId);
+
+            // إرجاع العنوان للحالة الافتراضية
+            document.title = 'Quran recited';
+
+            // تمكين التمرير بعد إغلاق الديف
+            enableScroll();
+
+            // تحديث الرابط
+            storeState('');
+        }
+    }
+});
+
+// حدث عند الضغط على زر الرجوع أو الأمام في المتصفح
+window.addEventListener('popstate', function (event) {
+    const divId = event.state ? event.state.divId : null;
+
+    // إغلاق جميع الديفات المفتوحة
+    const openDivs = document.querySelectorAll('.visible');
+    openDivs.forEach(function (div) {
+        div.classList.remove('visible');
+        div.classList.add('coffees');
+        div.style.display = 'none';
+        stopVideo(div.id); // إيقاف الفيديو عند إغلاق الديف
+    });
+
+    if (divId) {
+        const targetDiv = document.getElementById(divId);
+        if (targetDiv) {
+            targetDiv.classList.add('visible');
+            targetDiv.classList.remove('coffees');
+            targetDiv.style.display = 'block';
+
+            // تغيير العنوان وإخفاء التمرير
+            document.title = getDivTitle(divId);
+            disableScroll(); // تعطيل التمرير عند عرض الديف
+        }
+    } else {
+        // إذا لم يكن هناك ديف، ارجع العنوان والتمرير للحالة الافتراضية
+        document.title = 'Quran recited';
+        enableScroll(); // تمكين التمرير إذا لم يكن هناك ديف مفتوح
+    }
+});
+
+// عند تحميل الصفحة، استرجع حالة الديف المفتوح
+window.addEventListener('load', function () {
+    restoreState();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".copyable").forEach(el => {
+        el.addEventListener("click", () => {
+            const sel = window.getSelection(), range = document.createRange();
+            range.selectNodeContents(el);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            const msg = document.getElementById("message");
+            (navigator.clipboard ? navigator.clipboard.writeText(el.textContent) : document.execCommand("copy"))
+            .then(() => {
+                msg.style.display = "flex";
+                msg.innerHTML = '<ion-icon name="checkmark-outline" style="margin-right: 8px;"></ion-icon>Copied!';
+                setTimeout(() => {
+                    msg.style.display = "none";
+                    sel.removeAllRanges();
+                }, 3000);
+            });
+        });
+    });
+});
+
+
+
+
+
+
+
+
+// استرجاع الحالة المحفوظة من localStorage
+document.addEventListener('DOMContentLoaded', function () {
+    const sssd = document.getElementById('sssd');
+    const coos = document.getElementById('coos');
+    const isBoxShadowApplied = localStorage.getItem('boxShadowApplied') === 'true';
+
+    // إذا كانت الحالة المحفوظة هي true، أضف الظل وعدل لون الزر
+    if (isBoxShadowApplied) {
+        applyBoxShadow(sssd, coos);
+    }
+
+    // إضافة حدث للزر عند الضغط عليه لتبديل الحالة
+    coos.addEventListener('click', function () {
+        if (sssd.style.boxShadow) {
+            removeBoxShadow(sssd, coos);
+        } else {
+            applyBoxShadow(sssd, coos);
+        }
+    });
+});
+
+// دالة لإضافة الظل وتغيير لون الزر
+function applyBoxShadow(element, button) {
+    element.style.boxShadow = '0 0 0 5051px rgb(255 174 90 / 7%)';
+    button.classList.add('button-sss');
+    localStorage.setItem('boxShadowApplied', 'true');
+}
+
+// دالة لإزالة الظل وإعادة لون الزر لوضعه الأصلي
+function removeBoxShadow(element, button) {
+    element.style.boxShadow = '';
+    button.classList.remove('button-sss');
+    localStorage.setItem('boxShadowApplied', 'false');
+}
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const popupDiv = document.getElementById('popupDivWithLongIdName');
+    const overlay = document.getElementById('ass');
+    const showDivButton = document.getElementById('showDivButtonWithLongName');
+    const closeDivButton = document.getElementById('closeDivButtonWithLongName');
+
+    let startX = 0;
+    let isSwiping = false;
+
+    showDivButton.addEventListener('click', function () {
+        showDivButton.style.display = 'none'; // إخفاء زر الإظهار
+        popupDiv.classList.remove('hide');
+        popupDiv.classList.add('show');
+        popupDiv.style.display = 'block';
+        overlay.style.display = 'block';
+    });
+
+    function closePopup() {
+        popupDiv.classList.remove('show');
+        popupDiv.classList.add('hide');
+
+        setTimeout(() => {
+            popupDiv.style.display = 'none';
+            overlay.style.display = 'none';
+            showDivButton.style.display = 'flex'; // إعادة زر الإظهار
+        }, 500); // مدة الأنميشن
+    }
+
+    closeDivButton.addEventListener('click', closePopup);
+
+    // إغلاق عند الضغط خارج النافذة حتى لو لم يتم تحرير الضغط
+    overlay.addEventListener('mousedown', function (event) {
+        if (event.target === overlay) {
+            closePopup();
+        }
+    });
+
+    // إغلاق عند لمس الخارج على الهاتف
+    overlay.addEventListener('touchstart', function (event) {
+        if (event.target === overlay) {
+            closePopup();
+        }
+    });
+
+    // إضافة ميزة السحب لليسار على الهاتف
+    popupDiv.addEventListener('touchstart', function (event) {
+        startX = event.touches[0].clientX;
+        isSwiping = true;
+    });
+
+    popupDiv.addEventListener('touchmove', function (event) {
+        if (!isSwiping) return;
+
+        let moveX = event.touches[0].clientX;
+        let diffX = startX - moveX;
+
+        // إذا تم السحب لليسار بمسافة كافية
+        if (diffX > 100) {
+            isSwiping = false; // منع المزيد من السحب
+            closePopup();
+        }
+    });
+
+    popupDiv.addEventListener('touchend', function () {
+        isSwiping = false;
+    });
+});
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    function showModal() {
+        document.body.dataset.previousScrollState = document.body.style.overflow;
+        document.querySelector('.overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal() {
+        document.body.style.overflow = document.body.dataset.previousScrollState || '';
+        document.querySelector('.overlay').style.display = 'none';
+    }
+
+    // التحقق من وجود العناصر قبل إضافة الأحداث لتجنب الأخطاء
+    const overlay = document.querySelector('.overlay');
+    const modal = document.querySelector('.modal');
+
+    if (overlay) {
+        overlay.addEventListener('mousedown', hideModal);
+        overlay.addEventListener('touchstart', hideModal);
+    }
+
+    if (modal) {
+        modal.addEventListener('mousedown', function (event) {
+            event.stopPropagation();
+        });
+
+        modal.addEventListener('touchstart', function (event) {
+            event.stopPropagation();
+        });
+    }
+
+    // جعل `showModal` و `hideModal` متاحين عالميًا للاستدعاء من HTML
+    window.showModal = showModal;
+    window.hideModal = hideModal;
+});
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // التأكد من تحميل DOM أولاً
+    const button = document.getElementById("createShortcut"); // تأكد من أن الزر بالمعرف موجود
+
+    if (button) {
+        button.addEventListener("click", () => {
+            const confirmation = confirm("هل تريد تنزيل الاختصار؟"); // عرض رسالة تأكيد
+            if (confirmation) {
+                const localFilePath = "file:///C:/Users/ccit-one/Downloads/noon-20241009T110922Z-001/noon/The%20Quran/Quran.html";
+                const fileName = "Quran recited";
+
+                // المسار الصحيح للصورة التي تم رفعها على السيرفر أو المجلد المحلي
+                const iconUrl = "file:///C:/path/to/New%20Project.png"; // استبدل هذا بالمسار الصحيح للصورة على جهازك أو السيرفر
+
+                const shortcutFileContent = `
+[InternetShortcut]
+URL=${localFilePath}
+IconFile=${iconUrl}
+IconIndex=0
+                `;
+
+                const blob = new Blob([shortcutFileContent], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = `${fileName}.url`; // تنزيل الملف كـ .url
+                link.click();
+            } else {
+                console.log("تم إلغاء عملية التنزيل من قبل المستخدم.");
+            }
+        });
+    } else {
+        console.log("الزر غير موجود");
+    }
+});
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // تعريف المجموعات من الـ IDs للديفات والأزرار
+    const divIds = ["contentDivWithDetails1", "contentDivWithDetails2", "contentDivWithDetails3", "contentDivWithDetails4"];
+    const closeButtonIds = ["closeContentButtonForDiv1", "closeContentButtonForDiv2", "closeContentButtonForDiv3", "closeContentButtonForDiv4"];
+    const showButtonIds = ["showContentButtonForDiv1", "showContentButtonForDiv2", "showContentButtonForDiv3", "showContentButtonForDiv4"];
+
+    divIds.forEach((divId, index) => {
+        const contentDiv = document.getElementById(divId);
+        const closeButton = document.getElementById(closeButtonIds[index]);
+        const showButton = document.getElementById(showButtonIds[index]);
+
+        // التحقق من وجود العناصر قبل إضافة الأحداث
+        if (contentDiv && closeButton && showButton) {
+            // حدث زر الإغلاق
+            closeButton.addEventListener("click", () => {
+                contentDiv.style.display = "none";  // إخفاء الديف
+                showButton.style.display = "";  // إظهار زر الإظهار
+                closeButton.style.display = "none";  // إخفاء زر الإغلاق
+            });
+
+            // حدث زر الإظهار
+            showButton.addEventListener("click", () => {
+                contentDiv.style.display = "inline-flex";  // إظهار الديف
+                showButton.style.display = "none";  // إخفاء زر الإظهار
+                closeButton.style.display = "block"; // إظهار زر الإغلاق مجددًا
+            });
+        }
+    });
+});
+
+
+
+
+
+        // تأكد من تشغيل الكود بعد تحميل DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            // استهداف العناصر
+            const toggleButton123 = document.getElementById("toggleButton123");
+            const myDiv = document.querySelector(".myDiv123");
+
+            // التحقق من وجود العناصر
+            if (!toggleButton123) {
+                console.error("The toggleButton123 element was not found!");
+                return;
+            }
+
+            if (!myDiv) {
+                console.error("The myDiv123 element was not found!");
+                return;
+            }
+
+            let isStyleApplied = false; // حالة التنسيق
+
+            // إضافة حدث النقر للزر
+            toggleButton123.addEventListener("click", () => {
+                if (isStyleApplied) {
+                    // إزالة التنسيق
+                    myDiv.style.marginTop = ""; // إعادة القيم الافتراضية
+                    myDiv.style.zIndex = ""; // إعادة القيم الافتراضية
+                    toggleButton123.textContent = "اخفاء الشريط العلوي"; // تغيير نص الزر
+                } else {
+                    // تطبيق التنسيق
+                    myDiv.style.marginTop = "0";
+                    myDiv.style.zIndex = "100";
+                    toggleButton123.textContent = "اظهار الشريط العلوي"; // تغيير نص الزر
+                }
+                isStyleApplied = !isStyleApplied; // عكس الحالة
+            });
+        });
+
+
+
+      // دالة تحميل التطبيق الأول
+      function confirmAndDownloadApp1() {
+        // عرض رسالة التأكيد
+        const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل تطبيق Quran recited؟");
+
+        if (userConfirmed) {
+            // إذا وافق المستخدم، يتم بدء التنزيل
+            const apkUrl = 'app-release.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+
+            // إنشاء رابط وتحفيز التنزيل
+            const link = document.createElement('a');
+            link.href = apkUrl;
+            link.download = 'Quran recited.apk'; // اسم الملف عند التنزيل
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        // لا حاجة لعمل أي شيء إذا رفض المستخدم
+    }
+
+    // دالة تحميل التطبيق الثاني
+    function confirmAndDownloadApp2() {
+        // عرض رسالة التأكيد
+        const userConfirmed = confirm("هل أنت متأكد أنك تريد تحميل التطبيق الآخر؟");
+
+        if (userConfirmed) {
+            // إذا وافق المستخدم، يتم بدء التنزيل
+            const apkUrl = 'another-app.apk'; // قم بتغيير هذا إلى مسار ملف APK الخاص بك
+
+            // إنشاء رابط وتحفيز التنزيل
+            const link = document.createElement('a');
+            link.href = apkUrl;
+            link.download = 'Another app.apk'; // اسم الملف عند التنزيل
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        // لا حاجة لعمل أي شيء إذا رفض المستخدم
+    }
+
+
+
+
+
+// مراقبة شاملة لأي عملية مشاركة
+document.addEventListener('click', (event) => {
+    console.log("تم الضغط على عنصر:", event.target);
+
+    // إذا كان العنصر يحتوي على رابط مشاركة (مثل البريد الإلكتروني أو الروابط الخارجية)
+    if (event.target.tagName === 'A' && event.target.href) {
+        console.log("تم الضغط على رابط مشاركة:", event.target.href);
+
+        // مثال: يمكنك التحقق إذا كانت الرابط تبدأ بـ mailto أو whatsapp
+        if (event.target.href.includes('mailto:') || event.target.href.includes('whatsapp.com')) {
+            console.log("تم التعرف على عملية مشاركة عبر رابط خارجي.");
+            shareContent(); // تشغيل دالة المشاركة
+        }
+    }
+});
+
+// مراقبة النسخ كجزء من المشاركة
+document.addEventListener('copy', (event) => {
+    console.log("عملية نسخ تم التعرف عليها. المحتوى قد يتم مشاركته.");
+    shareContent(); // تشغيل دالة المشاركة
+});
+
+// مراقبة أي حدث يسحب النص أو العنصر
+document.addEventListener('dragstart', (event) => {
+    console.log("تم التعرف على عملية سحب محتوى (قد تكون مشاركة).");
+    shareContent(); // تشغيل دالة المشاركة
+});
+
+// مراقبة التفاعل مع واجهة المشاركة في المتصفح
+document.addEventListener('share', (event) => {
+    console.log("عملية مشاركة تم تشغيلها عبر واجهة المتصفح.");
+    shareContent(); // تشغيل دالة المشاركة
+});
+
+// الدالة العامة للمشاركة
+function shareContent() {
+    const url = window.location.href; // الرابط الحالي للصفحة
+    const title = document.title; // عنوان الصفحة
+    const text = "Check out this page!"; // النص الافتراضي
+
+    if (navigator.share) {
+        // إذا كان المتصفح يدعم واجهة Web Share API
+        navigator.share({
+            title: title,
+            text: text,
+            url: url,
+        })
+            .then(() => console.log("تمت مشاركة المحتوى بنجاح"))
+            .catch((error) => console.error("حدث خطأ أثناء المشاركة:", error));
+    } else {
+        // في حالة عدم دعم المتصفح لـ Web Share API
+        console.log("المتصفح لا يدعم Web Share API. يتم استخدام بديل.");
+        fallbackShare(url);
+    }
+}
+
+// طريقة بديلة للمشاركة (نسخ الرابط)
+function fallbackShare(url) {
+    navigator.clipboard.writeText(url)
+        .then(() => alert("تم نسخ الرابط إلى الحافظة!"))
+        .catch(() => alert("تعذر نسخ الرابط إلى الحافظة."));
+}
+
+
+
+
+
+
+// // تابع لتحديد الديف الذي سيتم عرضه
+// let messageDiv;
+
+// // وظيفة لعرض الـ div
+// function showMessage() {
+//   // إنشاء الديف إذا لم يكن موجودًا بعد
+//   if (!messageDiv) {
+//     messageDiv = document.createElement('div');
+//     messageDiv.style.position = 'fixed';
+//     messageDiv.style.top = '20px';
+//     messageDiv.style.left = '50%';
+//     messageDiv.style.transform = 'translateX(-50%)';
+//     messageDiv.style.outline = 'solid 3px #fff';
+//     messageDiv.style.backgroundColor = '#ff0000';
+//     messageDiv.style.color = '#fff';
+//     messageDiv.style.padding = '10px 20px';
+//     messageDiv.style.borderRadius = '5px';
+//     messageDiv.style.zIndex = '10000000';
+//     messageDiv.innerHTML = 'Creative Clouds IT Protection ! <a href="#" style="color: #fff;">سياسة الخصوصية</a>';
+//     document.body.appendChild(messageDiv);
+//   }
+
+//   // إظهار الـ div
+//   messageDiv.style.display = 'block';
+
+//   // إخفاء الديف بعد 3 ثواني
+//   setTimeout(function() {
+//     if (messageDiv) {
+//       messageDiv.style.display = 'none';
+//     }
+//   }, 3000);
+
+//   // إضافة حدث لإغلاق الديف عند النقر خارجه
+//   document.addEventListener('click', function closeMessage(event) {
+//     if (!messageDiv.contains(event.target)) {
+//       messageDiv.style.display = 'none';
+//       document.removeEventListener('click', closeMessage); // إزالة الحدث بعد النقر
+//     }
+//   });
+// }
+
+// // تعطيل الأزرار F1 إلى F12
+// document.addEventListener('keydown', function(event) {
+//   if (event.keyCode >= 112 && event.keyCode <= 123) {
+//     event.preventDefault(); // منع الفعل الافتراضي (فتح المساعدة أو قوائم أخرى)
+//     showMessage(); // عرض الـ div عند الضغط على F1-F12
+//   }
+// });
+
+// // تعطيل قائمة النقر بالزر الأيمن
+// document.addEventListener('contextmenu', function(event) {
+//   event.preventDefault(); // منع ظهور قائمة النقر بالزر الأيمن
+//   showMessage(); // عرض الـ div عند النقر بالزر الأيمن
+// });
+
+// // تعطيل اختصار Ctrl + S
+// document.addEventListener('keydown', function(event) {
+//   if (event.ctrlKey && event.key === 's') {
+//     event.preventDefault(); // منع الفعل الافتراضي (الحفظ)
+//     showMessage(); // عرض الـ div عند الضغط على Ctrl + S
+//   }
+// });
+
+// // تعطيل اختصار Alt + F
+// document.addEventListener('keydown', function(event) {
+//   if (event.altKey && event.key === 'f') {
+//     event.preventDefault(); // منع الفعل الافتراضي (فتح قائمة الملف)
+//     showMessage(); // عرض الـ div عند الضغط على Alt + F
+//   }
+
+//   // تعطيل اختصار Ctrl + F
+//   if (event.ctrlKey && event.key === 'f') {
+//     event.preventDefault(); // منع الفعل الافتراضي (فتح البحث)
+//     showMessage(); // عرض الـ div عند الضغط على Ctrl + F
+//   }
+
+//   // تعطيل اختصار Ctrl + S
+//   if (event.ctrlKey && event.key === 's') {
+//     event.preventDefault(); // منع الفعل الافتراضي (الحفظ)
+//     showMessage(); // عرض الـ div عند الضغط على Ctrl + S
+//   }
+
+//   // تعطيل اختصار Alt + E
+//   if (event.altKey && event.key === 'e') {
+//     event.preventDefault(); // منع الفعل الافتراضي (فتح قائمة التحرير)
+//     showMessage(); // عرض الـ div عند الضغط على Alt + E
+//   }
+// });
