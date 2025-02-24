@@ -462,7 +462,15 @@ shareButtonc.addEventListener('click', function () {
 
     const textToShare = suraTextDiv.innerText.trim();
 
+    // التعرف على المتصفح
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isChrome = userAgent.includes("chrome") && !userAgent.includes("edg");
+    const isEdge = userAgent.includes("edg");
+    const isFirefox = userAgent.includes("firefox");
+    const isSafari = userAgent.includes("safari") && !userAgent.includes("chrome");
+
     if (navigator.share) {
+        // إذا كان المتصفح يدعم navigator.share (مثل كروم وفايرفوكس وسفاري وإيدج)
         navigator.share({
             title: 'نص السورة',
             text: textToShare
@@ -471,12 +479,15 @@ shareButtonc.addEventListener('click', function () {
         }).catch((error) => {
             console.error('خطأ في مشاركة السورة:', error);
         });
-    } else {
-        // مشاركة عبر واتساب عند عدم دعم navigator.share
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+    } else if (!isChrome && !isEdge && !isFirefox && !isSafari) {
+        // إذا لم يكن المتصفح من القائمة (أي متصفح آخر)
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
         window.open(whatsappUrl, '_blank');
+    } else {
+        console.warn("المشاركة غير مدعومة على هذا المتصفح.");
     }
 });
+
 
 
 });
