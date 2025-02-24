@@ -557,6 +557,5 @@ body .select2-container .select2-selection--single {
     }
     body .select2-container--default .select2-results__option {
         padding: 8px 10px;
-        border-radius: 30px;
     }
   }
