@@ -520,7 +520,7 @@ body .page-1 {
 strong {
     border-radius: 50px;
     background: white;
-    font-family: cursive;
+    /* font-family: math; */
     background-size: contain;
     width: 43px;
     height: 43px;
@@ -661,6 +661,7 @@ body .cc {
     transition: ease 0.3s;
     position: relative;
     cursor: pointer;
+    direction: rtl;
 }
 /* .ayah::before {
     height: 40px;
