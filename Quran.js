@@ -112,14 +112,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const textResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
                 const textData = await textResponse.json();
 
+                function numberToArabic(num) {
+                    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                    return num.toString().split('').map(digit => arabicDigits[parseInt(digit)]).join('');
+                }
                 const surahText = textData.data.ayahs.map((ayah, index, array) => {
-                    return `
+                    const ayahNumberInArabic = numberToArabic(index + 1);  // تحويل رقم الآية إلى اللغة العربية
+                    const ayahTextWithNumberAtEnd = `
                         <div class="ayah" data-ayah-number="${ayah.number}"> 
-                            <strong>${index + 1}</strong> 
                             ${ayah.text.replace(/ٱللَّهِ|بِرَبِّ/gi, match => `<span style="color: red;">${match}</span>`)} 
+                            <strong class="ayah-number">${ayahNumberInArabic}</strong>
                         </div>
                         ${index !== array.length - 1 ? '<hr>' : ''}`;
-                }).join('');                
+                    
+                    return ayahTextWithNumberAtEnd;
+                }).join('');      
 
                 suraTextDiv.innerHTML = surahText;
                 suraTextContainer.style.display = 'block';
@@ -444,6 +451,28 @@ function scrollToTop(scrollableDiv) {
     });
   });  
   
+//   مشراكة نص السورة
+const shareButtonc = document.getElementById('shareButtonc');
+
+shareButtonc.addEventListener('click', function () {
+    const textToShare = suraTextDiv.innerText.trim();
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'نص السورة',
+            text: textToShare
+        }).then(() => {
+            console.log('تمت مشاركة السورة بنجاح');
+        }).catch((error) => {
+            console.error('خطأ في مشاركة السورة:', error);
+        });
+    } else {
+        // إنشاء رابط مشاركة واتساب
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+});
+
 });
 
 
