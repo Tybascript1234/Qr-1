@@ -1102,6 +1102,10 @@ function fallbackShare(url) {
 
 
 
+function displayMessage() {
+    alert("عذرا لا يتم تشغيل الاعنصر بعد");
+}
+
 
 // // تابع لتحديد الديف الذي سيتم عرضه
 // let messageDiv;
