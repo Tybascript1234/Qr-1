@@ -455,6 +455,11 @@ function scrollToTop(scrollableDiv) {
 const shareButtonc = document.getElementById('shareButtonc');
 
 shareButtonc.addEventListener('click', function () {
+    if (!suraTextDiv) {
+        console.error('العنصر الذي يحتوي على النص غير موجود!');
+        return;
+    }
+
     const textToShare = suraTextDiv.innerText.trim();
 
     if (navigator.share) {
@@ -467,11 +472,12 @@ shareButtonc.addEventListener('click', function () {
             console.error('خطأ في مشاركة السورة:', error);
         });
     } else {
-        // إنشاء رابط مشاركة واتساب
+        // مشاركة عبر واتساب عند عدم دعم navigator.share
         const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
         window.open(whatsappUrl, '_blank');
     }
 });
+
 
 });
 
@@ -1103,7 +1109,7 @@ function fallbackShare(url) {
 
 
 function displayMessage() {
-    alert("عذرا لا يتم تشغيل الاعنصر بعد");
+    alert("عذرا لم يتم تشغيل العنصر بعد");
 }
 
 
