@@ -40,6 +40,30 @@
     event.target.style.cursor = "context-menu";
 });
 </script>
+
+
+<script>
+    // منع التكبير باستخدام الإيماءات
+    document.addEventListener('wheel', function(event) {
+      if (event.ctrlKey) {
+        event.preventDefault(); // منع التكبير باستخدام عجلة الماوس مع زر Ctrl
+      }
+    }, { passive: false });
+  
+    // منع التكبير باستخدام اختصارات لوحة المفاتيح (Ctrl + "+" أو Ctrl + "-")
+    window.addEventListener('keydown', function(event) {
+      if ((event.ctrlKey && (event.key === '+' || event.key === '-')) || event.key === '0') {
+        event.preventDefault(); // منع التكبير باستخدام لوحة المفاتيح
+      }
+    });
+  
+    // منع التكبير باستخدام اللمس
+    document.addEventListener('touchstart', function(event) {
+      if (event.touches.length > 1) {
+        event.preventDefault(); // منع التكبير باستخدام إيماءات اللمس
+      }
+    }, { passive: false });
+</script>    
 </head>
 <body>
     <!-- Reload -->
