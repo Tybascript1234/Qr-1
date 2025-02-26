@@ -462,6 +462,11 @@ shareButtonc.addEventListener('click', function () {
 
     const textToShare = suraTextDiv.innerText.trim();
 
+    if (textToShare === "") {
+        console.error('النص فارغ!');
+        return;
+    }
+
     // التعرف على المتصفح
     const userAgent = navigator.userAgent.toLowerCase();
     const isChrome = userAgent.includes("chrome") && !userAgent.includes("edg");
@@ -479,14 +484,17 @@ shareButtonc.addEventListener('click', function () {
         }).catch((error) => {
             console.error('خطأ في مشاركة السورة:', error);
         });
-    } else if (!isChrome && !isEdge && !isFirefox && !isSafari) {
-        // إذا لم يكن المتصفح من القائمة (أي متصفح آخر)
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
-        window.open(whatsappUrl, '_blank');
-    } else {
+    } else if (isChrome || isEdge || isFirefox || isSafari) {
+        // إذا كان المتصفح من الأنواع المدعومة الأخرى (كروم، إيدج، فايرفوكس، سفاري)
         console.warn("المشاركة غير مدعومة على هذا المتصفح.");
+    } else {
+        // إذا لم يكن المتصفح من الأنواع المدعومة، استخدام رابط WhatsApp
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
+        console.log('فتح الرابط:', whatsappUrl); // طباعة الرابط للتأكد من أنه صحيح
+        window.open(whatsappUrl, '_blank');
     }
 });
+
 
 
 
@@ -698,6 +706,7 @@ window.addEventListener('popstate', function (event) {
 window.addEventListener('load', function () {
     restoreState();
 });
+
 
 
 
