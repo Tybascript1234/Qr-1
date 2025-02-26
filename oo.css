@@ -323,14 +323,15 @@ body .select2-container .select2-selection--single {
         padding: 0 19px;
         border: solid 1px rgba(0, 0, 8, 0.06);
         margin: 0 5px;
-        border-radius: 5px;
+        border-radius: 25px;
+        transition: ease 0.1s;
         background-color: #00000000;
     }
     .hom button:hover {
         background-color: #00000005;
     }
     .hom button:active {
-        transform: scale(0.95);
+        transform: scale(0.98);
     }
     .hom button:focus {
         border: solid 1px rgba(0, 0, 8, 0.158);
