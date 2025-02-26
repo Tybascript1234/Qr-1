@@ -274,6 +274,7 @@ body .select2-container .select2-selection--single {
         animation: fadeInOut2 2.0s ease forwards;
         display: block;
         height: 3px;
+        border-radius: 5px;
         /* width: 100%; */
         background-color: #1e79f0;
     }
