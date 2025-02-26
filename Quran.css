@@ -521,6 +521,8 @@ strong {
     border-radius: 50px;
     background: white;
     /* font-family: math; */
+    position: relative;
+    bottom: 4px;
     background-size: contain;
     width: 43px;
     height: 43px;
@@ -2566,8 +2568,8 @@ html .links-Translate-search input {
         padding-bottom: 16px;
     }
     body strong {
-        width: 38px;
-        height: 38px;
+        width: 34px;
+        height: 34px;
         font-size: 12px;
     }
     body .menu-buttons {
