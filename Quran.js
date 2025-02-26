@@ -462,11 +462,6 @@ shareButtonc.addEventListener('click', function () {
 
     const textToShare = suraTextDiv.innerText.trim();
 
-    if (textToShare === "") {
-        console.error('النص فارغ!');
-        return;
-    }
-
     // التعرف على المتصفح
     const userAgent = navigator.userAgent.toLowerCase();
     const isChrome = userAgent.includes("chrome") && !userAgent.includes("edg");
@@ -490,7 +485,6 @@ shareButtonc.addEventListener('click', function () {
     } else {
         // إذا لم يكن المتصفح من الأنواع المدعومة، استخدام رابط WhatsApp
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
-        console.log('فتح الرابط:', whatsappUrl); // طباعة الرابط للتأكد من أنه صحيح
         window.open(whatsappUrl, '_blank');
     }
 });
