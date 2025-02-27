@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const togglePlayButton = document.getElementById('togglePlayButton');
     const repeatButton = document.getElementById('repeatButton');
     const downloadButton = document.getElementById('downloadButton'); // زر التنزيل
+    const selectedSuraNameSpan = document.getElementById('selectedSuraName');  // العنصر لعرض اسم السورة
 
     let allSurahs = [];
     let selectedAyah = null;
@@ -32,25 +33,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             wrapper.className = 'sura-wrapper';
             wrapper.style.backgroundImage = `url('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-images@master/surah/${surah.number}.jpg')`;
             wrapper.setAttribute('data-number', surah.number);
-
+    
             const typeImg = document.createElement('img');
             typeImg.className = 'sura-type-image';
             typeImg.src = surah.revelationType === 'Meccan'
                 ? 'https://png.pngtree.com/png-clipart/20220605/original/pngtree-kaaba-illustration-png-image_7965087.png'
                 : 'https://png.pngtree.com/png-vector/20230620/ourmid/pngtree-madina-vector-png-image_7297129.png';
-
+    
             const suraNameDiv = document.createElement('div');
             suraNameDiv.className = 'sura-name';
             suraNameDiv.textContent = surah.name;
-
+    
             const audioButton = document.createElement('button');
             audioButton.innerHTML = '<span class="material-symbols-outlined">record_voice_over</span>';
             audioButton.className = 'audio-button wave-button';
-
+    
             audioButton.addEventListener('click', function () {
                 const surahNumber = wrapper.getAttribute('data-number');
                 const audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`;
-            
+                
                 // إيقاف الصوت الحالي إذا كان قيد التشغيل
                 if (audio && isPlaying && previousAudioButton && previousAudioButton !== audioButton) {
                     audio.pause();
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     isPlaying = false;
                     togglePlayButton.innerHTML = '<ion-icon name="caret-forward-outline"></ion-icon>';
                 }
-            
+                
                 // إنشاء كائن الصوت الجديد فقط إذا لم يكن الصوت الحالي هو نفسه
                 if (previousAudioButton !== audioButton) {
                     audio = new Audio(audioUrl);
@@ -72,12 +73,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                         currentTimeSpan.textContent = '0:00';
                         durationTimeSpan.textContent = '0:00';
                     };
-            
+                
                     audio.addEventListener('loadedmetadata', function () {
                         durationTimeSpan.textContent = formatTime(audio.duration);
                     });
                 }
-            
+                
                 // Toggle play/pause state when clicking the button
                 if (isPlaying) {
                     audio.pause();
@@ -88,57 +89,61 @@ document.addEventListener("DOMContentLoaded", async function () {
                     audioButton.innerHTML = '<span class="material-symbols-outlined">voice_over_off</span>';
                     togglePlayButton.innerHTML = '<ion-icon name="pause-outline"></ion-icon>'; // Update main play button
                 }
-            
+                
                 isPlaying = !isPlaying;
                 previousAudioButton = audioButton;
-            });            
-
+            });
+    
             wrapper.appendChild(typeImg);
             wrapper.appendChild(suraNameDiv);
             wrapper.appendChild(audioButton);
             suraContainer.appendChild(wrapper);
 
-            wrapper.addEventListener('click', async function () {
-                document.querySelectorAll('.sura-wrapper').forEach(item => {
-                    item.classList.remove('selected');
-                    item.querySelector('.sura-name').style.color = 'black';
-                });
-                this.classList.add('selected');
-                this.querySelector('.sura-name').style.color = '#444';
+            
+        wrapper.addEventListener('click', async function () {
+            document.querySelectorAll('.sura-wrapper').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('.sura-name').style.color = 'black';
+            });
+            this.classList.add('selected');
+            this.querySelector('.sura-name').style.color = '#444';
 
-                const surahNumber = this.getAttribute('data-number');
-                localStorage.setItem('selectedSurah', surahNumber);
+            const surahNumber = this.getAttribute('data-number');
+            localStorage.setItem('selectedSurah', surahNumber);
 
-                const textResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
-                const textData = await textResponse.json();
+            const textResponse = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+            const textData = await textResponse.json();
 
-                function numberToArabic(num) {
-                    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-                    return num.toString().split('').map(digit => arabicDigits[parseInt(digit)]).join('');
+            function numberToArabic(num) {
+                const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                return num.toString().split('').map(digit => arabicDigits[parseInt(digit)]).join('');
+            }
+            const surahText = textData.data.ayahs.map((ayah, index, array) => {
+                const ayahNumberInArabic = numberToArabic(index + 1);  // تحويل رقم الآية إلى اللغة العربية
+                const ayahTextWithNumberAtEnd = `
+                    <div class="ayah" data-ayah-number="${ayah.number}"> 
+                        ${ayah.text.replace(/ٱللَّهِ|بِرَبِّ/gi, match => `<span style="color: red;">${match}</span>`)} 
+                        <strong class="ayah-number">${ayahNumberInArabic}</strong>
+                    </div>
+                    ${index !== array.length - 1 ? '<hr>' : ''}`;
+                
+                return ayahTextWithNumberAtEnd;
+            }).join('');
+
+            suraTextDiv.innerHTML = surahText;
+            suraTextContainer.style.display = 'block';
+
+            // تحديث اسم السورة في الـ span
+            selectedSuraNameSpan.textContent = `${surah.name}`;
+
+            if (localStorage.getItem('selectedAyah')) {
+                const savedAyah = localStorage.getItem('selectedAyah');
+                const savedAyahElement = document.querySelector(`.ayah[data-ayah-number="${savedAyah}"]`);
+                if (savedAyahElement) {
+                    highlightAyah(savedAyahElement);
+                    selectedAyah = savedAyahElement;
                 }
-                const surahText = textData.data.ayahs.map((ayah, index, array) => {
-                    const ayahNumberInArabic = numberToArabic(index + 1);  // تحويل رقم الآية إلى اللغة العربية
-                    const ayahTextWithNumberAtEnd = `
-                        <div class="ayah" data-ayah-number="${ayah.number}"> 
-                            ${ayah.text.replace(/ٱللَّهِ|بِرَبِّ/gi, match => `<span style="color: red;">${match}</span>`)} 
-                            <strong class="ayah-number">${ayahNumberInArabic}</strong>
-                        </div>
-                        ${index !== array.length - 1 ? '<hr>' : ''}`;
-                    
-                    return ayahTextWithNumberAtEnd;
-                }).join('');      
-
-                suraTextDiv.innerHTML = surahText;
-                suraTextContainer.style.display = 'block';
-
-                if (localStorage.getItem('selectedAyah')) {
-                    const savedAyah = localStorage.getItem('selectedAyah');
-                    const savedAyahElement = document.querySelector(`.ayah[data-ayah-number="${savedAyah}"]`);
-                    if (savedAyahElement) {
-                        highlightAyah(savedAyahElement);
-                        selectedAyah = savedAyahElement;
-                    }
-                }
+            }
 
                 // إضافة EventListener لجميع الآيات
         document.querySelectorAll('.ayah').forEach(ayahElement => {
@@ -488,6 +493,170 @@ shareButtonc.addEventListener('click', function () {
         window.open(whatsappUrl, '_blank');
     }
 });
+
+
+
+
+
+
+const downloadOptionsDiv = document.getElementById("downloadOptions");
+const selectFormat = document.getElementById("downloadFormat");
+const downloadButtone = document.getElementById("downloadButtone");
+const closeSelection = document.getElementById("closeSelection"); // زر الإغلاق
+const selectedCountSpan = document.getElementById("selectedCount"); // العنصر لعرض العدد
+
+let selectedSurahs = new Set(); // لتخزين السور المحددة
+let isFirstSelection = false; // تحديد ما إذا تم تحديد السورة الأولى بزر الفأرة الأيمن
+let isSelectionCleared = false; // لتحديد ما إذا تم إلغاء التحديد من جميع السور
+
+// إضافة الحدث 'contextmenu' للنقر بزر الفأرة الأيمن على اسم السورة
+suraContainer.addEventListener("contextmenu", function (event) {
+    const clickedElement = event.target.closest(".sura-wrapper");
+    if (!clickedElement) return;
+
+    event.preventDefault(); // منع القائمة الافتراضية للنقر بزر الفأرة الأيمن
+
+    const surahNumber = clickedElement.getAttribute("data-number");
+    const typeImg = clickedElement.querySelector(".sura-type-image");
+
+    // إذا تم إلغاء التحديد من جميع السور، يجب النقر بزر الفأرة الأيمن لتحديد السورة الأولى مجددًا
+    if (isSelectionCleared) {
+        selectedSurahs.clear(); // إلغاء أي تحديد سابق
+        isFirstSelection = false; // إعادة تعيين اختيار السورة الأولى
+        isSelectionCleared = false; // إعادة تعيين حالة إلغاء التحديد
+        document.querySelectorAll(".sura-wrapper").forEach(wrapper => {
+            const typeImg = wrapper.querySelector(".sura-type-image");
+            if (wrapper.hasAttribute("data-original-src")) {
+                typeImg.src = wrapper.getAttribute("data-original-src"); // استعادة الصورة الأصلية
+                typeImg.classList.remove("online"); // إزالة كلاس online من الصورة
+            }
+        });
+        downloadOptionsDiv.style.display = "none"; // إخفاء خيارات التنزيل
+        updateSelectedCount(); // تحديث العدد
+    }
+
+    // إذا لم يتم تحديد السورة الأولى بعد، نقوم بتحديد السورة الأولى
+    if (!isFirstSelection) {
+        selectedSurahs.add(surahNumber); // إضافة السورة إلى المحددة
+        clickedElement.setAttribute("data-original-src", typeImg.src);
+        typeImg.src = "https://cdn-icons-png.flaticon.com/512/1828/1828640.png"; // صورة علامة الصح
+        typeImg.classList.add("online"); // إضافة الكلاس "online" للصورة
+        isFirstSelection = true; // تم تحديد السورة الأولى
+    } else {
+        // إذا كانت السورة موجودة في المحددات، نقوم بإلغاء تحديدها
+        if (selectedSurahs.has(surahNumber)) {
+            selectedSurahs.delete(surahNumber);
+            typeImg.src = clickedElement.getAttribute("data-original-src"); // استعادة الصورة الأصلية
+            typeImg.classList.remove("online"); // إزالة الكلاس "online" من الصورة
+        } else {
+            selectedSurahs.add(surahNumber); // إضافة السورة إلى التحديد
+            clickedElement.setAttribute("data-original-src", typeImg.src);
+            typeImg.src = "https://cdn-icons-png.flaticon.com/512/1828/1828640.png"; // صورة علامة الصح
+            typeImg.classList.add("online"); // إضافة الكلاس "online" للصورة
+        }
+    }
+
+    // إظهار أو إخفاء خيارات التنزيل بناءً على السور المحددة
+    downloadOptionsDiv.style.display = selectedSurahs.size > 0 ? "flex" : "none";
+    updateSelectedCount(); // تحديث العدد
+});
+
+// إضافة الحدث للنقر العادي لتحديد باقي السور بعد تحديد السورة الأولى
+suraContainer.addEventListener("click", function (event) {
+    const clickedElement = event.target.closest(".sura-wrapper");
+    if (!clickedElement) return;
+
+    // إذا تم تحديد السورة الأولى بزر الفأرة الأيمن، يمكن تحديد باقي السور بالنقر فقط
+    if (isFirstSelection) {
+        const surahNumber = clickedElement.getAttribute("data-number");
+        const typeImg = clickedElement.querySelector(".sura-type-image");
+
+        // إذا كانت السورة موجودة في المحددات، نقوم بإلغاء تحديدها
+        if (selectedSurahs.has(surahNumber)) {
+            selectedSurahs.delete(surahNumber);
+            typeImg.src = clickedElement.getAttribute("data-original-src"); // استعادة الصورة الأصلية
+            typeImg.classList.remove("online"); // إزالة الكلاس "online" من الصورة
+        } else {
+            selectedSurahs.add(surahNumber); // إضافة السورة إلى التحديد
+            clickedElement.setAttribute("data-original-src", typeImg.src);
+            typeImg.src = "https://cdn-icons-png.flaticon.com/512/1828/1828640.png"; // صورة علامة الصح
+            typeImg.classList.add("online"); // إضافة الكلاس "online" للصورة
+        }
+
+        // إظهار أو إخفاء خيارات التنزيل بناءً على السور المحددة
+        downloadOptionsDiv.style.display = selectedSurahs.size > 0 ? "flex" : "none";
+        updateSelectedCount(); // تحديث العدد
+    }
+});
+
+downloadButtone.addEventListener("click", async function () {
+    if (selectedSurahs.size === 0) return;
+
+    const format = selectFormat.value;
+    const zip = new JSZip();
+
+    for (let surahNumber of selectedSurahs) {
+        if (format === "video") {
+            try {
+                const videoUrl = `https://example.com/quran/videos/surah${surahNumber}.mp4`; // تأكد من وجود روابط فيديو صحيحة
+                const response = await fetch(videoUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`لم يتم العثور على الفيديو لسورة ${surahNumber}`);
+                }
+
+                // تحقق من تحميل الفيديو بنجاح
+                const blob = await response.blob();
+                console.log(`تم تحميل الفيديو لسورة ${surahNumber} بنجاح`);
+                zip.file(`Surah_${surahNumber}.mp4`, blob);
+            } catch (error) {
+                console.error(`خطأ في تحميل الفيديو لسورة ${surahNumber}:`, error);
+            }
+        } else {
+            try {
+                // تحميل اسم السورة من API
+                const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+                const data = await response.json();
+                const surahName = data.data.name; // اسم السورة
+                const textContent = data.data.ayahs.map(ayah => ayah.text).join("\n");
+
+                // إضافة الملف إلى zip باستخدام اسم السورة
+                zip.file(`Surah_${surahName}.txt`, textContent);
+            } catch (error) {
+                console.error(`خطأ في تحميل النص لسورة ${surahNumber}:`, error);
+            }
+        }
+    }
+
+    // إنشاء ملف ZIP وتنزيله
+    zip.generateAsync({ type: "blob" }).then(content => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "Selected_Surahs.zip";
+        a.click();
+    });
+});
+
+// زر الإغلاق: عند النقر عليه يتم إلغاء التحديد وإخفاء الديف
+closeSelection.addEventListener("click", function () {
+    selectedSurahs.clear(); // إلغاء تحديد جميع السور
+    isFirstSelection = false; // إعادة تعيين حالة السورة الأولى
+    isSelectionCleared = true; // تحديد أنه تم إلغاء التحديد من جميع السور
+    document.querySelectorAll(".sura-wrapper").forEach(wrapper => {
+        const typeImg = wrapper.querySelector(".sura-type-image");
+        if (wrapper.hasAttribute("data-original-src")) {
+            typeImg.src = wrapper.getAttribute("data-original-src"); // استعادة الصورة الأصلية
+            typeImg.classList.remove("online"); // إزالة كلاس "online" من الصورة
+        }
+    });
+    downloadOptionsDiv.style.display = "none"; // إخفاء الديف
+    updateSelectedCount(); // تحديث العدد
+});
+
+// دالة لتحديث عدد السور المحددة في الـ span
+function updateSelectedCount() {
+    selectedCountSpan.textContent = `${selectedSurahs.size}`;
+}
 
 
 
