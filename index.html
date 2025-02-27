@@ -296,10 +296,10 @@ setInterval(updateQRCode, 20000);
                     </div>
                 </div>
 
-                <div class="opin_link" style="display: none;">
-                    <button class="opin_link-button"><div><ion-icon name="logo-github"></ion-icon><span>Github</span></div><ion-icon name="open-outline"></ion-icon></button>
-                    <button class="opin_link-button"><div><ion-icon name="logo-youtube"></ion-icon><span>Youtube</span></div><ion-icon name="open-outline"></ion-icon></button>
-                    <button class="opin_link-button"><div><ion-icon name="logo-twitter"></ion-icon><span>Twitter</span></div><ion-icon name="open-outline"></ion-icon></button>
+                <div class="opin_link">
+                    <button class="opin_link-button"><div><ion-icon name="logo-github"></ion-icon><span>Github</span></div><ion-icon class="lock" name="open-outline"></ion-icon></button>
+                    <button class="opin_link-button"><div><ion-icon name="logo-youtube"></ion-icon><span>Youtube</span></div><ion-icon class="lock" name="open-outline"></ion-icon></button>
+                    <button class="opin_link-button"><div><ion-icon name="logo-twitter"></ion-icon><span>Twitter</span></div><ion-icon class="lock" name="open-outline"></ion-icon></button>
                 </div>
 
                 <div class="oio">
@@ -375,22 +375,22 @@ setInterval(updateQRCode, 20000);
                             <div class="Name" style="z-index: 5;">
                                 <button class="logo_button wave-button cc buttonWithLongClassName pagee" id="showDivButtonWithLongName"><ion-icon name="menu-outline"></ion-icon></button>
                                 <div id="controlsContainer"></div>
-                                <span id="bismillah">محتوى السورة هنا</span><button class="close-button closeButton" id="closeButton"><span class="material-symbols-outlined notranslate"> refresh </span></button> <!-- زر الإغلاق -->
+                                <span id="selectedSuraName">محتوى السورة هنا</span><button class="close-button closeButton" id="closeButton"><span class="material-symbols-outlined notranslate"> refresh </span></button> <!-- زر الإغلاق -->
                                 <button class="close-button closeButton" id="playPauseAudio" style="display: none;"><ion-icon name="radio-outline"></ion-icon></button>
                                 <button class="page-close hide-btn pagee wave-button cvme" data-target="Page2" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
                                 <!-- --------- -->
-                                 <div class="name_12" id="selectionDiv" style="display: none;">
+                                 <div class="name_12" id="downloadOptions" style="display: none;">
                                     <div class="name_12_div">
                                         <div>
                                             <div class="name_13"><span id="selectedCount">0</span> العدد المحدد</div>
-                                            <select name="" id="downloadType" class="name_14">
-                                                <option value="video">فيديو</option>
+                                            <select name="" id="downloadFormat" class="name_14" style="padding-right: 18px;">
+                                                <!-- <option value="video">فيديو</option> -->
                                                 <option value="text">نص</option>
                                             </select>
                                         </div>
                                         <div>
-                                            <button class="name_14" id="downloadFiles"><ion-icon name="download-outline"></ion-icon>تنزيل</button>
-                                            <button id="closeSelection" class="name_15" style="background: #f7f7f7; color: #555555;"><ion-icon name="close-outline"></ion-icon></button>
+                                            <button class="name_14" id="downloadButtone"><ion-icon name="download-outline"></ion-icon>تنزيل</button>
+                                            <button id="closeSelection" class="name_15 wave-button" style="background: #f7f7f7; color: #555555;"><ion-icon name="close-outline"></ion-icon></button>
                                         </div>
                                         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
                                         <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
