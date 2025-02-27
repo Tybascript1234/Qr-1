@@ -2741,8 +2741,8 @@ html .links-Translate-search input {
         cursor: context-menu;
     }
     body .oio-div-div {
-        margin-left: 15px;
-        margin-right: 15px;
+        margin-left: 0;
+        /* margin-right: 15px; */
     }
     body .oio-div {
         display: block;
