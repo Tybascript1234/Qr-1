@@ -28,6 +28,9 @@
         ion-icon {
             display: flex;
         }
+        button {
+            cursor: pointer;
+        }
         #worldMap {
             width: 100%;
             height: 100%;
@@ -69,7 +72,6 @@ body .leaflet-left .leaflet-control {
 .map-menu button {
     position: relative;
     background: #0000009c;
-    cursor: context-menu;
     width: 40px;
     height: 40px;
     border-radius: 50px;
@@ -458,6 +460,11 @@ body .leaflet-marker-pane img {
     </style>
 </head>
 <body>
+    <script>
+        document.addEventListener("touchstart", function (event) {
+        event.target.style.cursor = "context-menu";
+    });
+    </script>
 <!--     <div id="container" style="z-index: 1500;"></div> -->
         <!-- Reload -->
         <div class="Reload" id="Reload-logo">
