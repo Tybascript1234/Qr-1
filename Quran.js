@@ -659,6 +659,23 @@ function updateSelectedCount() {
 }
 
 
+// const divs = suraContainer.querySelectorAll('.sura-wrapper'); // تحديد جميع العناصر التي تحتوي على أسماء السور
+
+//     // عدد العناصر التي نريد إضافة div بينها
+//     const interval = 30;
+
+//     // إنشاء div جديد يحتوي على الصور والروابط
+//     const newDiv = document.createElement('div');
+//     newDiv.id = 'suraContainere';
+//     newDiv.innerHTML = `
+//         <img src="https://taibahcloud.com/images/promo/39/Men_-_Mobile.jpg" alt="صورة">
+//         <a href="https://taibahcloud.com/"></a>
+//     `;
+
+//     // إضافة div جديد بين كل 52 عنصر
+//     for (let i = interval - 1; i < divs.length; i += interval) {
+//         divs[i].parentNode.insertBefore(newDiv.cloneNode(true), divs[i].nextSibling);
+//     }
 
 
 });
