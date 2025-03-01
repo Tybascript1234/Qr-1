@@ -57,8 +57,10 @@
     font-family: "Amiri", serif;
     line-height: 2em;
     font-size: 2.2em;
-    border-bottom: solid 1px #ececec;
     color: #4a596d;
+}
+.text-container:not(:last-child) {
+    border-bottom: solid 1px #ececec;
 }
 .text-container p {
     max-height: 200px;
@@ -95,6 +97,10 @@
 }
 .containersk-button:hover {
     background-color: #4a596d09;
+}
+.containersk-button:active ion-icon {
+    transform: scale(0.95);
+    transition: ease 0.0s;
 }
 
 
