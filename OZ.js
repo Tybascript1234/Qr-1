@@ -1,4 +1,5 @@
 const createdTexts = new Set(); // لتخزين النصوص التي تم إنشاؤها بالفعل
+const deletedTexts = new Set(); // لتخزين النصوص التي تم حذفها
 
 // دالة لإنشاء div جديد مع النص والأزرار
 function createDiv(text, containerId, showDeleteButton = false) {
@@ -22,7 +23,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر النسخ
     const copyButton = document.createElement('button');
-    copyButton.className = 'containersk-button wave-button cvme';
+    copyButton.className = 'containersk-button cvme';
     copyButton.innerHTML = '<ion-icon name="copy-outline"></ion-icon>';
     copyButton.setAttribute('data-tooltip', 'نسخ النص');
     copyButton.onclick = () => {
@@ -39,7 +40,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر المشاركة
     const shareButton = document.createElement('button');
-    shareButton.className = 'containersk-button wave-button cvme';
+    shareButton.className = 'containersk-button cvme';
     shareButton.innerHTML = '<ion-icon name="arrow-redo-outline"></ion-icon>';
     shareButton.setAttribute('data-tooltip', 'مشاركة النص');
     shareButton.onclick = async () => {
@@ -57,7 +58,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر التحميل
     const downloadButton = document.createElement('button');
-    downloadButton.className = 'containersk-button wave-button cvme';
+    downloadButton.className = 'containersk-button cvme';
     downloadButton.innerHTML = '<ion-icon name="download-outline"></ion-icon>';
     downloadButton.setAttribute('data-tooltip', 'تحميل النص');
     downloadButton.onclick = () => {
@@ -74,7 +75,7 @@ function createDiv(text, containerId, showDeleteButton = false) {
 
     // زر الاستماع
     const listenButton = document.createElement('button');
-    listenButton.className = 'containersk-button wave-button cvme';
+    listenButton.className = 'containersk-button cvme';
     listenButton.innerHTML = '<ion-icon name="volume-high-outline"></ion-icon>';
     listenButton.setAttribute('data-tooltip', 'الاستماع إلى النص');
 
@@ -142,6 +143,8 @@ function createDiv(text, containerId, showDeleteButton = false) {
             if (confirm("هل أنت متأكد أنك تريد حذف هذا النص؟")) { // تأكيد الحذف
                 container.removeChild(textContainer);
                 createdTexts.delete(text); // إزالة النص من المجموعة عند الحذف
+                deletedTexts.add(text); // إضافة النص إلى المجموعة المحذوفة
+                saveTextsToLocalStorage(); // تحديث التخزين المحلي
                 alert('تم حذف النص بنجاح!'); // هذه الرسالة ستبقى
             }
         };
@@ -175,13 +178,13 @@ function toggleDivs(showFirst) {
     }
 }
 
+// دالة لإنشاء divs لحاوية معينة
+function createDivsForContainer(texts, containerId, showDeleteButton = false) {
+    texts.forEach(text => createDiv(text, containerId, showDeleteButton));
+}
+
 // عند تحميل محتوى DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // دالة لإنشاء divs لحاوية معينة
-    const createDivsForContainer = (texts, containerId, showDeleteButton = false) => {
-        texts.forEach(text => createDiv(text, containerId, showDeleteButton));
-    };
-
     // إنشاء divs لكل من الحاويات
     createDivsForContainer(textsArray1, 'containersk', false); // عدم عرض زر الحذف للنصوص الموجودة مسبقًا
     createDivsForContainer(textsArray2, 'container-second', false); // عدم عرض زر الحذف للنصوص الجديدة
@@ -204,6 +207,40 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // إنشاء div جديد في container-second بدون زر الحذف
             createDiv(newText, 'container-second', false); // زر الحذف لا يظهر هنا
+
+            // حفظ النصوص في localStorage
+            saveTextsToLocalStorage();
         }
     });
+
+    // تحميل النصوص المحفوظة من localStorage
+    loadTextsFromLocalStorage();
 });
+
+// دالة لحفظ النصوص في localStorage
+function saveTextsToLocalStorage() {
+    const containerskTexts = Array.from(document.getElementById('containersk').children)
+        .map(child => child.querySelector('p') ? child.querySelector('p').textContent : null)
+        .filter(text => text !== null);
+    const containerSecondTexts = Array.from(document.getElementById('container-second').children)
+        .map(child => child.querySelector('p') ? child.querySelector('p').textContent : null)
+        .filter(text => text !== null);
+
+    localStorage.setItem('containerskTexts', JSON.stringify(containerskTexts));
+    localStorage.setItem('containerSecondTexts', JSON.stringify(containerSecondTexts));
+    localStorage.setItem('deletedTexts', JSON.stringify(Array.from(deletedTexts)));
+}
+
+// دالة لتحميل النصوص من localStorage
+function loadTextsFromLocalStorage() {
+    const containerskTexts = JSON.parse(localStorage.getItem('containerskTexts')) || [];
+    const containerSecondTexts = JSON.parse(localStorage.getItem('containerSecondTexts')) || [];
+    const savedDeletedTexts = JSON.parse(localStorage.getItem('deletedTexts')) || [];
+
+    // استرجاع النصوص المحذوفة إلى المجموعة
+    savedDeletedTexts.forEach(text => deletedTexts.add(text));
+
+    // إنشاء divs لكل من الحاويات باستخدام النصوص المحفوظة
+    createDivsForContainer(containerskTexts, 'containersk', true);
+    createDivsForContainer(containerSecondTexts, 'container-second', false);
+}
