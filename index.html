@@ -373,7 +373,7 @@ setInterval(updateQRCode, 20000);
                     </div>
                     <div class="page-2 scrollable-div">
                             <div class="Name" style="z-index: 5;">
-                                <button class="logo_button wave-button cc buttonWithLongClassName pagee" id="showDivButtonWithLongName"><ion-icon name="menu-outline"></ion-icon></button>
+                                <button class="logo_button wave-button cc buttonWithLongClassName cvme pagee" id="showDivButtonWithLongName"  data-tooltip="قائمة السور"><ion-icon name="menu-outline"></ion-icon></button>
                                 <div id="controlsContainer"></div>
                                 <span id="selectedSuraName">محتوى السورة هنا</span><button class="close-button closeButton" id="closeButton"><span class="material-symbols-outlined notranslate"> refresh </span></button> <!-- زر الإغلاق -->
                                 <button class="close-button closeButton" id="playPauseAudio" style="display: none;"><ion-icon name="radio-outline"></ion-icon></button>
@@ -400,70 +400,72 @@ setInterval(updateQRCode, 20000);
 
                             <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
                             <div id="controls" class="Name" style="z-index: 10;justify-content: left;display: flex;box-shadow: 0px -1px 0px #e3e3e3;">
-                                <div class="controlse">
-                                    <div style="display: flex;">
-                                        <button id="togglePlayButton" class="logo_button wave-button cccx"><ion-icon name="caret-forward-outline"></ion-icon></button>
-                                        <button id="rewindButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> undo </span></button>
-                                        <button id="forwardButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> redo </span></button>
+                                <div class="controls-div">
+                                    <div class="controlse">
+                                        <div style="display: flex;">
+                                            <button id="togglePlayButton" class="logo_button wave-button cccx"><ion-icon name="caret-forward-outline"></ion-icon></button>
+                                            <button id="rewindButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> undo </span></button>
+                                            <button id="forwardButton" class="logo_button wave-button cccx"><span class="material-symbols-outlined notranslate"> redo </span></button>
+                                        </div>
+                                    <div style="margin: 0 8px;" class="svs">
+                                        <span id="currentTime" class="sv">0:00</span> / <span class="sv" id="durationTime">0:00</span>
                                     </div>
-                                <div style="margin: 0 8px;" class="svs">
-                                    <span id="currentTime" class="sv">0:00</span> / <span class="sv" id="durationTime">0:00</span>
-                                </div>
-                                <input type="range" id="progressBar" min="0" max="100" value="0" style="margin-right: 8px;"> 
-                                </div>
-                                <div class="fof-div cke xxd" style="margin-right: 8px;justify-content: right;margin-left: 0;">
-                                    <button class="logo_button cccx"><ion-icon name="settings-outline"></ion-icon></button>
-                                    <div class="fof-dive" id="kn">
-                                        <div>
-                                            <!-- <button class="kkf" id="nextSuraButton"><ion-icon name="return-up-forward-outline"></ion-icon>Skip Next</button>
-                                            <button class="kkf" id="prevSuraButton"><ion-icon name="return-up-back-outline"></ion-icon>Skip Previous</button> -->
-                                            <button class="kkf" id="showContentButtonForDiv3"><ion-icon name="search-outline"></ion-icon>البحث بالسورة</button>
-                                            <button class="kkf" id="repeatButton"><ion-icon name="repeat-outline"></ion-icon>إعادة</button>
-                                            <div id="ert" style="display: none;">
-                                                <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>الصوت</button>
-                                                <div class="fof-dive" id="">
-                                                    <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>عالي</button>
-                                                    <button class="kkf" id=""><ion-icon name="volume-medium"></ion-icon>متوسط</button>
-                                                    <button class="kkf" id=""><ion-icon name="volume-low"></ion-icon>منخفض</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert">
-                                                <button class="kkf"><ion-icon name="share-social"></ion-icon>مشاركة</button>
-                                                <div class="fof-dive" id="">
-                                                    <button class="kkf" id="shareButton234"><ion-icon name="checkbox-outline"></ion-icon>اية محددة</button>
-                                                    <button class="kkf" id="shareButtonc"><ion-icon name="reader-outline"></ion-icon>نص السورة</button>
-                                                    <button class="kkf" id="" onclick="displayMessage()"><ion-icon name="videocam-outline"></ion-icon>فيديو السورة</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert">
-                                                <button class="kkf" id=""><span class="material-symbols-outlined notranslate"> download </span>تنزيل</button>
-                                                <div class="fof-dive" id="">
-                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-                                                    <button class="kkf" id="downloadButton"><span class="material-symbols-outlined notranslate"> movie </span>فيديو</button>
-                                                    <button class="kkf" id="downloadTextButton"><ion-icon name="document-text-outline"></ion-icon>نص</button>
-                                                </div>
-                                            </div>
-                                            <div id="ert" style="display: block;">
-                                                <button class="kkf" id=""><ion-icon name="ellipsis-horizontal"></ion-icon>اخرى</button>
-                                                <div class="fof-dive" style="bottom: -11px; top: auto;">
-                                                    <div id="">
-                                                        <select id="audioSelect">
-                                                            <option value="ar.alafasy">مشاري العفاسي</option>
-                                                            <option value="ar.abdulsamad">عبد الباسط عبد الصمد</option>
-                                                            <option value="ar.husary">محمود الحصري</option>
-                                                            <option value="ar.shuraym">سعود الشريم</option>
-                                                        </select>   
+                                    <input type="range" id="progressBar" min="0" max="100" value="0" style="margin-right: 8px;"> 
+                                    </div>
+                                    <div class="fof-div cke xxd" style="margin-right: 8px;justify-content: right;margin-left: 0;">
+                                        <button class="logo_button cccx"><ion-icon name="settings-outline"></ion-icon></button>
+                                        <div class="fof-dive" id="kn" style="top: 52px;">
+                                            <div>
+                                                <!-- <button class="kkf" id="nextSuraButton"><ion-icon name="return-up-forward-outline"></ion-icon>Skip Next</button>
+                                                <button class="kkf" id="prevSuraButton"><ion-icon name="return-up-back-outline"></ion-icon>Skip Previous</button> -->
+                                                <button class="kkf" id="showContentButtonForDiv3"><ion-icon name="search-outline"></ion-icon>البحث بالسورة</button>
+                                                <button class="kkf" id="repeatButton"><ion-icon name="repeat-outline"></ion-icon>إعادة</button>
+                                                <div id="ert" style="display: none;">
+                                                    <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>الصوت</button>
+                                                    <div class="fof-dive" id="">
+                                                        <button class="kkf" id=""><ion-icon name="volume-high"></ion-icon>عالي</button>
+                                                        <button class="kkf" id=""><ion-icon name="volume-medium"></ion-icon>متوسط</button>
+                                                        <button class="kkf" id=""><ion-icon name="volume-low"></ion-icon>منخفض</button>
                                                     </div>
-                                                    <button class="kkf" id="toggleButton123" style="justify-content: right;">اخفاء الشريط العلوي</button>
-                                                    <button class="kkf" id="" onclick="showModal()"><span class="material-symbols-outlined notranslate"> flag </span>ابلاغ عن مشكلة</button>
                                                 </div>
+                                                <div id="ert">
+                                                    <button class="kkf"><ion-icon name="share-social"></ion-icon>مشاركة</button>
+                                                    <div class="fof-dive" id="">
+                                                        <button class="kkf" id="shareButton234"><ion-icon name="checkbox-outline"></ion-icon>اية محددة</button>
+                                                        <button class="kkf" id="shareButtonc"><ion-icon name="reader-outline"></ion-icon>نص السورة</button>
+                                                        <button class="kkf" id="" onclick="displayMessage()"><ion-icon name="videocam-outline"></ion-icon>فيديو السورة</button>
+                                                    </div>
+                                                </div>
+                                                <div id="ert">
+                                                    <button class="kkf" id=""><span class="material-symbols-outlined notranslate"> download </span>تنزيل</button>
+                                                    <div class="fof-dive" id="">
+                                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                                        <button class="kkf" id="downloadButton"><span class="material-symbols-outlined notranslate"> movie </span>فيديو</button>
+                                                        <button class="kkf" id="downloadTextButton"><ion-icon name="document-text-outline"></ion-icon>نص</button>
+                                                    </div>
+                                                </div>
+                                                <div id="ert" style="display: block;">
+                                                    <button class="kkf" id=""><ion-icon name="ellipsis-horizontal"></ion-icon>اخرى</button>
+                                                    <div class="fof-dive" style="bottom: -11px; top: auto;">
+                                                        <div id="">
+                                                            <select id="audioSelect">
+                                                                <option value="ar.alafasy">مشاري العفاسي</option>
+                                                                <option value="ar.abdulsamad">عبد الباسط عبد الصمد</option>
+                                                                <option value="ar.husary">محمود الحصري</option>
+                                                                <option value="ar.shuraym">سعود الشريم</option>
+                                                            </select>   
+                                                        </div>
+                                                        <button class="kkf" id="toggleButton123" style="justify-content: right;">اخفاء الشريط العلوي</button>
+                                                        <button class="kkf" id="" onclick="showModal()"><span class="material-symbols-outlined notranslate"> flag </span>ابلاغ عن مشكلة</button>
+                                                    </div>
+                                                </div>
+                                                <!-- <button class="kkf" id=""><ion-icon name="download-outline"></ion-icon>Download MP4</button> -->
                                             </div>
-                                            <!-- <button class="kkf" id=""><ion-icon name="download-outline"></ion-icon>Download MP4</button> -->
                                         </div>
                                     </div>
+                                    <div id="contentDivWithDetails3" style="display: none;"><ion-icon style="font-size: 19px;color: #4a596d;" name="search"></ion-icon><input type="text" placeholder="ابحث" id="searchAyahInput"><button id="closeContentButtonForDiv3" class="Shortcut-close"><ion-icon name="close-outline"></ion-icon></button></div>
                                 </div>
-                                <div id="contentDivWithDetails3" style="display: none;"><ion-icon style="font-size: 19px;color: #4a596d;" name="search"></ion-icon><input type="text" placeholder="ابحث" id="searchAyahInput"><button id="closeContentButtonForDiv3" class="Shortcut-close"><ion-icon name="close-outline"></ion-icon></button></div>
-                            </div> 
+                            </div>
                         <div id="suraTextContainer">
                             <div class="oo" id="suraText">
                             
