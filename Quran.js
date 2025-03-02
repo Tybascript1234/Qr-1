@@ -688,7 +688,14 @@ function updateSelectedCount() {
 
 
 
-
+document.addEventListener("DOMContentLoaded", function () {
+    if (navigator.userAgent.includes("AndroidApp")) { 
+        let unwantedDiv = document.querySelector("screen"); // استبدل id-المطلوب-إخفاؤه بالمعرف الفعلي للـ div
+        if (unwantedDiv) {
+            unwantedDiv.style.display = "none";
+        }
+    }
+});
 
 
 
