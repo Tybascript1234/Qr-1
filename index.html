@@ -330,11 +330,11 @@ setInterval(updateQRCode, 20000);
                         <div class="oio-div-div">
                             <span style="direction: rtl;">ربط API</span>
                             <div class="">
-                              <a onclick="showModal()">اوقات الصلاة</a>
-                                <a onclick="showModal()">القرآن الكريم</a>
-                                <a onclick="showModal()">اذكار الصباح والمساء</a>
-                                <a onclick="showModal()">خريطة العالم</a>
-                                <a onclick="showModal()">ماسبقة دينية</a>
+                                <a class="selecte" data-fruit="er6" onclick="showModal()">اوقات الصلاة</a>
+                                <a class="selecte" data-fruit="er7" onclick="showModal()">القرآن الكريم</a>
+                                <a class="selecte" data-fruit="er8" onclick="showModal()">اذكار الصباح والمساء</a>
+                                <a class="selecte" data-fruit="er9" onclick="showModal()">خريطة العالم</a>
+                                <a class="selecte" data-fruit="er10" onclick="showModal()">ماسبقة دينية</a>
                                 <a id="showContentButtonForDiv1" style="display: none;">تنزيل التطبيق</a>  
                             </div>
                         </div>
@@ -364,8 +364,8 @@ setInterval(updateQRCode, 20000);
                             <span>المساهمات</span>
                             <div class="">
                                 <a class="show-btn" data-target="Page8">مساهمة تقنية</a>
-                                <a onclick="showModal()">مساهمة مالية</a>
-                                <a onclick="showModal()">مساهمة ادارية وغيرها</a>
+                                <a class="selecte" data-fruit="er4" onclick="showModal()">مساهمة مالية</a>
+                                <a class="selecte" data-fruit="er5" onclick="showModal()">مساهمة ادارية وغيرها</a>
                             </div>
                         </div>
                         <div style="position: absolute;margin: auto;bottom: 8px;filter: opacity(0.7);width: -webkit-fill-available;right: 0;">Released under MIT License | Copyright @ 2024</div>
@@ -465,7 +465,7 @@ setInterval(updateQRCode, 20000);
                                                             </select>   
                                                         </div>
                                                         <button class="kkf" id="toggleButton123" style="justify-content: right;">اخفاء الشريط العلوي</button>
-                                                        <button class="kkf" id="" onclick="showModal()"><span class="material-symbols-outlined notranslate"> flag </span>ابلاغ عن مشكلة</button>
+                                                        <button class="kkf selecte" data-fruit="er2" id="" onclick="showModal()"><span class="material-symbols-outlined notranslate"> flag </span>ابلاغ عن مشكلة</button>
                                                     </div>
                                                 </div>
                                                 <!-- <button class="kkf" id=""><ion-icon name="download-outline"></ion-icon>Download MP4</button> -->
@@ -1021,17 +1021,17 @@ setInterval(updateQRCode, 20000);
             <input class="" type="email" name="entry.1398539276" placeholder="الإميل" required>
         </div>
         <textarea class="API-cupy" typy="text" name="entry.744897344" placeholder="اكتب الطلب" required></textarea>
-        <select name="" id="" style="text-align: right;" required>
-            <option value="">سبب آخر</option>
-            <option value="">(قرائة الرآن) الإبلاغ عن مشكلة</option>
-            <option value="">الإعلانت</option>
-            <option value="">مساهمة مالية</option>
-            <option value="">مساهمة إدارية وغيرها</option>
-            <option value="">API اوقات الصلاة</option>
-            <option value="">API القرآن الكريم</option>
-            <option value="">API اذكار الصباح والمساء</option>
-            <option value="">API خريطة العالم</option>
-            <option value="">API مسابقة دينية</option>
+        <select name="" id="fruit" style="text-align: right;" required>
+            <option value="er1">سبب آخر</option>
+            <option value="er2">(قرائة الرآن) الإبلاغ عن مشكلة</option>
+            <option value="er3">الإعلانت</option>
+            <option value="er4">مساهمة مالية</option>
+            <option value="er5">مساهمة إدارية وغيرها</option>
+            <option value="er6">API اوقات الصلاة</option>
+            <option value="er7">API القرآن الكريم</option>
+            <option value="er8">API اذكار الصباح والمساء</option>
+            <option value="er9">API خريطة العالم</option>
+            <option value="er10">API مسابقة دينية</option>
         </select>
         <span>إختر سبب الإرسال</span>
         <div class="API-button">
@@ -1043,6 +1043,22 @@ setInterval(updateQRCode, 20000);
      </form>
      </div>
      <script src="form.js"></script>     
+
+
+     <script>
+        // الحصول على جميع الأزرار
+        const buttons = document.querySelectorAll('.selecte');
+        
+        // إضافة حدث النقر على كل زر
+        buttons.forEach(button => {
+          button.addEventListener('click', function() {
+            // تحديد الخيار في القائمة بناءً على data-fruit
+            const fruit = this.getAttribute('data-fruit');
+            document.getElementById('fruit').value = fruit;
+          });
+        });
+      </script>
+
 
 <p class="message" id="message"></p>
 
