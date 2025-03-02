@@ -479,7 +479,7 @@ body .page-1 {
     border-radius: 0px 0px 4px 4px;
     display: flex;
     align-items: center;
-    top: 46px;
+    top: 40px;
 }
 #contentDivWithDetails3 .Shortcut-close {
     margin: 0;
@@ -1386,9 +1386,9 @@ body .hidden {
     justify-content: center;
 }
 .sold img {
-    height: 36px;
-    border: solid 1px #000000;
-    border-radius: 8px;
+    height: 41px;
+    border: solid 1px #dadada;
+    border-radius: 13px;
 }
 .qr-txt {
     font-size: 18px;
@@ -2863,8 +2863,11 @@ html .links-Translate-search input {
     body .page-1 {
         width: 240px;
     }
+    body .page-1::-webkit-scrollbar {
+        width: 0px;
+    }
     body .home-div .fof-dive {
-        top: 51px;
+        top: 48px;
     }
     body .opacity {
         margin: 16px;
