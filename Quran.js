@@ -484,19 +484,38 @@ document.addEventListener("DOMContentLoaded", async function () {
             selectedCountSpan.textContent = `${selectedSurahs.size}`;
         }
 
-        const divs = suraContainer.querySelectorAll('.sura-wrapper');
-        const interval = 30;
-        const newDiv = document.createElement('div');
-        newDiv.id = 'suraContainere';
-        newDiv.innerHTML = `<img src="https://taibahcloud.com/images/promo/39/Men_-_Mobile.jpg" alt="صورة"><a href="https://taibahcloud.com/"></a>`;
 
-        for (let i = interval - 1; i < divs.length; i += interval) {
-            divs[i].parentNode.insertBefore(newDiv.cloneNode(true), divs[i].nextSibling);
-        }
-    } catch (error) {
-        console.error('Error fetching surah data:', error);
-    }
+
+            const divs = suraContainer.querySelectorAll('.sura-wrapper');
+            const interval = 30;
+            const newDiv = document.createElement('div');
+            newDiv.id = 'suraContainere';
+            newDiv.innerHTML = `
+                <div class="suraCont wave-button" onclick="window.location.href='https://taibahcloud.com/'">
+                    <div>
+                        <img src="https://taibahcloud.com/images/promo/39/Men_-_Mobile.jpg" alt="صورة">
+                    </div>
+                    <div class="dady">
+                        <ion-icon name="arrow-back-outline"></ion-icon>
+                        <span>تسوق الأن</span>
+                    </div>
+                </div>
+            `;
+        
+            for (let i = interval - 1; i < divs.length; i += interval) {
+                divs[i].parentNode.insertBefore(newDiv.cloneNode(true), divs[i].nextSibling);
+            }
+        } catch (error) {
+            console.error('Error fetching surah data:', error);
+        }        
+
 });
+
+
+
+
+
+
 
 
 
