@@ -396,7 +396,7 @@ body ion-icon {
     margin-top: -60px;
 }
 .menu-buttons .wave-button .ripple {
-    background: #ffffff57;
+    background: #ffffff71;
 }
 .menu-buttons:active .c {
     border: solid 1px #4e5a681c;
@@ -2975,5 +2975,6 @@ html .links-Translate-search input {
     }
     body .c::before {
         min-width: -webkit-fill-available;
+        margin-top: 46px;
     }
 }
