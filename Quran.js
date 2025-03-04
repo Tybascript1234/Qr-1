@@ -509,7 +509,45 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error('Error fetching surah data:', error);
         }        
 
+
+        // الدالة التي تقوم بالتمرير للأعلى داخل الديف
+function scrollToTop(scrollableDiv) {
+    scrollableDiv.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  // اختيار جميع الديفات التي تحتوي على صنف .scrollable-div
+  var scrollableDivs = document.querySelectorAll(".scrollable-div");
+  var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  var hideBtns = document.querySelectorAll(".hide-btn");  // اختيار جميع الأزرار التي تحتوي على الكلاس .hide-btn
+  
+  // ربط الزر بالدالة عند النقر عليه باستخدام addEventListener
+  scrollToTopBtn.addEventListener("click", function() {
+    // تمرير إلى الأعلى في كل ديف يتم تمرير الزر له
+    scrollableDivs.forEach(function(scrollableDiv) {
+      scrollToTop(scrollableDiv);
+    });
+  });
+  
+  // إضافة حدث التمرير لكل ديف
+  scrollableDivs.forEach(function(scrollableDiv) {
+    scrollableDiv.onscroll = function() {
+      // تحقق من إذا كان التمرير داخل الديف قد تجاوز 100px
+      if (scrollableDiv.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    };
+  });
+  
+  // إخفاء الزر عند النقر على أي زر يحتوي على الكلاس .hide-btn
+  hideBtns.forEach(function(hideBtn) {
+    hideBtn.addEventListener("click", function() {
+      scrollToTopBtn.style.display = "none";  // إخفاء زر التمرير للأعلى
+    });
+  });
 });
+
 
 
 
