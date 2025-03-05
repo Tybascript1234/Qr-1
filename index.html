@@ -489,7 +489,7 @@ setInterval(updateQRCode, 20000);
             <!-- 2 -->
                 <div id="Page1" class="kk">
                     <div class="div-page scrollable-div">
-                        <button onclick="requestNotificationPermission()" class="page-close wave-button" style="right: auto;left: 0;"><ion-icon name="notifications-outline"></ion-icon></button>
+                        <button id="show-qibla-container" class="page-close wave-button" style="right: auto;left: 0;"><span class="material-symbols-outlined"> explore </span></button>
                         <button class="page-close hide-btn pagee wave-button cvme" data-target="Page1" data-tooltip="Back"><span class="material-symbols-outlined notranslate"> arrow_forward </span></button>
                         
                          <!-- ديف يحتوي على أوقات الصلاة وزر لإغلاقه -->
@@ -535,6 +535,27 @@ setInterval(updateQRCode, 20000);
                             
                             </div>
                         
+                            <div id="overlay" style="display: none;align-items: center;background-color: rgb(119 135 154 / 20%);height: -webkit-fill-available; margin-top: 57px;">
+                                <div class="only" id="qibla-container" style="display: none;">
+                                    <div>
+                                        <div>
+                                            <div id="qibla-arrow-container">
+                                            <img id="qibla-arrow" src="qibla-compass.png" alt="اتجاه القبلة">
+                                            </div>
+                                            <p>اتجاه القبلة</p>
+                                            <div class="lx">
+                                                <span><x></x><a id="north-distance">الشمال: 0 كم</a></span>
+                                                <span><x style="background: #fbbc05;"></x><a id="south-distance">الجنوب: 0 كم</a></span>
+                                                <span><x style="background: #34a853;"></x><a id="east-distance">الشرق: 0 كم</a></span>
+                                                <span><x style="background: #ea4335;"></x><a id="west-distance">الغرب: 0 كم</a></span>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>
+                            </div>
+                                                                     
+
+
                             <div class="omg">
                                 <select onchange="handleCountryChange(this)" class="dropdown-selector custom-select mySelect">
                                     <option value="">اختر الدولة</option>
