@@ -1773,7 +1773,7 @@ body #ert .fof-dive::before {
 
 
  /* خلفية تغطي الصفحة بالكامل لمنع الضغط */
- .overlay {
+ .overlay,#overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -2665,6 +2665,72 @@ html .links-Translate-search input {
 .suraCont:hover .dady ion-icon {
     margin-left: 3px;
 }
+
+
+
+
+
+#qibla-container {
+    text-align: -webkit-center;
+    /* margin-top: 50px; */
+    position: absolute;
+    width: 407px;
+    max-width: -webkit-fill-available;
+    z-index: 2001;
+    margin: auto;
+    padding: 20px;
+    right: auto;
+    top: 50px;
+    background: white;
+    border-radius: 16px;
+    margin: 0 10px;
+    box-shadow: 0px 2px 9px #41505d36;
+}
+#qibla-arrow-container {
+    position: relative;
+    width: max-content;
+    margin: auto;
+    padding: 14px;
+}
+#qibla-arrow-container::before {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    left: 58px;
+    top: 0;
+    background: #4285f4;
+    box-shadow: 57px 58px 0px #ea4335, -58px 58px 0px #34a853, 1px 116px 0px #fbbc05;
+    padding: 6px;
+    border-radius: 10px;
+}
+.lx {
+    display: flex;
+    flex-wrap: wrap;
+}
+.lx span {
+    position: relative;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding-right: 17px;
+}
+.lx x {
+    position: absolute;
+    padding: 6px;
+    border-radius: 10px;
+    right: 0;
+    background: #4285f4;
+}
+
+#qibla-arrow {
+    width: 100px;
+    height: auto;
+    transition: transform 0.5s ease-in-out; /* حركة سلسة */
+}
+
+
+
 
 
 
