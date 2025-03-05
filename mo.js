@@ -308,6 +308,133 @@ function updateCountdownAndNotifications(timings, container) {
 
 
 
+
+
+// ----------------------------------------------------------------------------------------------------------------------
+
+// إحداثيات الكعبة المكرمة
+const qiblaCoordinates = { lat: 21.4225, lon: 39.8262 };
+
+// حساب اتجاه القبلة
+function getQiblaDirection(latitude, longitude) {
+    const phi = Math.PI / 180 * latitude;
+    const lambda = Math.PI / 180 * longitude;
+    const qiblaLat = Math.PI / 180 * qiblaCoordinates.lat;
+    const qiblaLon = Math.PI / 180 * qiblaCoordinates.lon;
+
+    const deltaLon = qiblaLon - lambda;
+    const y = Math.sin(deltaLon);
+    const x = Math.cos(phi) * Math.tan(qiblaLat) - Math.sin(phi) * Math.cos(deltaLon);
+
+    let qiblaAngle = Math.atan2(y, x) * 180 / Math.PI;
+    qiblaAngle = (qiblaAngle + 360) % 360; // التأكد من أن الزاوية بين 0 و 360
+
+    return qiblaAngle;
+}
+
+// حساب المسافة بين نقطتين باستخدام معادلة هافرسين (Haversine Formula)
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // نصف قطر الأرض بالكيلومترات
+    const phi1 = lat1 * Math.PI / 180;
+    const phi2 = lat2 * Math.PI / 180;
+    const deltaPhi = (lat2 - lat1) * Math.PI / 180;
+    const deltaLambda = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+              Math.cos(phi1) * Math.cos(phi2) *
+              Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // المسافة بالكيلومترات
+}
+
+// الحصول على الموقع الجغرافي للمستخدم
+function getUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            const qiblaAngle = getQiblaDirection(userLat, userLon);
+
+            // حساب المسافات في الاتجاهات الأربعة
+            const northDistance = calculateDistance(userLat, userLon, 90, userLon); // شمال
+            const southDistance = calculateDistance(userLat, userLon, -90, userLon); // جنوب
+            const eastDistance = calculateDistance(userLat, userLon, userLat, 180); // شرق
+            const westDistance = calculateDistance(userLat, userLon, userLat, -180); // غرب
+
+            // تحديث الـ spans بالمسافات
+            document.getElementById("north-distance").textContent = `الشمال: ${northDistance.toFixed(2)} كم`;
+            document.getElementById("south-distance").textContent = `الجنوب: ${southDistance.toFixed(2)} كم`;
+            document.getElementById("east-distance").textContent = `الشرق: ${eastDistance.toFixed(2)} كم`;
+            document.getElementById("west-distance").textContent = `الغرب: ${westDistance.toFixed(2)} كم`;
+
+            // استماع لاتجاه الجهاز
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener("deviceorientation", function(event) {
+                    const alpha = event.alpha; // زاوية الجهاز من البوصلة
+                    const direction = (alpha - qiblaAngle + 360) % 360;
+
+                    // تحديث دوران السهم
+                    document.getElementById("qibla-arrow").style.transform = `rotate(${direction}deg)`;
+                });
+            } else {
+                alert("جهازك لا يدعم مستشعر البوصلة.");
+            }
+        }, (error) => {
+            alert("حدث خطأ أثناء الحصول على الموقع: " + error.message);
+        });
+    } else {
+        alert("المتصفح لا يدعم تحديد الموقع الجغرافي.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // إظهار/إخفاء div عند النقر على الزر
+    document.getElementById("show-qibla-container").addEventListener("click", function() {
+        const qiblaContainer = document.getElementById("qibla-container");
+        const overlay = document.getElementById("overlay");
+        
+        qiblaContainer.style.display = "block"; // عرض الـ div
+        overlay.style.display = "flex"; // عرض الـ overlay
+        document.body.style.overflow = "hidden"; // إيقاف التمرير عند فتح الـ div
+    });
+
+    // إخفاء الـ div والـ overlay عند النقر على الـ overlay (لكن ليس عند النقر داخل qibla-container)
+    document.getElementById("overlay").addEventListener("click", function(event) {
+        // التأكد من أن النقر حدث على الـ overlay وليس على qibla-container
+        if (!document.getElementById("qibla-container").contains(event.target)) {
+            const qiblaContainer = document.getElementById("qibla-container");
+            const overlay = document.getElementById("overlay");
+
+            qiblaContainer.style.display = "none"; // إخفاء الـ div
+            overlay.style.display = "none"; // إخفاء الـ overlay
+            document.body.style.overflow = "hidden"; // إعادة التمرير عند إغلاق الـ div
+
+            // إعادة التمرير إلى حالته الأصلية
+            window.scrollTo(0, 0);
+        }
+    });
+
+    // إضافة حدث للنقر على qibla-arrow-container لعرض رسالة تحديد القبلة
+    const qiblaArrowContainer = document.getElementById("qibla-arrow-container");
+    if (qiblaArrowContainer) {
+        qiblaArrowContainer.addEventListener("click", function() {
+            alert("تحديد القبلة من جديد.");
+            getUserLocation();  // إعادة حساب اتجاه القبلة
+        });
+    }
+
+    getUserLocation(); // تشغيل دالة الحصول على الموقع الجغرافي
+});
+
+
+
+// ----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 function updateDate() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const today = new Date();
