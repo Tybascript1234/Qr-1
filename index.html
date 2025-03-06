@@ -79,8 +79,8 @@
             <div class="ome"><span id="progress-bar"></span></div>
             <br>
             <div class="hom">
-                <button onclick="openInternetSettings()">WiFi settings</button>
-                <button onclick="reloadPage()">Reload</button>
+                <button class="klo" onclick="openInternetSettings()">WiFi settings</button>
+                <button class="klo" onclick="reloadPage()">Reload</button>
             </div>
             <br>
             <div id="status-text" style="color: rgb(117, 117, 117);">Internet disconnected.</div>
@@ -172,21 +172,21 @@
                         <div>
                             <img src="https://png.pngtree.com/png-vector/20230424/ourmid/pngtree-azan-prayer-call-vector-png-image_6728480.png" alt="">
                             <br>
-                            <button class="c wave-button show-btn" data-target="Page1">اوقات الصلاة اليوم</button> 
+                            <button class="c klo wave-button show-btn" data-target="Page1">اوقات الصلاة اليوم</button> 
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page2">
                         <div>
                             <img src="https://alhafidzacademy.com/wp-content/uploads/2023/10/pngimg.com-quran_PNG33-1024x734.png" alt="">
                             <br>
-                            <button class="c wave-button show-btn" data-target="Page2">قرائة القرآن</button>   
+                            <button class="c klo wave-button show-btn" data-target="Page2">قرائة القرآن</button>   
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page3">
                         <div>
                             <img src="https://png.pngtree.com/png-clipart/20240605/original/pngtree-yellow-crescent-moon-with-fluffy-clouds-png-image_15251413.png" alt="" style="border-radius: 0;">
                             <br>
-                            <button class="c wave-button show-btn" data-target="Page3">اذكار الصباح والمساء</button>   
+                            <button class="c klo wave-button show-btn" data-target="Page3">اذكار الصباح والمساء</button>   
                         </div>
                     </div>
                     <a href="hello.html" class="menu-buttons pagee" data-target="">
@@ -194,7 +194,7 @@
                             <div>
                                 <img src="https://png.pngtree.com/png-clipart/20230328/original/pngtree-map-pin-location-with-red-png-image_9006526.png" alt="" style="border-radius: 0;">
                                 <br>
-                                <button class="c wave-button">خريطة العالم</button>   
+                                <button class="c klo wave-button">خريطة العالم</button>   
                             </div>
                         </div>
                     </a>
@@ -202,14 +202,14 @@
                         <div>
                             <img src="https://github.com/Tybascript1234/Qr-1/blob/main/camera+video+icon-1320184411724820637.png?raw=true" alt="" style="border-radius: 0;">
                             <br>
-                            <button class="c wave-button show-btn" data-target="Page10">مقاطع دينية</button>   
+                            <button class="c klo wave-button show-btn" data-target="Page10">مقاطع دينية</button>   
                         </div>
                     </div>
                     <div class="menu-buttons pagee show-btn" data-target="Page5">
                         <div>
                             <img src="https://png.pngtree.com/png-clipart/20231101/original/pngtree-sport-cup-cup-photo-png-image_13470918.png" alt="" style="border-radius: 0;">
                             <br>
-                            <button class="c wave-button show-btn" data-target="Page5">مسابقة دينية</button>   
+                            <button class="c klo wave-button show-btn" data-target="Page5">مسابقة دينية</button>   
                         </div>
                     </div>
                 </div>
@@ -541,14 +541,14 @@ setInterval(updateQRCode, 20000);
                                         <div>
                                             <p style="margin-top: 0;">اتجاه القبلة</p>
                                             <div id="qibla-arrow-container">
-                                            <img id="qibla-arrow" src="qibla-compass.png" alt="اتجاه القبلة">
+                                            <sd id="qibla-arrow"></sd>
                                             </div>
                                             <p>القبله حيث المؤشر</p>
                                             <div class="lx">
-                                                <span><x></x><a id="north-distance">الشمال: 0 كم</a></span>
-                                                <span><x style="background: #fbbc05;"></x><a id="south-distance">الجنوب: 0 كم</a></span>
-                                                <span><x style="background: #34a853;"></x><a id="east-distance">الشرق: 0 كم</a></span>
-                                                <span><x style="background: #ea4335;"></x><a id="west-distance">الغرب: 0 كم</a></span>
+                                                <span><x class="cvme" data-tooltip="N"></x><a id="north-distance">الشمال: 0 كم</a></span>
+                                                <span><x class="cvme" data-tooltip="S" style="background: #fbbc05;"></x><a id="south-distance">الجنوب: 0 كم</a></span>
+                                                <span><x class="cvme" data-tooltip="A" style="background: #34a853;"></x><a id="east-distance">الشرق: 0 كم</a></span>
+                                                <span><x class="cvme" data-tooltip="W" style="background: #ea4335;"></x><a id="west-distance">الغرب: 0 كم</a></span>
                                             </div>
                                         </div>   
                                     </div>
@@ -663,7 +663,7 @@ setInterval(updateQRCode, 20000);
                             </div>
                             <div id="containersk" class="containersk">
                             <!-- map -->
-                             <button id="addTextButton" style="display: flex;" class="wave-button"><span class="material-symbols-outlined notranslate"> add </span></button>
+                             <button id="addTextButton" style="display: flex;" class="wave-button klo"><span class="material-symbols-outlined notranslate"> add </span></button>
                             </div>  
                             <div id="container-second" class="containersk hidden">
 
@@ -1059,7 +1059,7 @@ setInterval(updateQRCode, 20000);
         <div class="API-button">
             <input type="file" id="send-input" style="display: none;">
             <label for="send-input" class="api-share" type="button"><ion-icon name="cloud-upload-outline"></ion-icon></label>
-            <button class="api-butt" id="api-butt" type="submit">Send</button>
+            <button class="api-butt klo" id="api-butt" type="submit">Send</button>
             <button class="api-butt" onclick="hideModal()">Cancel</button>
         </div>
      </form>
