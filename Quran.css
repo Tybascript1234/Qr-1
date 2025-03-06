@@ -373,27 +373,35 @@ body ion-icon {
     transition: ease 0.4s;
     border: solid 1px #dadada;
 }
-.c::before {
+body .klo {
+    position: relative;
+    overflow: hidden;
+}
+body .klo::before {
     transition: transform 1s cubic-bezier(.66, .00, .34, 1.00);
     background-color: #1c1e21;
     border-radius: 50%;
     content: '';
-    height: 167px;
+    height: 80px;
     min-width: -webkit-fill-available;
     position: absolute;
     transition: ease 0.4s;
-    margin-top: 42px;
+    margin-top: 60px;
     top: 0;
     left: 0;
     /* transform: scale(1) translateY(67px); */
     width: 100%;
     z-index: -1;
 }
-.c:hover {
+body .klo:hover {
     color: white;
 }
-.c:hover::before {
+body .klo:hover span {
+    color: white;
+}
+body .klo:hover::before {
     margin-top: -60px;
+    height: 167px;
 }
 .menu-buttons .wave-button .ripple {
     background: #ffffff71;
@@ -531,9 +539,18 @@ body .page-1 {
     /* position: sticky; */
     display: flex;
     align-items: center;
-    border-bottom: solid 1px #0000001c;
+    border-bottom: solid 1px #00000000;
     width: -webkit-fill-available;
     padding-right: 39px;
+}
+.text-inpu::before {
+    position: absolute;
+    content: '';
+    bottom: -1px;
+    height: 1px;
+    margin: 0 6px;
+    width: -webkit-fill-available;
+    background: #0000001c;
 }
 .text-inpu span {
     position: absolute;
@@ -2714,6 +2731,13 @@ html .links-Translate-search input {
     padding: 6px;
     border-radius: 10px;
 }
+body sd {
+    background-image: url(qibla-compass.png);
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    display: block;
+}
 .lx {
     display: flex;
     flex-wrap: wrap;
@@ -2733,10 +2757,13 @@ html .links-Translate-search input {
     right: 0;
     background: #4285f4;
 }
+.lx a {
+    user-select: text;
+}
 
 #qibla-arrow {
-    width: 100px;
-    height: auto;
+    /* width: 100px; */
+    /* height: auto; */
     transition: transform 0.5s ease-in-out; /* حركة سلسة */
 }
 
@@ -3012,7 +3039,7 @@ html .links-Translate-search input {
         width: -webkit-fill-available;
     }
     body .page-1 {
-        width: 240px;
+        border-radius: 0px 16px 16px 0px;
     }
     body .page-1::-webkit-scrollbar {
         width: 0px;
