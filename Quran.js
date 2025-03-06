@@ -19,6 +19,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     repeatCountSpan.style.display = 'none';
 
+    // دالة لإزالة التشكيل من النص العربي
+    function removeTashkeel(text) {
+        return text.replace(/[\u064B-\u065F\u0610-\u061A]/g, ''); // إزالة الحركات والتشكيل
+    }
+
     try {
         const response = await fetch('https://api.alquran.cloud/v1/surah');
         const data = await response.json();
@@ -29,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             wrapper.className = 'sura-wrapper';
             wrapper.style.backgroundImage = `url('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-images@master/surah/${surah.number}.jpg')`;
             wrapper.setAttribute('data-number', surah.number);
+            wrapper.id = removeTashkeel(surah.name.replace(/\s+/g, ' ')); // إضافة id بدون تشكيل
 
             const typeImg = document.createElement('img');
             typeImg.className = 'sura-type-image';
@@ -179,10 +185,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         searchInput.addEventListener('input', function () {
             const searchTerm = this.value.trim().toLowerCase().normalize("NFC");
-            const filteredSurahs = allSurahs.filter(surah => surah.name.trim().toLowerCase().normalize("NFC").includes(searchTerm));
-            suraContainer.innerHTML = '';
-            if (filteredSurahs.length > 0) filteredSurahs.forEach(surah => createSurahElement(surah));
-            else suraContainer.innerHTML = '<p>السورة غير موجودة</p>';
+            if (searchTerm === '') {
+                suraContainer.innerHTML = '';
+                allSurahs.forEach(surah => createSurahElement(surah));
+            } else {
+                // البحث باستخدام الـ ID بدلاً من اسم السورة
+                const filteredSurahs = allSurahs.filter(surah => 
+                    removeTashkeel(surah.name).trim().toLowerCase().normalize("NFC").includes(searchTerm) || 
+                    removeTashkeel(surah.number.toString()).includes(searchTerm) // البحث باستخدام رقم السورة
+                );
+                
+                suraContainer.innerHTML = '';
+                if (filteredSurahs.length > 0) {
+                    filteredSurahs.forEach(surah => createSurahElement(surah));
+                } else {
+                    suraContainer.innerHTML = '<p>السورة غير موجودة</p>';
+                }
+            }
         });
 
         forwardButton.addEventListener('click', function () {
@@ -484,70 +503,66 @@ document.addEventListener("DOMContentLoaded", async function () {
             selectedCountSpan.textContent = `${selectedSurahs.size}`;
         }
 
-
-
-            const divs = suraContainer.querySelectorAll('.sura-wrapper');
-            const interval = 30;
-            const newDiv = document.createElement('div');
-            newDiv.id = 'suraContainere';
-            newDiv.innerHTML = `
-                <div class="suraCont wave-button" onclick="window.location.href='https://taibahcloud.com/'">
-                    <div>
-                        <img src="https://taibahcloud.com/images/promo/39/Men_-_Mobile.jpg" alt="صورة">
-                    </div>
-                    <div class="dady">
-                        <ion-icon name="arrow-back-outline"></ion-icon>
-                        <span>تسوق الأن</span>
-                    </div>
+        const divs = suraContainer.querySelectorAll('.sura-wrapper');
+        const interval = 30;
+        const newDiv = document.createElement('div');
+        newDiv.id = 'suraContainere';
+        newDiv.innerHTML = `
+            <div class="suraCont wave-button" onclick="window.location.href='https://taibahcloud.com/'">
+                <div>
+                    <img src="https://taibahcloud.com/images/promo/39/Men_-_Mobile.jpg" alt="صورة">
                 </div>
-            `;
-        
-            for (let i = interval - 1; i < divs.length; i += interval) {
-                divs[i].parentNode.insertBefore(newDiv.cloneNode(true), divs[i].nextSibling);
-            }
-        } catch (error) {
-            console.error('Error fetching surah data:', error);
-        }        
+                <div class="dady">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <span>تسوق الأن</span>
+                </div>
+            </div>
+        `;
 
+        for (let i = interval - 1; i < divs.length; i += interval) {
+            divs[i].parentNode.insertBefore(newDiv.cloneNode(true), divs[i].nextSibling);
+        }
+    } catch (error) {
+        console.error('Error fetching surah data:', error);
+    }
 
-        // الدالة التي تقوم بالتمرير للأعلى داخل الديف
-function scrollToTop(scrollableDiv) {
-    scrollableDiv.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  
-  // اختيار جميع الديفات التي تحتوي على صنف .scrollable-div
-  var scrollableDivs = document.querySelectorAll(".scrollable-div");
-  var scrollToTopBtn = document.getElementById("scrollToTopBtn");
-  var hideBtns = document.querySelectorAll(".hide-btn");  // اختيار جميع الأزرار التي تحتوي على الكلاس .hide-btn
-  
-  // ربط الزر بالدالة عند النقر عليه باستخدام addEventListener
-  scrollToTopBtn.addEventListener("click", function() {
-    // تمرير إلى الأعلى في كل ديف يتم تمرير الزر له
+    // الدالة التي تقوم بالتمرير للأعلى داخل الديف
+    function scrollToTop(scrollableDiv) {
+        scrollableDiv.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // اختيار جميع الديفات التي تحتوي على صنف .scrollable-div
+    var scrollableDivs = document.querySelectorAll(".scrollable-div");
+    var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    var hideBtns = document.querySelectorAll(".hide-btn");  // اختيار جميع الأزرار التي تحتوي على الكلاس .hide-btn
+
+    // ربط الزر بالدالة عند النقر عليه باستخدام addEventListener
+    scrollToTopBtn.addEventListener("click", function() {
+        // تمرير إلى الأعلى في كل ديف يتم تمرير الزر له
+        scrollableDivs.forEach(function(scrollableDiv) {
+            scrollToTop(scrollableDiv);
+        });
+    });
+
+    // إضافة حدث التمرير لكل ديف
     scrollableDivs.forEach(function(scrollableDiv) {
-      scrollToTop(scrollableDiv);
+        scrollableDiv.onscroll = function() {
+            // تحقق من إذا كان التمرير داخل الديف قد تجاوز 100px
+            if (scrollableDiv.scrollTop > 100) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
     });
-  });
-  
-  // إضافة حدث التمرير لكل ديف
-  scrollableDivs.forEach(function(scrollableDiv) {
-    scrollableDiv.onscroll = function() {
-      // تحقق من إذا كان التمرير داخل الديف قد تجاوز 100px
-      if (scrollableDiv.scrollTop > 100) {
-        scrollToTopBtn.style.display = "block";
-      } else {
-        scrollToTopBtn.style.display = "none";
-      }
-    };
-  });
-  
-  // إخفاء الزر عند النقر على أي زر يحتوي على الكلاس .hide-btn
-  hideBtns.forEach(function(hideBtn) {
-    hideBtn.addEventListener("click", function() {
-      scrollToTopBtn.style.display = "none";  // إخفاء زر التمرير للأعلى
-    });
-  });
-});
 
+    // إخفاء الزر عند النقر على أي زر يحتوي على الكلاس .hide-btn
+    hideBtns.forEach(function(hideBtn) {
+        hideBtn.addEventListener("click", function() {
+            scrollToTopBtn.style.display = "none";  // إخفاء زر التمرير للأعلى
+        });
+    });
+});
 
 
 
